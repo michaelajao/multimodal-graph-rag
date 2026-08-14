@@ -1,0 +1,441 @@
+[
+
+  {
+    "q": "How does the use of bidirectional gated recurrent units in encoding sequences relate to the implementation of sentence-level BLEU as an objective for the generator?",
+    "source": "1611.04684v1.txt",
+    "source2": "1703.04887v4.txt",
+    "answer": "In channel two, we employ bidirectional gated recurrent units (BiGRU) to encode $S_x$ and $S_y$ on words, and sentence-level BLEU is used as the static and specific objective for the generator which biases the generation towards achieving high BLEU points.",
+    "type": "multihop_cross",
+    "entity": "bidirectional gated recurrent units"
+  },
+
+ 
+
+  {
+    "q": "How are pretrained word2vec embeddings utilized in the training process, and what effect do they have on internal coherence in models for IMDB and Yahoo answers?",
+    "source": "1804.07707v2.txt",
+    "source2": "1705.09296v2.txt",
+    "answer": "Pretrained word2vec embeddings are initialized in the training process and not updated, which returned a model with the best internal coherence for IMDB and Yahoo answers. Additionally, words with count 1 in the training corpus are replaced with the UNK token with a probability of 0.5.",
+    "type": "multihop_cross",
+    "entity": "pretrained word2vec embeddings"
+  },
+  {
+    "q": "How is maximum likelihood estimation applied in supervised summarization approaches, and what role does it play in pre-training the generator in GANs?",
+    "source": "1812.00108v4.txt",
+    "source2": "1703.04887v4.txt",
+    "answer": "In supervised summarization approaches, maximum likelihood estimation is used to define the similarity measure based on the Multi-DPP measure with respect to the ground-truth labels. In GANs, maximum likelihood estimation is utilized to pre-train the generator on the parallel training set.",
+    "type": "multihop_cross",
+    "entity": "maximum likelihood estimation"
+  },
+  {
+    "q": "How does knowledge transfer in action recognition utilize a large amount of training data, and what challenges do deep generative models face regarding a large amount of training data?",
+    "source": "1804.01429v3.txt",
+    "source2": "1703.10730v2.txt",
+    "answer": "Knowledge transfer in action recognition requires a large amount of training data to generalize a model trained with limited scenes to unseen scenes. Deep generative models face the challenge of being labor intensive to label conditional information since they require a large amount of training data.",
+    "type": "multihop_cross",
+    "entity": "large amount of training data"
+  },
+
+  {
+    "q": "How does the baseline model in the smoke dataset learn spatial and temporal features, and what method is used to process spatial features across frames in the independent views?",
+    "source": "1811.09393v4.txt",
+    "source2": "1812.00108v4.txt",
+    "answer": "The baseline model in the smoke dataset learns spatial and temporal features by using original, unwarped triplets, which results in sub-optimal quality due to a lack of sharp spatial structures. In the independent views, spatial features are extracted from each frame using a pre-trained CNN and are then temporally processed using a Bidirectional LSTM layer.",
+    "type": "multihop_cross",
+    "entity": "spatial and temporal features"
+  },
+
+  {
+    "q": "What datasets are introduced for temporal action localization, and what is a key requirement for efficient search in temporal action localization?",
+    "source": "1804.01429v3.txt",
+    "source2": "1706.04269v2.txt",
+    "answer": "THUMOS, ActivityNet, and AVA are introduced for temporal action localization, and an efficient search for different visual targets in videos is a key requirement.",
+    "type": "multihop_cross",
+    "entity": "temporal action localization"
+  },
+  {
+    "q": "What challenges do tensor factorization methods face in modeling time modes, and what novel approach is proposed to address the gap in their application to HRSI?",
+    "source": "1803.04572v2.txt",
+    "source2": "1707.01917v2.txt",
+    "answer": "Tensor factorization methods face challenges in modeling the time mode due to its irregularity, and the novel approach proposed to address the gap in their application to HRSI is Tensor Factorization with Back-off and Aggregation (TFBA).",
+    "type": "multihop_cross",
+    "entity": "tensor factorization methods"
+  },
+  {
+    "q": "How does mutual information estimation contribute to the talking face generation task, and what is the objective of generating a sequence of frames in this task?",
+    "source": "1812.06589v2.txt",
+    "source2": "1804.04786v3.txt",
+    "answer": "Mutual information estimation in the talking face generation task leverages the proposed AMIE to learn the cross-modal coherence, while the objective of generating a sequence of frames is to ensure that the conditional probability distribution of the generated frames given the identity image and condition is close to that of the actual frames.",
+    "type": "multihop_cross",
+    "entity": "talking face generation task"
+  },
+  {
+    "q": "How does MTSA contribute to question-type classification, and what classification type is question-type classification categorized as in TREC?",
+    "source": "1805.00912v4.txt",
+    "source2": "1809.02731v3.txt",
+    "answer": "MTSA achieves state-of-the-art or competitive performance in question-type classification, and question-type classification is categorized as a multi-class classification task in TREC.",
+    "type": "multihop_cross",
+    "entity": "question-type classification"
+  },
+  {
+    "q": "What challenges do semantic segmentation models face when tested on different datasets, and how does a semi-supervised method improve the training of semantic segmentation models?",
+    "source": "1805.04687v2.txt",
+    "source2": "1811.07073v3.txt",
+    "answer": "Semantic segmentation models perform much worse when tested on a different dataset due to dramatic domain shifts, and a semi-supervised method improves training by leveraging cheap object bounding box labels.",
+    "type": "multihop_cross",
+    "entity": "semantic segmentation models"
+  },
+
+  {
+    "q": "How does the feed-forward neural network predict the next joint configuration of a robot, and what role does it play in evaluating the coherence of sentence embeddings?",
+    "source": "1603.03833v4.txt",
+    "source2": "1611.02654v2.txt",
+    "answer": "The feed-forward neural network predicts the next joint configuration of the robot based on its current joint configuration, and it is trained to output a probability representing the coherence of the sentence window from the input window of sentence embeddings.",
+    "type": "multihop_cross",
+    "entity": "feed-forward neural network"
+  },
+  {
+    "q": "How do sequence-to-sequence models utilize a hierarchical structure for combinatorial optimization, and what challenges do they face when applied to the AMR dataset?",
+    "source": "1611.02654v2.txt",
+    "source2": "1804.07707v2.txt",
+    "answer": "The model has a hierarchical structure that takes a discriminative approach for combinatorial optimization, and the AMR dataset presents challenges with data sparsity causing poor parameter estimation for rarely seen words.",
+    "type": "multihop_cross",
+    "entity": "sequence-to-sequence models"
+  },
+
+
+
+
+
+  {
+    "q": "How does the uniqueness of factorizations relate to standard compressed sensing, and what role does sparsity play in applications of standard compressed sensing?",
+    "source": "1706.08146v3.txt",
+    "source2": "1811.06635v1.txt",
+    "answer": "The uniqueness of factorizations after projection is more complex than in standard compressed sensing, and sparsity is crucial for tackling high dimensional problems in applications such as medical imaging and data analysis.",
+    "type": "multihop_cross",
+    "entity": "standard compressed sensing"
+  },
+  {
+    "q": "How is the Stanford sentiment treebank utilized in binary classification tasks, and what classification type is associated with TREC?",
+    "source": "1709.02755v5.txt",
+    "source2": "1809.02731v3.txt",
+    "answer": "The Stanford sentiment treebank is used as a binary version dataset for sentence classification tasks, while TREC is associated with multi-class classification.",
+    "type": "multihop_cross",
+    "entity": "stanford sentiment treebank"
+  },
+
+ 
+
+
+  {
+    "q": "How do deep neural network models capture semantic dependencies in natural language, and what privacy concerns arise when using deep neural network models for prediction services?",
+    "source": "1802.07459v2.txt",
+    "source2": "1811.08257v1.txt",
+    "answer": "Deep neural network models can capture the semantic dependencies (especially sequential dependencies) in natural language through layers of recurrent or convolutional neural networks. However, this raises privacy concerns since clients need to send sensitive information to servers.",
+    "type": "multihop_cross",
+    "entity": "deep neural network models"
+  },
+  {
+    "q": "How does the negative sampling strategy enhance the performance of AMAN in CVR modeling, and what role does it play in the training iterations of RippleNet?",
+    "source": "1804.07931v2.txt",
+    "source2": "1803.03467v4.txt",
+    "answer": "The negative sampling strategy in AMAN is utilized to achieve the best results with a sampling rate searched in {10}, while in RippleNet, it is used to randomly sample a minibatch of positive/negative interactions and true/false triples to optimize the loss function.",
+    "type": "multihop_cross",
+    "entity": "negative sampling strategy"
+  },
+  {
+    "q": "How does the exponential moving average contribute to the unsupervised loss term in the temporal ensemble, and what role does it play in boosting performance during model evaluation?",
+    "source": "1805.06431v4.txt",
+    "source2": "1809.03449v3.txt",
+    "answer": "The exponential moving average is used to update the augmented target in the temporal ensemble, and it is applied to boost the performance of the model.",
+    "type": "multihop_cross",
+    "entity": "exponential moving average"
+  },
+
+
+
+  {
+    "q": "How does gradient back-propagation affect the optimization of deep neural models like DSPR, and what conclusion is drawn about its role in improving information flow in networks?",
+    "source": "1611.07718v2.txt",
+    "source2": "1708.03797v1.txt",
+    "answer": "Gradient back-propagation is difficult to optimize in deep neural models like DSPR due to the stacking of many layers, and it is concluded that gradient back-propagation improves both forward and backward information flow in networks.",
+    "type": "multihop_cross",
+    "entity": "gradient back-propagation"
+  },
+  {
+    "q": "How is dropout applied to non-recurrent connections in the r-LSTM model, and what dropout probability is used for non-recurrent connections in the LSTM cell?",
+    "source": "1704.00774v3.txt",
+    "source2": "1804.07707v2.txt",
+    "answer": "In the r-LSTM model, dropout is applied to all non-recurrent connections, while in the LSTM cell, non-recurrent connections are dropped out with a probability of 0.5.",
+    "type": "multihop_cross",
+    "entity": "non-recurrent connections"
+  },
+
+
+  {
+    "q": "How are training and testing sets utilized in constructing noisy training targets, and what method is used to ensure a fair comparison in the performance evaluation of video datasets?",
+    "source": "1803.05776v2.txt",
+    "source2": "1804.04786v3.txt",
+    "answer": "We use a portion of the signals for training and the remaining for testing to construct noisy training targets by adding white Gaussian noise at SNR-levels of 10 dB and 0 dB. For a fair comparison and performance evaluation, we split each dataset into training and testing sets following the same experimental setting as previous works.",
+    "type": "multihop_cross",
+    "entity": "training and testing sets"
+  },
+
+
+
+
+
+
+  {
+    "q": "How are pre-trained word vectors utilized in the neural network model for embedding, and what challenges do they present when used with recurrent neural networks like BiLSTM?",
+    "source": "1802.07459v2.txt",
+    "source2": "1809.03449v3.txt",
+    "answer": "In the neural network model, pre-trained word vectors are loaded and fixed during training, while using recurrent neural networks like BiLSTM with pre-trained word vectors can lead to challenges in capturing covert multi-hop semantic relation chains.",
+    "type": "multihop_cross",
+    "entity": "pre-trained word vectors"
+  },
+
+
+
+  {
+    "q": "How does FALCON evaluate the relu activation function, and what network structure does the BASE model use that includes the relu activation function?",
+    "source": "1811.08257v1.txt",
+    "source2": "1804.07931v2.txt",
+    "answer": "FALCON provides detailed evaluation methods for the relu activation function, and the BASE model uses a network structure that employs the relu activation function.",
+    "type": "multihop_cross",
+    "entity": "relu activation function"
+  },
+  {
+    "q": "How is the categorical distribution utilized in segmentation models, and what role does the categorical distribution play in determining attention probabilities?",
+    "source": "1811.07073v3.txt",
+    "source2": "1805.00912v4.txt",
+    "answer": "In segmentation models, the categorical distribution is used to represent the probabilities over C+1 categories. In attention mechanisms, the categorical distribution for attention probabilities is derived from applying softmax.",
+    "type": "multihop_cross",
+    "entity": "categorical distribution"
+  },
+  {
+    "q": "How does a mixture density network utilize LSTM layers for error signaling, and what role does the Cholesky Block play in estimating target distributions in relation to a mixture density network?",
+    "source": "1603.03833v4.txt",
+    "source2": "1805.06431v4.txt",
+    "answer": "The robot is controlled by a mixture density network with 3 layers of LSTM, which uses an MDN-based error signal. The Cholesky Block estimates the mixture of the target distribution and other correlated distributions, allowing effective inference and distinction between target distributions and noisy distributions.",
+    "type": "multihop_cross",
+    "entity": "mixture density network"
+  },
+  {
+    "q": "How does the VAGER model utilize a linear mapping function to relate embedding similarity to classification parameters, and what role does the linear mapping function $f_{fr}$ play in transforming input orthonormal matrices in the FRMap layers?",
+    "source": "1710.06177v2.txt",
+    "source2": "1611.05742v3.txt",
+    "answer": "The VAGER model learns a linear mapping function from the embedding of a base class to its previously learned classification parameters, reflecting visual analogy through embedding similarity. In the FRMap layers, the linear mapping function $f_{fr}$ transforms input orthonormal matrices of subspaces to new matrices, facilitating better classification.",
+    "type": "multihop_cross",
+    "entity": "linear mapping function"
+  },
+  {
+    "q": "What tasks are included in the unsupervised evaluation for Semantic Textual Similarity, and how is the correlation of cosine similarity utilized in the unsupervised evaluation for sentence similarity?",
+    "source": "1809.02731v3.txt",
+    "source2": "1703.02507v3.txt",
+    "answer": "The unsupervised evaluation includes five tasks from SemEval Semantic Textual Similarity (STS) in 2012-2016 and the SemEval2014 Semantic Relatedness task (SICK-R). In the unsupervised evaluation for sentence similarity, the correlation of the cosine similarity between two embeddings is compared to human annotators.",
+    "type": "multihop_cross",
+    "entity": "unsupervised evaluation"
+  },
+  {
+    "q": "How have Recurrent Neural Networks (RNNs) been applied in time series forecasting, and what challenge does multivariate time series forecasting face regarding variable dependencies?",
+    "source": "1706.03847v3.txt",
+    "source2": "1703.07015v3.txt",
+    "answer": "Recurrent Neural Networks (RNNs) have emerged as powerful methods for modeling sequential data, including time series forecasting. Multivariate time series forecasting often faces a major research challenge in capturing and leveraging the dynamics dependencies among multiple variables.",
+    "type": "multihop_cross",
+    "entity": "time series forecasting"
+  },
+  {
+    "q": "What challenges do ARIMA models face in high dimensional multivariate time series forecasting due to high computational cost, and how does the generative adversarial network (GAN) also relate to high computational cost in its performance of untargeted attacks?",
+    "source": "1703.07015v3.txt",
+    "source2": "1803.01128v3.txt",
+    "answer": "ARIMA models are rarely used in high dimensional multivariate time series forecasting due to their high computational cost, while the generative adversarial network (GAN) can only perform untargeted attacks and also suffers from high computational cost.",
+    "type": "multihop_cross",
+    "entity": "high computational cost"
+  },
+  {
+    "q": "How does the performance on the unseen imagenet validation set relate to the construction of Imagenet-Random, and what role does the imagenet validation set play in the k-shot learning scenario?",
+    "source": "1705.08016v3.txt",
+    "source2": "1710.06177v2.txt",
+    "answer": "...",
+    "type": "multihop_cross",
+    "entity": "imagenet validation set"
+  },
+  {
+    "q": "How does the attention-based listwise loss improve model efficiency compared to traditional listwise loss functions, and what issue do the new family of listwise loss functions aim to address regarding the gradients of negative samples?",
+    "source": "1804.05936v2.txt",
+    "source2": "1706.03847v3.txt",
+    "answer": "Models trained with our attention-based loss are more efficient and effective than those trained with traditional listwise loss functions such as ListMLE. The new family of listwise loss functions aims to overcome the vanishing of gradients as the number of samples increases.",
+    "type": "multihop_cross",
+    "entity": "listwise loss functions"
+  },
+  {
+    "q": "How is one convolutional layer utilized in feature encoding with residual blocks, and what role does one convolutional layer play in generating a fixed-length vector in a basic CNN model?",
+    "source": "1706.04284v3.txt",
+    "source2": "1709.08294v3.txt",
+    "answer": "In feature encoding, one convolutional layer is designed along with one residual block, followed by spatial batch normalization and a ReLU neuron. In the basic CNN model, one convolutional layer is employed along with the pooling operation to encapsulate the input into a fixed-length vector.",
+    "type": "multihop_cross",
+    "entity": "one convolutional layer"
+  },
+  {
+    "q": "How is reconstruction accuracy measured in shape-from-silhouette, and what does Factorize-Recover achieve in terms of reconstruction accuracy when applied to compressed data?",
+    "source": "1812.00281v3.txt",
+    "source2": "1706.08146v3.txt",
+    "answer": "The reconstruction accuracy metric is the closest point distance from the 3D garment surface reconstructed by shape-from-silhouette, and performing NMF on compressed data achieves reconstruction accuracy comparable to or better than factorizing the recovered (uncompressed) data.",
+    "type": "multihop_cross",
+    "entity": "reconstruction accuracy"
+  },
+  {
+    "q": "What benefits do element-wise operations provide in handling large data, and how do they contribute to better GPU utilization in the SRU model?",
+    "source": "1803.04572v2.txt",
+    "source2": "1709.02755v5.txt",
+    "answer": "Element-wise operations allow for the application of several constraints simultaneously, which is beneficial for handling large data. In the SRU model, assembling all element-wise operations of both directions achieves better GPU utilization.",
+    "type": "multihop_cross",
+    "entity": "element-wise operations"
+  },
+  {
+    "q": "What efficient protocols does SecureML propose for training machine learning models, and how are graphs utilized in regularizing machine learning models?",
+    "source": "1811.08257v1.txt",
+    "source2": "1710.05654v2.txt",
+    "answer": "SecureML proposed efficient and privacy-preserving protocols for training several kinds of machine learning models, including linear regression, logistic regression and neural network. Graphs are utilized for regularizing various machine learning models, for example for classification, sparse coding, matrix completion, or PCA.",
+    "type": "multihop_cross",
+    "entity": "machine learning models"
+  },
+  {
+    "q": "How does the curse of dimensionality affect the feasibility of word embeddings in optimization problems, and what challenges does it pose when taking photos of geometric objects under varying conditions?",
+    "source": "1803.01128v3.txt",
+    "source2": "1804.00863v3.txt",
+    "answer": "The curse of dimensionality can cause the final solution in optimization problems to be a word embedding that is not feasible, leading to nearest neighbors being far away. Additionally, it complicates the process of taking many photos at various exposure settings of geometric objects due to the high number of parameters involved.",
+    "type": "multihop_cross",
+    "entity": "curse of dimensionality"
+  },
+  {
+    "q": "How does the concatenation of ID embedding and averaged word embedding provide more useful information for recommendation, and what is the relationship between higher entropy predictions and classification performance in θp?",
+    "source": "1803.03467v4.txt",
+    "source2": "1906.06589v3.txt",
+    "answer": "The concatenation of ID embedding and averaged word embedding provides more useful information for recommendation because news titles are typically much longer than names of movies or books. Additionally, higher entropy predictions contain more useful information and lead to high accuracy of θp.",
+    "type": "multihop_cross",
+    "entity": "more useful information"
+  },
+
+  {
+    "q": "How does the accuracy of positional information from a Kinect sensor affect object manipulation, and what role does positional information play in extracting inter-word semantic connections in a MRC model?",
+    "source": "1603.03833v4.txt",
+    "source2": "1809.03449v3.txt",
+    "answer": "The accuracy of positional information from a Kinect sensor is affected by noise due to limited sensor accuracy and occlusion during manipulation. In a MRC model, positional information is extracted to identify the positions of passage words that are semantically connected to each word.",
+    "type": "multihop_cross",
+    "entity": "positional information"
+  },
+  {
+    "q": "How does the availability of training data affect the prediction performance of Gaussian processes, and what role do correlations play in improving the prediction performance of WeakFG?",
+    "source": "1803.05776v2.txt",
+    "source2": "1611.04363v2.txt",
+    "answer": "The prediction performance of the Gaussian process depends on the availability of training data, progressively improving as the training data size is increased. WeakFG incorporates various correlations to propagate the responses throughout the graph model, thus improving its prediction performance.",
+    "type": "multihop_cross",
+    "entity": "prediction performance"
+  },
+  {
+    "q": "How does training deep networks with structured layers improve performance, and what challenges arise in generalization when training deep networks on limited data?",
+    "source": "1805.06447v3.txt",
+    "source2": "1611.05742v3.txt",
+    "answer": "Training deep networks with structured layers by matrix backpropagation can enhance performance, while generalization performance is poor when the training data is limited and fails to cover the range of variations in the testing data.",
+    "type": "multihop_cross",
+    "entity": "training deep networks"
+  },
+  {
+    "q": "How is the discrimination of the classifier h measured when using support vector machine, and what role does support vector data description play in fault diagnosis?",
+    "source": "1703.00060v2.txt",
+    "source2": "1709.00139v4.txt",
+    "answer": "The discrimination of the classifier h is measured as DE_{h}, and support vector data description (SVDD) is used for single-class classification and outlier detection in fault diagnosis.",
+    "type": "multihop_cross",
+    "entity": "support vector machine"
+  },
+  {
+    "q": "How are accuracy and f1 scores evaluated in binary classification results, and what method is used to compute accuracy and f1 scores on the test set?",
+    "source": "1802.07459v2.txt",
+    "source2": "1703.02507v3.txt",
+    "answer": "The accuracy and F1 scores are evaluated by performing training for 10 epochs and choosing the epoch with the best validation performance in binary classification results. The accuracy and F1 scores are computed on the test set using feature vectors generated by concatenating Sent2Vec representations.",
+    "type": "multihop_cross",
+    "entity": "accuracy and f1 scores"
+  },
+  {
+    "q": "How does a POS tagger improve concept identification in phrases, and what common mistakes are associated with concept identification in parsing?",
+    "source": "1803.06506v3.txt",
+    "source2": "1704.04539v2.txt",
+    "answer": "A POS tagger should perform better than random sampling of words for concept identification, as it is used to find all nouns in a phrase. Common mistakes associated with concept identification in parsing include relevant words being erroneously ignored.",
+    "type": "multihop_cross",
+    "entity": "concept identification"
+  },
+
+
+
+  {
+    "q": "How does the use of gaussian distributions in the Cholesky transform affect the correlation of output mean vectors, and how are embeddings for out of vocabulary words set from gaussian distributions during training?",
+    "source": "1805.06431v4.txt",
+    "source2": "1705.02798v6.txt",
+    "answer": "The use of gaussian distributions in the Cholesky transform attenuates the influences of uninformative or independent data as their variances increase, while embeddings for out of vocabulary words are set from gaussian distributions and kept trainable.",
+    "type": "multihop_cross",
+    "entity": "gaussian distributions"
+  },
+
+  {
+    "q": "What is the significance of the performance difference in task-oriented dialogs as shown by the Mem2Seq model, and how does Action Search improve performance difference compared to the Direction Baseline and Random Baseline?",
+    "source": "1805.01216v3.txt",
+    "source2": "1706.04269v2.txt",
+    "answer": "The performance difference between the non-OOV and OOV test sets remains large despite gains from the Mem2Seq model, while Action Search takes on average 16.6% and 22.3% less observations than the Direction Baseline and Random Baseline, respectively.",
+    "type": "multihop_cross",
+    "entity": "performance difference"
+  },
+  {
+    "q": "How is the deep autoencoder model utilized in deep learning applications, and what unique aspect does it contribute to the hashing mechanism in state space exploration?",
+    "source": "1805.08751v2.txt",
+    "source2": "1707.00524v2.txt",
+    "answer": "The deep autoencoder model is applied in various applications, such as detecting fake news articles, and it contributes to hashing over the state space by utilizing latent features trained from the model.",
+    "type": "multihop_cross",
+    "entity": "deep autoencoder model"
+  },
+
+
+
+  {
+    "q": "What challenges in robust principal component analysis relate to theoretical guarantees, and what theoretical guarantees does LIME provide when using cosine similarity?",
+    "source": "1809.03550v3.txt",
+    "source2": "1708.02153v2.txt",
+    "answer": "Robustness to both sparse and non-sparse noise and theoretical guarantees in the time-varying setting; using cosine similarity offers certain theoretical guarantees over other approaches.",
+    "type": "multihop_cross",
+    "entity": "theoretical guarantees"
+  },
+
+  {
+    "q": "What is the function of fully-connected layers in a CNN model, and how are fully-connected layers utilized in generating an RGB output value?",
+    "source": "1811.08257v1.txt",
+    "source2": "1804.00863v3.txt",
+    "answer": "In a CNN model, fully-connected layers are part of the architecture that follows convolutional, activation, and pooling layers. In the RGB output generation, several fully-connected layers are combined to produce a single RGB output value.",
+    "type": "multihop_cross",
+    "entity": "fully-connected layers"
+  },
+  {
+    "q": "How do node degrees in real-world graphs relate to the power law distribution, and what does the creator-article publishing record reveal about the power law distribution?",
+    "source": "1809.01246v1.txt",
+    "source2": "1805.08751v2.txt",
+    "answer": "In real-world graphs, node degrees usually follow the power law distribution, where a few nodes have very high degrees while most have small degrees. In the dataset, the creator-article publishing records also follow the power law distribution, with a large proportion of creators publishing less than 10 articles and only a small number publishing more than 100 articles.",
+    "type": "multihop_cross",
+    "entity": "power law distribution"
+  },
+  {
+    "q": "How does relying on human-annotated labels enhance the learning of behavioral patterns, and what metric is used to report performance in relation to human-annotated labels in supervised evaluation?",
+    "source": "1812.00108v4.txt",
+    "source2": "1809.02731v3.txt",
+    "answer": "Relying on human-annotated labels allows learning generic behavioral patterns instead of customized heuristics as in most unsupervised approaches. The performance is reported in Pearson's correlation score between human-annotated labels and the model predictions on each dataset.",
+    "type": "multihop_cross",
+    "entity": "human-annotated labels"
+  },
+  {
+    "q": "How are geometric constraints utilized in unsupervised monocular depth estimation, and what is the impact of lacking geometric constraints on the price of fairness in welfare allocation?",
+    "source": "1701.03077v10.txt",
+    "source2": "1603.00286v5.txt",
+    "answer": "In unsupervised monocular depth estimation, geometric constraints are used to directly train a neural network. Without geometric constraints, the following is an upper bound on the price of fairness in welfare allocation.",
+    "type": "multihop_cross",
+    "entity": "geometric constraints"
+  }
+]

@@ -1,0 +1,5 @@
+run_id,question_set,question_type,model,vendor,access,n_questions,system,recall,complete,mrr,acc,faith,rel,mean_in_tok,mean_out_tok,mean_latency_ms,total_cost_usd,cost_per_100q_usd,n_errors,error_rate
+2026-07-17_01:20:59,questions_publaynet_multihop,multihop,llama4-scout,Meta/DeepInfra,open,30,baseline,0.9,0.9,0.883,0.5,0.467,0.7,486.0,70.0,1603.8,0.001797,0.006,0,0.0
+2026-07-17_01:20:59,questions_publaynet_multihop,multihop,llama4-scout,Meta/DeepInfra,open,30,+KG,0.9,0.9,0.883,0.533,0.467,0.667,536.0,72.7,1699.7,0.00194,0.0065,0,0.0
+2026-07-17_01:20:59,questions_publaynet_multihop,multihop,llama4-scout,Meta/DeepInfra,open,30,+multimodal,0.9,0.9,0.883,0.5,0.533,0.733,657.1,62.4,1323.5,0.002139,0.0071,0,0.0
+2026-07-17_01:20:59,questions_publaynet_multihop,multihop,llama4-scout,Meta/DeepInfra,open,30,+both,0.9,0.9,0.883,0.533,0.5,0.6,711.0,82.5,1769.4,0.002449,0.0082,0,0.0

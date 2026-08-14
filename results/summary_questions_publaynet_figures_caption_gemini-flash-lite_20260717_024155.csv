@@ -1,0 +1,5 @@
+run_id,question_set,question_type,model,vendor,access,n_questions,system,recall,complete,mrr,acc,faith,rel,mean_in_tok,mean_out_tok,mean_latency_ms,total_cost_usd,cost_per_100q_usd,n_errors,error_rate
+2026-07-17_02:41:55,questions_publaynet_figures_caption,figure,gemini-flash-lite,Google,closed,35,baseline,0.0,0.0,0.0,0.2,0.343,0.486,477.9,39.6,511.8,0.002227,0.0064,0,0.0
+2026-07-17_02:41:55,questions_publaynet_figures_caption,figure,gemini-flash-lite,Google,closed,35,+KG,0.0,0.0,0.0,0.171,0.4,0.571,508.4,44.0,539.5,0.002395,0.0068,0,0.0
+2026-07-17_02:41:55,questions_publaynet_figures_caption,figure,gemini-flash-lite,Google,closed,35,+multimodal,0.257,0.257,0.186,0.314,0.257,0.8,1568.1,77.3,1054.9,0.006571,0.0188,0,0.0
+2026-07-17_02:41:55,questions_publaynet_figures_caption,figure,gemini-flash-lite,Google,closed,35,+both,0.257,0.257,0.186,0.257,0.229,0.8,1602.6,84.3,906.9,0.00679,0.0194,0,0.0

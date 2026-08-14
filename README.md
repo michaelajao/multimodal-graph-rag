@@ -1,13 +1,16 @@
-# Multimodal and Graph-Aware RAG
+# When Do Multimodal and Graph-Augmented RAG Help?
 
-This repository implements and evaluates retrieval-augmented generation systems
-for scientific document question answering. Experiments are conducted on 1,000
-pages from the Hugging Face `lhoestq/small-publaynet-wds` dataset. The study
-compares text-only retrieval, knowledge-graph augmentation, multimodal retrieval,
-and their combination across closed-weight and open-weight multimodal models.
+This repository implements and evaluates retrieval-augmented generation (RAG)
+systems for document question answering. The evaluation varies the evidence
+configuration, the generator, and the corpus as independent factors: five
+system configurations, four production multimodal generators, and three
+corpora (PubLayNet, SPIQA, HotpotQA) with matched question-set controls. It
+accompanies the paper *"When Do Multimodal and Graph-Augmented RAG Help? A
+Controlled Evaluation for Document Question Answering."*
 
-A detailed report covering the problem formulation, data preprocessing,
-experimental design, and results is available in `report.pdf`.
+Every table and figure in the paper is regenerated from the released
+per-question run logs by two scripts (`make_tables.py`, `make_figures.py`), so
+every reported number is traceable to a recorded model response.
 
 ## Architecture
 
@@ -15,302 +18,154 @@ experimental design, and results is available in `report.pdf`.
   <img src="architecture.png" alt="Multimodal graph-RAG architecture" width="900">
 </p>
 
-The pipeline processes document pages into text passages, a knowledge graph,
-and figure or table crops. At query time, the three evidence sources are
-retrieved independently and combined through late fusion before generation.
-The knowledge-graph and visual branches can be enabled or removed to support
-controlled ablation across system configurations.
+Documents are processed into text passages, a knowledge graph of extracted
+subject–relation–object triples, and figure/table crops. At query time the
+evidence sources are retrieved independently. The knowledge graph is deployed
+at two alternative stages: injected into the generation prompt under a
+provenance constraint (+KG), or used to expand the retrieval candidate set
+with chunks from entity-bridged documents (+KGret). The two are complementary
+by construction—one can only reformulate retrieved evidence, the other can
+only extend it—so their comparison isolates the pipeline stage at which graph
+evidence acts.
 
 ## Systems evaluated
 
-The main experiment compares four systems:
+* `baseline` — text-only RAG (top-3 chunks)
+* `+KG` — generation-stage graph augmentation (provenance-filtered facts in the prompt)
+* `+KGret` — retrieval-stage graph augmentation (entity-bridged candidate expansion)
+* `+multimodal` — CLIP-retrieved figures/tables (pixels or captions)
+* `+both` — +KG and +multimodal combined
 
-* `baseline`: text-only RAG
-* `+KG`: text retrieval enhanced with knowledge-graph facts
-* `+multimodal`: text retrieval enhanced with CLIP-retrieved figures and tables
-* `+both`: text retrieval combined with knowledge-graph and multimodal evidence
+## Generators
 
-## Models evaluated
+The retrieval stack is fixed while the generator changes: GPT-4o-mini and
+Gemini 3.1 Flash-Lite (closed-weight), Llama 4 Scout and Llama 4 Maverick
+(open-weight, hosted inference). GPT-4o is a higher-cost diagnostic on
+selected figure experiments. Question authoring (DeepSeek-Chat, Claude
+Haiku 4.5) and judging (DeepSeek-Chat, Claude Haiku 4.5) use models outside
+the four generator families.
 
-The retrieval stack is held fixed while the generator is changed. The main
-comparison includes:
+## Corpora
 
-* `GPT-4o-mini`: closed-weight model from OpenAI
-* `Gemini 3.1 Flash-Lite`: closed-weight model from Google
-* `Llama 4 Scout`: open-weight model
-* `Llama 4 Maverick`: open-weight model
+One environment variable selects the corpus for every script:
 
-GPT-4o is also used separately as a higher-cost diagnostic model for selected
-figure-question experiments.
+```powershell
+$env:RAG_CORPUS = "spiqa"      # publaynet (default) | spiqa | hotpotqa
+```
+
+| Corpus | Source | Units | Property varied |
+|---|---|---|---|
+| `publaynet` | `lhoestq/small-publaynet-wds` (1,000 pages) | page | disconnected, OCR text, obscure content |
+| `spiqa` | SPIQA test-A (100 papers, 1,126 crops) | paper | cross-document terminology, clean TeX text, prominent papers |
+| `hotpotqa` | HotpotQA distractor dev (2,964 paragraphs) | article | canonical entities, bridge/comparison controls, text-only |
+
+Each corpus is rebuilt deterministically by its ingestion script
+(`ingestion.py`, `ingest_spiqa.py`, `ingest_hotpotqa.py`); the corpus
+directories themselves are not committed. Per-corpus caches
+(`triples_cache_<corpus>_corpus.json`) are committed so the expensive triple
+extraction never re-runs.
+
+## Question sets
+
+| File | n | Author | Notes |
+|---|---|---|---|
+| `questions_publaynet_text/multihop/figures[_caption].json` | 35/30/35/35 | DeepSeek / Claude Haiku | original sets |
+| `questions_spiqa_text.json` | 35 | DeepSeek | |
+| `questions_spiqa_multihop.json` | 30 | DeepSeek | within-paper control |
+| `questions_spiqa_multihop_cross.json` | 50 | DeepSeek | seeded from the triple store; 50 entities, 50 paper pairs |
+| `questions_spiqa_figures.json` | 35 | Claude Haiku (vision) | tiered by `verify_figure_integrity.py` |
+| `questions_hotpotqa_bridge/comparison.json` | 50/50 | HotpotQA gold | multi-source gold lists |
+
+All sets pass programmatic validators (no modality cues, no container
+references, no source-id leaks, length caps) implemented in
+`generate_questions.py`; `clean_question_sets.py` re-applies them to existing
+files.
+
+## Installation
+
+```bash
+conda env create -f environment.yml && conda activate rag
+# or: pip install -r requirements.txt
+```
+
+Create a `.env` in the project root (never committed; see `.env.example`):
+
+```text
+OPENAI_API_KEY=...        # generation (GPT-4o-mini/GPT-4o), embeddings, captioning
+DEEPSEEK_API_KEY=...      # question authoring + text judging
+ANTHROPIC_API_KEY=...     # figure-question authoring + figure judging
+GEMINI_API_KEY=...        # Gemini 3.1 Flash-Lite
+DEEPINFRA_API_KEY=...     # Llama 4 Scout / Maverick hosted inference
+```
+
+## Reproduction path
+
+```powershell
+# 1. Build a corpus (once per corpus)
+python ingestion.py --limit 1000                     # publaynet
+python ingest_spiqa.py --papers 100                  # spiqa
+python ingest_hotpotqa.py                            # hotpotqa
+
+# 2. Run an evaluation (RAG_CORPUS selects everything consistently)
+$env:RAG_CORPUS = "spiqa"
+python compare_all.py questions_spiqa_multihop_cross.json --model gpt4o-mini --systems baseline,+KG,+KGret
+
+$env:RAG_CORPUS = "hotpotqa"
+python compare_all.py questions_hotpotqa_bridge.json --model gpt4o-mini --systems baseline,+KG,+KGret --hops 2
+
+# 3. Regenerate every paper table and figure from results/
+python make_tables.py          # -> paper_tables/
+python make_figures.py         # -> figs/
+```
+
+`compare_all.py` guards against corpus/question mismatches (it aborts if no
+gold source exists in the active corpus) and writes summary and per-question
+CSVs to `results/`, which this repository includes for all reported runs.
+
+Useful auxiliary analyses:
+
+```powershell
+python graph_retrieval.py questions_spiqa_multihop_cross.json          # retrieval-side A/B (+ bridge diagnostics)
+python retrieval_dump.py questions_spiqa_multihop_cross.json           # per-question top-k with multi-gold hits
+python verify_figure_integrity.py questions_spiqa_figures.json spiqa_images/captions.json spiqa_corpus
+```
+
+## Metrics
+
+Retrieval: Recall@K, MRR, and completeness (all gold sources present, for
+multi-gold questions). Answers: accuracy, faithfulness, and relevancy as
+binary LLM-judge verdicts (RAGAS-style), plus accuracy conditioned on
+evidence completeness, which separates retrieval-attributable performance
+from parametric memory. `metrics.py` adds lexical/semantic measures (EM, F1,
+BLEU, ROUGE-L, BERTScore).
+
+## Explainability
+
+`explainability.py` records, per answer: retrieved chunks and source pages
+with scores, injected graph facts, retrieved crops with CLIP scores, bridged
+chunks (for +KGret), and the final fused context.
 
 ## Project structure
 
 ```text
 .
-├── ingestion.py
-├── rag_basics.py
-├── rag_full.py
-├── rag_multimodal.py
-├── rag_vlm.py
-├── graph_aware.py
-├── compare_all.py
-├── compare_graph_vs_basaline.py
-├── compare_multimodal.py
-├── run_matrix.py
-├── evaluation.py
-├── metrics.py
-├── explainability.py
-├── generate_figure_questions.py
-├── generate_questions_multihop.py
-├── generate_questions_publaynet.py
-├── questions_publaynet_text.json
-├── questions_publaynet_figures.json
-├── questions_publaynet_multihop.json
-├── requirements.txt
-├── environment.yml
-└── results/
+├── ingestion.py / ingest_spiqa.py / ingest_hotpotqa.py   # corpus builders
+├── rag_basics.py / rag_multimodal.py / rag_full.py       # retrieval + fusion
+├── graph_aware.py                                        # triples, graph, +KG
+├── graph_retrieval.py                                    # +KGret bridging + A/B
+├── compare_all.py                                        # main evaluation (5 systems)
+├── generate_questions.py                                 # canonical question authoring
+├── generate_questions_spiqa_cross.py                     # cross-paper set (triple-seeded)
+├── generate_caption_questions_spiqa.py                   # matched caption protocol
+├── clean_question_sets.py / verify_figure_integrity.py   # validators
+├── retrieval_dump.py / metrics.py / evaluation.py / explainability.py
+├── make_tables.py / make_figures.py                      # paper reproduction
+├── questions_*.json                                      # evaluation sets
+├── triples_cache_*_corpus.json                           # committed KG caches
+├── results/                                              # all reported run logs
+├── paper_tables/  figs/                                  # regenerated outputs
+└── legacy/                                               # superseded scripts (do not run)
 ```
 
-## Dataset
-
-The experiments use 1,000 pages streamed from:
-
-```text
-lhoestq/small-publaynet-wds
-```
-
-The ingestion stage creates:
-
-```text
-publaynet_corpus/
-```
-
-for extracted text, and:
-
-```text
-publaynet_images/
-```
-
-for cropped figures and tables.
-
-These generated directories are excluded from GitHub.
-
-## Installation
-
-Create the Conda environment:
-
-```bash
-conda env create -f environment.yml
-conda activate rag
-```
-
-Alternatively, install the Python dependencies directly:
-
-```bash
-pip install -r requirements.txt
-```
-
-## Environment variables
-
-Create a `.env` file in the project root:
-
-```text
-OPENAI_API_KEY=your_api_key
-```
-
-The `.env` file is excluded from GitHub.
-
-## Data ingestion
-
-Process the 1,000-page experimental corpus:
-
-```bash
-python ingestion.py --limit 1000
-```
-
-For a smaller test run with additional output and without image caption generation:
-
-```bash
-python ingestion.py --limit 5 --smoke
-```
-
-The ingestion script performs OCR on textual regions and saves figures and tables for multimodal retrieval.
-
-## Running the main comparison experiment
-
-The main experiment is implemented in `compare_all.py`.
-
-It builds the text index, knowledge graph, and image index once, then evaluates
-the four system configurations across the selected question set and generator.
-The retrieval stack is reused across models so that differences can be attributed
-to the supplied evidence and the generator.
-
-### Text questions
-
-```bash
-python compare_all.py questions_publaynet_text.json
-```
-
-### Figure and table questions
-
-```bash
-python compare_all.py questions_publaynet_figures.json
-```
-
-### Multi-hop questions
-
-```bash
-python compare_all.py questions_publaynet_multihop.json
-```
-
-The experiment reports:
-
-* Recall at K
-* Mean Reciprocal Rank
-* answer accuracy
-* faithfulness
-* answer relevancy
-
-Summary and per-question CSV files are written to the `results/` directory.
-
-## Running individual comparisons
-
-Compare the baseline system with the knowledge-graph system:
-
-```bash
-python compare_graph_vs_basaline.py
-```
-
-Compare the text and multimodal systems:
-
-```bash
-python compare_multimodal.py
-```
-
-These scripts can be used when a full four-system comparison is not required.
-
-## Metrics experiment
-
-Run the standalone metrics experiment with:
-
-```bash
-python metrics.py
-```
-
-The metrics module evaluates retrieval and generated-answer quality using measures such as:
-
-* Recall at K
-* Mean Reciprocal Rank
-* exact match
-* token-level F1
-* BLEU
-* ROUGE-L
-* BERTScore
-
-The lexical and semantic metrics complement the language-model-based accuracy, faithfulness and relevancy judgements used by the main comparison experiment.
-
-## Evaluation
-
-Run the evaluation script with:
-
-```bash
-python evaluation.py
-```
-
-This evaluates generated answers against the expected answers and sources contained in the question datasets.
-
-The question files use the following structure:
-
-```json
-{
-  "q": "Question text",
-  "source": "Expected source file",
-  "answer": "Expected answer",
-  "type": "text, figure or multihop"
-}
-```
-
-## Explainability
-
-The explainability functionality is implemented in:
-
-```text
-explainability.py
-```
-
-It is used to inspect why the system produced an answer by exposing the supporting evidence used during retrieval and generation.
-
-Depending on the selected system, this evidence can include:
-
-* retrieved text chunks
-* source document names
-* knowledge-graph facts
-* retrieved figure or table names
-* image captions
-* similarity or retrieval scores
-* the final context passed to the language model
-
-This makes it possible to trace an answer back to the evidence retrieved from the corpus.
-
-## Question generation
-
-Generate text questions from the processed PubLayNet corpus:
-
-```bash
-python generate_questions_publaynet.py
-```
-
-Generate figure and table questions:
-
-```bash
-python generate_figure_questions.py
-```
-
-Generate multi-hop questions:
-
-```bash
-python generate_questions_multihop.py
-```
-
-The generated questions should be reviewed before they are used as evaluation ground truth.
-
-## Running individual RAG systems
-
-The individual implementations can also be run separately:
-
-```bash
-python rag_basics.py
-python rag_full.py
-python graph_aware.py
-python rag_multimodal.py
-python rag_vlm.py
-```
-
-These scripts support testing and inspecting each stage of the project independently.
-
-## Results
-
-Generated experiment outputs are stored in:
-
-```text
-results/
-```
-
-The main comparison produces:
-
-* an aggregate summary CSV containing one row per system
-* a detailed CSV containing results for every question and system
-
-The result filenames include the question set and execution timestamp so that multiple runs can be retained.
-
-## Recommended experiment order
-
-```bash
-python ingestion.py --limit 1000
-python compare_all.py questions_publaynet_text.json
-python compare_all.py questions_publaynet_figures.json
-python compare_all.py questions_publaynet_multihop.json
-python metrics.py
-```
-
-
+`legacy/` holds early question-generation scripts kept for provenance; running
+them would overwrite canonical question files.

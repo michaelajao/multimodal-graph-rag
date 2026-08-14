@@ -1,0 +1,5 @@
+run_id,question_set,question_type,model,vendor,access,n_questions,system,recall,complete,mrr,acc,faith,rel,mean_in_tok,mean_out_tok,mean_latency_ms,total_cost_usd,cost_per_100q_usd,n_errors,error_rate
+2026-08-11_13:35:58,questions_spiqa_multihop_cross,multihop_cross,gemini-flash-lite,Google,closed,50,baseline,0.72,0.72,0.533,0.82,0.8,0.98,448.3,83.7,659.1,0.003916,0.0078,0,0.0
+2026-08-11_13:35:58,questions_spiqa_multihop_cross,multihop_cross,gemini-flash-lite,Google,closed,50,+KG,0.72,0.72,0.533,0.78,0.78,0.98,527.3,92.1,711.4,0.004479,0.009,0,0.0
+2026-08-11_13:35:58,questions_spiqa_multihop_cross,multihop_cross,gemini-flash-lite,Google,closed,50,+multimodal,0.72,0.72,0.533,0.82,0.8,0.98,700.6,97.5,723.8,0.005453,0.0109,0,0.0
+2026-08-11_13:35:58,questions_spiqa_multihop_cross,multihop_cross,gemini-flash-lite,Google,closed,50,+both,0.72,0.72,0.533,0.86,0.88,0.98,783.6,111.5,798.2,0.006149,0.0123,0,0.0

@@ -1,0 +1,10 @@
+run_id,question_set,n_questions,metric,tier,value
+2026-06-24_12:22:54,questions_publaynet_text,24,Recall@3,primary_retrieval,0.958
+2026-06-24_12:22:54,questions_publaynet_text,24,MRR,primary_retrieval,0.938
+2026-06-24_12:22:54,questions_publaynet_text,24,NDCG@3,primary_retrieval,0.943
+2026-06-24_12:22:54,questions_publaynet_text,24,AnswerAccuracy,primary_generation,0.75
+2026-06-24_12:22:54,questions_publaynet_text,24,Faithfulness,primary_generation,0.75
+2026-06-24_12:22:54,questions_publaynet_text,24,AnswerRelevancy,primary_generation,0.958
+2026-06-24_12:22:54,questions_publaynet_text,24,BLEU,comparability_excluded,0.195
+2026-06-24_12:22:54,questions_publaynet_text,24,ROUGE-L,comparability_excluded,0.448
+2026-06-24_12:22:54,questions_publaynet_text,24,BERTScore_F1,comparability_excluded,0.89

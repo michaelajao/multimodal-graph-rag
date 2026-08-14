@@ -33,7 +33,13 @@ client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 EMBED_MODEL = "text-embedding-3-small"
 CHAT_MODEL  = "gpt-4o"
-CORPUS_DIR  = "publaynet_corpus"
+# One env var switches every per-corpus path in the stack:
+#   RAG_CORPUS=spiqa python compare_all.py questions_spiqa_text.json
+# Unset -> publaynet, so all existing commands behave exactly as before.
+# graph_aware derives its triple cache from CORPUS_DIR, and the index/CLIP
+# caches are content-fingerprinted, so this constant is the single switch.
+CORPUS_NAME = os.environ.get("RAG_CORPUS", "publaynet")
+CORPUS_DIR  = f"{CORPUS_NAME}_corpus"
 
 
 # ---------- LOADERS: each file type -> plain text ----------

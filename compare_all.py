@@ -58,10 +58,12 @@ from rag_basics import (build_index, retrieve, generate,
 from graph_aware import build_triples, build_graph, graph_facts_for_query, generate_with_graph
 from rag_multimodal import build_image_index, retrieve_images, generate_multimodal
 from rag_full import generate_full
+from graph_retrieval import retrieve_with_bridge, generate_with_bridge
 
 load_dotenv()
 
 K            = 3                  # text chunks retrieved per question
+BRIDGE_HOPS  = 1                  # +KGret bridge depth; set by --hops in main()
 
 # ---------------------------------------------------------------------------
 # Image knobs. These were ONE constant (K_IMAGES = 1), which conflated three
@@ -247,16 +249,41 @@ def run_both(q, model, text_index, chunks, sources, graph, img_index,
             [n for _, n, _ in scored],      # metrics see all K_IMAGES_RETRIEVE
             context, paths)
 
+def run_kgret(q, model, text_index, chunks, sources, graph, img_index,
+                img_names, captions, image_dir=IMAGE_DIR, vlm=True):
+    """+KGret: the graph acts on RETRIEVAL, not the prompt. Standard top-K text
+    chunks plus up to N_BRIDGE chunks from graph-bridged pages (labelled in the
+    prompt). This is the channel +KG's provenance filter structurally closes:
+    there, graph facts come only from already-retrieved pages; here the graph
+    contributes unretrieved evidence. Bridged sources are appended to the
+    ranked list, so recall/complete/MRR measure the EXPANDED candidate set —
+    the retrieval-side effect is visible in the same metrics table.
+    Opt-in via --systems (not in the default four), so prior runs stay
+    comparable. Bridge depth: --hops (2 for HotpotQA-style bridge questions,
+    where the linking entity is absent from the question)."""
+    base, bridged = retrieve_with_bridge(q, text_index, chunks, sources, graph,
+                                         k=K, hops=BRIDGE_HOPS)
+    context = "\n\n".join(chunk for _, _, chunk in base)
+    if bridged:
+        context += "\n\n" + "\n\n".join(
+            f"[graph-bridged] {chunk}" for _, _, chunk in bridged)
+    ranked = [s for _, s, _ in base] + [s for _, s, _ in bridged]
+    return (generate_with_bridge(q, base, bridged, model=model),
+            ranked, None, context, None)
+
 ALL_SYSTEMS = {
     "baseline":    run_baseline,
     "+KG":         run_kg,
     "+multimodal": run_multimodal,
     "+both":       run_both,
+    "+KGret":      run_kgret,
 }
-# Default: the full four-way ablation (PubLayNet — has figures).
+# Default: the ORIGINAL four-way ablation (PubLayNet — has figures), so every
+# existing run remains comparable. +KGret is opt-in:
+#   --systems baseline,+KG,+KGret        (the three-way graph comparison)
 # --systems baseline,+KG runs the text-only pair (HotpotQA — no images, so the
 # multimodal systems have nothing to retrieve and would only burn tokens).
-DEFAULT_SYSTEMS = list(ALL_SYSTEMS)
+DEFAULT_SYSTEMS = ["baseline", "+KG", "+multimodal", "+both"]
 
 # Quality metrics + the efficiency metrics the paper's cost/latency tables need.
 # `complete` = did retrieval return ALL gold sources? Splitting accuracy on this
@@ -295,6 +322,10 @@ def main():
                                 "the original 100-page report (figure acc 0.514), so "
                                 "it is the like-for-like comparison. Text-only models "
                                 "a text-only model would use this path regardless.")
+    ap.add_argument("--hops", type=int, default=1, choices=[1, 2],
+                    help="+KGret bridge depth. 1: linking entity appears in the "
+                         "question (SPIQA cross). 2: bridge entity absent from "
+                         "the question (HotpotQA bridge).")
     ap.set_defaults(vlm=True)
     args = ap.parse_args()
 
@@ -309,6 +340,9 @@ def main():
         systems = [(n, ALL_SYSTEMS[n]) for n in ALL_SYSTEMS if n in wanted]
     else:
         systems = [(n, ALL_SYSTEMS[n]) for n in DEFAULT_SYSTEMS]
+
+    global BRIDGE_HOPS
+    BRIDGE_HOPS = args.hops
 
     model = args.model
     with open(args.qfile, encoding="utf-8") as f:
@@ -358,6 +392,24 @@ def main():
     corpus_dir = args.corpus or DEFAULT_CORPUS_DIR
     print(f"Corpus    : {corpus_dir}")
     text_index, chunks, sources = build_index(corpus_dir=corpus_dir)
+
+    # Guard: running one dataset's questions against another's index looks
+    # plausible and is nonsense — it happened (Scout run 134712: Recall 0.000,
+    # 15-token abstentions, wrong $env:RAG_CORPUS). Zero overlap between the
+    # questions' gold .txt sources and the corpus is never legitimate: abort.
+    txt_golds = set()
+    for _item in questions:
+        _s = _item["source"]
+        for _g in (_s if isinstance(_s, list) else [_s]):
+            if _g.endswith(".txt"):
+                txt_golds.add(_g)
+    if txt_golds:
+        _found = txt_golds & set(sources)
+        print(f"[guard]   gold sources in corpus: {len(_found)}/{len(txt_golds)}")
+        if not _found:
+            raise SystemExit(
+                f"ABORT: none of the question gold sources exist in {corpus_dir}. "
+                f"Wrong corpus? Check $env:RAG_CORPUS / --corpus.")
     # with_sources=True carries each triple's origin page, so KG facts can be
     # restricted to what retrieval returned. Reuses the existing cache — no
     # re-extraction.
@@ -388,6 +440,13 @@ def main():
         # HotpotQA questions carry a LIST of gold paragraphs; PubLayNet a single
         # string. Image questions are keyed off a .png source.
         srcs_list = expected_src if isinstance(expected_src, list) else [expected_src]
+        # SPIQA cross questions carry a SECOND gold paper in a separate field.
+        # Without folding it in, Recall/AllGoldFound score primary-source-only
+        # and overstate completeness (0.720 reported vs 0.500 true on the cross
+        # set). HotpotQA's list schema is unaffected.
+        if item.get("source2"):
+            srcs_list = srcs_list + [item["source2"]]
+            expected_src = srcs_list
         is_image_question = any(s.endswith(".png") for s in srcs_list)
         row = {"question": question,
                "expected_source": "|".join(srcs_list),

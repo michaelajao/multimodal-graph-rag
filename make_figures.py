@@ -200,6 +200,111 @@ def main():
                   f"{fnum(q_mm[key],'acc'):>8.3f}{fnum(e_mm[key],'mean_in_tok'):>9.0f}")
     print("\nGPT-4o excluded (diagnostic; see Table I).")
 
+    if os.path.isdir(TABLES):
+        fig4_stage()
+        fig5_leakage()
+    else:
+        print(f"NOTE: {TABLES}/ not found -- run make_tables.py first for "
+              "Figs 4-5.")
+
+
+# ---------------------------------------------------------------- Fig 4 / Fig 5
+# The two stage-comparison figures. These read paper_tables/ (produced by
+# make_tables.py) rather than results/, because they aggregate across corpora.
+# System colours (not model colours): the contrast being drawn is between the
+# two graph deployments, so +KG and +KGret each get one hue and the models are
+# distinguished on the x-axis. Neither hue appears in the model palette above,
+# so the mapping cannot be confused across figures.
+KG_COLOUR    = "#c8553d"   # generation-stage
+KGRET_COLOUR = "#2e6f95"   # retrieval-stage
+TABLES = "paper_tables"
+
+
+def fig4_stage():
+    """Per-generator accuracy deltas of +KG and +KGret over baseline on the
+    two evidence-deficient sets. The asymmetry IS the finding: +KG scatters
+    around zero, +KGret is uniformly positive."""
+    t1 = load(os.path.join(TABLES, "T1_graph_three_way.csv"))
+    sets = ["SPIQA multi-hop (cross-paper)", "HotpotQA bridge"]
+    short = {sets[0]: "SPIQA cross-paper", sets[1]: "HotpotQA bridge"}
+
+    acc = {}
+    for r in t1:
+        qs, system = r["question set"], r["system"]
+        if qs not in sets:
+            continue
+        for key, _, _, _ in MODELS:
+            cell = r.get(key, "\u2014")
+            if cell and not cell.startswith("\u2014") and cell != "—":
+                acc.setdefault(qs, {}).setdefault(system, {})[key] = \
+                    float(cell.split()[0])
+
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.6), sharey=True)
+    for ax, qs in zip(axes, sets):
+        x = range(len(MODELS))
+        d_kg    = [acc[qs]["+KG"][k]    - acc[qs]["baseline"][k]
+                   for k, _, _, _ in MODELS]
+        d_kgret = [acc[qs]["+KGret"][k] - acc[qs]["baseline"][k]
+                   for k, _, _, _ in MODELS]
+        ax.axhline(0, color="0.55", lw=0.8, zorder=1)
+        ax.bar([i - 0.18 for i in x], d_kg, width=0.34, zorder=3,
+               color=KG_COLOUR, edgecolor="black", linewidth=0.6,
+               label="+KG (generation stage)")
+        ax.bar([i + 0.18 for i in x], d_kgret, width=0.34, zorder=3,
+               color=KGRET_COLOUR, edgecolor="black", linewidth=0.6,
+               label="+KGret (retrieval stage)")
+        ax.set_xticks(list(x))
+        ax.set_xticklabels([lbl.replace(" 3.1 Flash-Lite", "\n3.1 F-L")
+                              .replace("Llama 4 ", "Llama 4\n")
+                            for _, lbl, _, _ in MODELS], fontsize=6.5)
+        ax.set_title(short[qs])
+        ax.grid(axis="y", ls=":", lw=0.5, alpha=0.5, zorder=0)
+    axes[0].set_ylabel("$\\Delta$ accuracy vs baseline")
+    axes[0].legend(frameon=False, loc="upper left")
+    out = os.path.join(FIGS, "fig4_stage.pdf")
+    fig.savefig(out); plt.close(fig)
+    print(f"wrote {out}")
+
+
+def fig5_leakage():
+    """Baseline accuracy conditioned on evidence completeness, per corpus.
+    PubLayNet's 0.000 incomplete-evidence floor against 0.35-0.71 on the
+    prominent corpora is the parametric-leakage contrast."""
+    t3 = load(os.path.join(TABLES, "T3_evidence_conditioned.csv"))
+    rows = [r for r in t3 if r["system"] == "baseline"
+            and "within-paper" not in r["question set"]]
+    labels = {"PubLayNet multi-hop (within-page)": "PubLayNet\nmulti-hop",
+              "SPIQA multi-hop (cross-paper)": "SPIQA\ncross-paper",
+              "HotpotQA bridge": "HotpotQA\nbridge",
+              "HotpotQA comparison (control)": "HotpotQA\ncomparison"}
+    names, comp, incomp = [], [], []
+    for r in rows:
+        names.append(labels.get(r["question set"], r["question set"]))
+        comp.append(float(r["acc | complete"]))
+        v = r["acc | incomplete"]
+        incomp.append(float(v) if v not in ("\u2014", "—", "") else 0.0)
+
+    fig, ax = plt.subplots(figsize=(3.5, 2.6))
+    x = range(len(names))
+    ax.bar([i - 0.19 for i in x], comp, width=0.36, zorder=3,
+           color=KGRET_COLOUR, edgecolor="black", linewidth=0.6,
+           label="evidence complete")
+    ax.bar([i + 0.19 for i in x], incomp, width=0.36, zorder=3,
+           color=KG_COLOUR, edgecolor="black", linewidth=0.6,
+           label="evidence incomplete")
+    for i, v in enumerate(incomp):
+        ax.text(i + 0.19, v + 0.02, f"{v:.2f}", ha="center", fontsize=6.5,
+                zorder=4)
+    ax.set_xticks(list(x))
+    ax.set_xticklabels(names, fontsize=6.5)
+    ax.set_ylabel("Baseline accuracy")
+    ax.set_ylim(0, 1.08)
+    ax.grid(axis="y", ls=":", lw=0.5, alpha=0.5, zorder=0)
+    ax.legend(frameon=False, loc="upper left")
+    out = os.path.join(FIGS, "fig5_leakage.pdf")
+    fig.savefig(out); plt.close(fig)
+    print(f"wrote {out}")
 
 if __name__ == "__main__":
     main()
+

@@ -1,0 +1,1230 @@
+[
+  {
+    "q": "Are Bamboo Mañalac and Danny Jones both musicians?",
+    "golds": [
+      "Bamboo_Manalac_c064bb.txt",
+      "Danny_Jones.txt"
+    ],
+    "base": [
+      "As_the_Music_Plays.txt",
+      "Bamboo_Manalac_c064bb.txt",
+      "Bamboo_band.txt"
+    ],
+    "bridged": [
+      [
+        0.4621,
+        "No_Water_No_Moon.txt"
+      ],
+      [
+        0.4224,
+        "Danny_Jones.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "Which was fought earlier in our nation's history, the Seven Days Battles or the Battle of Manila?",
+    "golds": [
+      "Battle_of_Manila_1945.txt",
+      "Seven_Days_Battles.txt"
+    ],
+    "base": [
+      "Battle_of_Cross_Keys.txt",
+      "Battle_of_Manila_1945.txt",
+      "Seven_Days_Battles.txt"
+    ],
+    "bridged": [
+      [
+        0.4729,
+        "Seven_Days_Union_order_of_battle.txt"
+      ],
+      [
+        0.4543,
+        "Seven_Days_Confederate_order_of_battle.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are Yingkou and Fuding the same level of city?",
+    "golds": [
+      "Fuding.txt",
+      "Yingkou.txt"
+    ],
+    "base": [
+      "Tongcheng_Subdistrict_Fuding.txt",
+      "Yingkou.txt",
+      "Yingkou_Lanqi_Airport.txt"
+    ],
+    "bridged": [
+      [
+        0.433,
+        "Yingkou_East_Railway_Station.txt"
+      ],
+      [
+        0.4095,
+        "Fuding.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "Are Hot Rod and The Memory of Our People both magazines?",
+    "golds": [
+      "Hot_Rod_magazine.txt",
+      "The_Memory_of_Our_People.txt"
+    ],
+    "base": [
+      "Ala_Kart_custom_car.txt",
+      "Hot_Rod_magazine.txt",
+      "The_Memory_of_Our_People.txt"
+    ],
+    "bridged": [
+      [
+        0.3408,
+        "List_of_magazines_in_Austria.txt"
+      ],
+      [
+        0.3259,
+        "Rick_Wilber.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which author has won more Pulitzer Prizes, Thomas Friedman or Henri Bergson?",
+    "golds": [
+      "Henri_Bergson.txt",
+      "Thomas_Friedman.txt"
+    ],
+    "base": [
+      "2011_Pulitzer_Prize.txt",
+      "Henri_Bergson.txt",
+      "Thomas_Friedman.txt"
+    ],
+    "bridged": [
+      [
+        0.3781,
+        "Introduction_to_Metaphysics_Bergson.txt"
+      ],
+      [
+        0.3681,
+        "Matter_and_Memory.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are both Elko Regional Airport and Gerald R. Ford International Airport located in Michigan?",
+    "golds": [
+      "Elko_Regional_Airport.txt",
+      "Gerald_R._Ford_International_Airport.txt"
+    ],
+    "base": [
+      "Gerald_R._Ford_Freeway.txt",
+      "Gerald_R._Ford_International_Airport.txt",
+      "Gerald_R._Ford_Presidential_Library.txt"
+    ],
+    "bridged": [
+      [
+        0.4829,
+        "Elko_Regional_Airport.txt"
+      ],
+      [
+        0.4594,
+        "Bishop_International_Airport.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "Are Freakonomics and In the Realm of the Hackers both American documentaries?",
+    "golds": [
+      "Freakonomics_film.txt",
+      "In_the_Realm_of_the_Hackers.txt"
+    ],
+    "base": [
+      "Freakonomics_Radio.txt",
+      "Freakonomics_film.txt",
+      "In_the_Realm_of_the_Hackers.txt"
+    ],
+    "bridged": [
+      [
+        0.4912,
+        "Hackers_film.txt"
+      ],
+      [
+        0.4351,
+        "Heidi_Ewing.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which band, Letters to Cleo or Screaming Trees, had more members?",
+    "golds": [
+      "Letters_to_Cleo.txt",
+      "Screaming_Trees.txt"
+    ],
+    "base": [
+      "Letters_to_Cleo.txt",
+      "Screaming_Trees.txt",
+      "Screaming_Trees_discography.txt"
+    ],
+    "bridged": [
+      [
+        0.4785,
+        "Beat_Happening_Screaming_Trees.txt"
+      ],
+      [
+        0.4626,
+        "Change_Has_Come.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which filmmaker was known for animation, Lev Yilmaz or Pamela B. Green?",
+    "golds": [
+      "Lev_Yilmaz.txt",
+      "Pamela_B._Green.txt"
+    ],
+    "base": [
+      "Lev_Yilmaz.txt",
+      "Pamela_B._Green.txt",
+      "Piano_Girl.txt"
+    ],
+    "bridged": [
+      [
+        0.217,
+        "The_Importance_of_Being_Icelandic.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Do the drinks Gibson and Zurracapote both contain gin?",
+    "golds": [
+      "Gibson_cocktail.txt",
+      "Zurracapote.txt"
+    ],
+    "base": [
+      "Flaming_beverage.txt",
+      "Gibson_cocktail.txt",
+      "Zurracapote.txt"
+    ],
+    "bridged": [
+      [
+        0.3299,
+        "Gin_pennant.txt"
+      ],
+      [
+        0.312,
+        "Rubicon_Drinks.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are Daryl Hall and Gerry Marsden both musicians?",
+    "golds": [
+      "Daryl_Hall.txt",
+      "Gerry_Marsden.txt"
+    ],
+    "base": [
+      "Daryl_Hall.txt",
+      "Gerry_Marsden.txt",
+      "Hall_&amp;_Oates.txt"
+    ],
+    "bridged": [
+      [
+        0.5131,
+        "Live_from_Daryl_s_House.txt"
+      ],
+      [
+        0.4777,
+        "Janna_Allen.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which tower is taller, 712 Fifth Avenue or Manhattan Life Insurance Building?",
+    "golds": [
+      "712_Fifth_Avenue.txt",
+      "Manhattan_Life_Insurance_Building.txt"
+    ],
+    "base": [
+      "712_Fifth_Avenue.txt",
+      "Manhattan_Life_Insurance_Building.txt",
+      "New_York_Life_Building.txt"
+    ],
+    "bridged": [
+      [
+        0.5745,
+        "Flatiron_Building.txt"
+      ],
+      [
+        0.5481,
+        "New_York_Life_Insurance_Building_Montreal.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which genus has more species, Xanthoceras or Ehretia?",
+    "golds": [
+      "Ehretia.txt",
+      "Xanthoceras.txt"
+    ],
+    "base": [
+      "Ehretia.txt",
+      "Eucryphia.txt",
+      "Xanthoceras.txt"
+    ],
+    "bridged": [
+      [
+        0.4117,
+        "Huernia.txt"
+      ],
+      [
+        0.3834,
+        "Stenocereus.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Where are Teide National Park and Garajonay National Park located?",
+    "golds": [
+      "Garajonay_National_Park.txt",
+      "Teide_National_Park.txt"
+    ],
+    "base": [
+      "Garajonay_National_Park.txt",
+      "Hermigua.txt",
+      "Teide_National_Park.txt"
+    ],
+    "bridged": [
+      [
+        0.4559,
+        "Roque_Cinchado.txt"
+      ],
+      [
+        0.4348,
+        "Tenerife.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Who has written more than 300 papers, Semyon Aranovich Gershgorin or Pavel Alexandrov?",
+    "golds": [
+      "Pavel_Alexandrov.txt",
+      "Semyon_Aranovich_Gershgorin.txt"
+    ],
+    "base": [
+      "Gershgorin_circle_theorem.txt",
+      "Pavel_Alexandrov.txt",
+      "Semyon_Aranovich_Gershgorin.txt"
+    ],
+    "bridged": [
+      [
+        0.3703,
+        "Pavel_Urysohn.txt"
+      ],
+      [
+        0.3537,
+        "Ephraim_Sklyansky.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which came out first, Dinosaur or McFarland, USA",
+    "golds": [
+      "Dinosaur_film.txt",
+      "McFarland_USA.txt"
+    ],
+    "base": [
+      "Dinosaur_film.txt",
+      "Mark_Ciardi.txt",
+      "McFarland_USA.txt"
+    ],
+    "bridged": [
+      [
+        0.2721,
+        "Sacred_Planet.txt"
+      ],
+      [
+        0.25,
+        "Deewana_1992_film.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Who was born first, Arthur Conan Doyle or Penelope Lively?",
+    "golds": [
+      "Arthur_Conan_Doyle.txt",
+      "Penelope_Lively.txt"
+    ],
+    "base": [
+      "Adrian_Conan_Doyle.txt",
+      "Arthur_Conan_Doyle.txt",
+      "Penelope_Lively.txt"
+    ],
+    "bridged": [
+      [
+        0.4638,
+        "Douglas_Ainslie.txt"
+      ],
+      [
+        0.3707,
+        "Dead_Man_s_Land.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which film was Oscar nominated, LaLee's Kin: The Legacy of Cotton or Gimme Shelter, the 1970 Rolling Stones documentary?",
+    "golds": [
+      "Gimme_Shelter_1970_film.txt",
+      "LaLee_s_Kin_The_Legacy_of_Cotton.txt"
+    ],
+    "base": [
+      "Gimme_Shelter_1970_film.txt",
+      "Gimme_Shelter_disambiguation.txt",
+      "LaLee_s_Kin_The_Legacy_of_Cotton.txt"
+    ],
+    "bridged": [
+      [
+        0.5205,
+        "Gimme_Shelter_album.txt"
+      ],
+      [
+        0.5126,
+        "Gimme_Shelter.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Were Scott Derrickson and Ed Wood of the same nationality?",
+    "golds": [
+      "Ed_Wood.txt",
+      "Scott_Derrickson.txt"
+    ],
+    "base": [
+      "Ed_Wood_film.txt",
+      "Scott_Derrickson.txt",
+      "Sinister_film.txt"
+    ],
+    "bridged": [
+      [
+        0.4036,
+        "Ed_Wood.txt"
+      ],
+      [
+        0.4011,
+        "Deliver_Us_from_Evil_2014_film.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "In what city can a person find both the Nusretiye Clock Tower and the Eski Imaret Mosque be found?",
+    "golds": [
+      "Eski_Imaret_Mosque.txt",
+      "Nusretiye_Clock_Tower.txt"
+    ],
+    "base": [
+      "Eski_Imaret_Mosque.txt",
+      "Hysen_Pasha_Mosque.txt",
+      "Nusretiye_Clock_Tower.txt"
+    ],
+    "bridged": [
+      [
+        0.5155,
+        "Kumanovo_Clock_Tower.txt"
+      ],
+      [
+        0.5032,
+        "Sultan_Ahmed_Mosque.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+    "golds": [
+      "Esma_Sultan_Mansion.txt",
+      "Laleli_Mosque.txt"
+    ],
+    "base": [
+      "Esma_Sultan_Mansion.txt",
+      "Laleli_Mosque.txt",
+      "Sultan_Ahmed_Mosque.txt"
+    ],
+    "bridged": [
+      [
+        0.4689,
+        "Esma_Sultan.txt"
+      ],
+      [
+        0.459,
+        "Esma_Sultan_daughter_of_Ahmed_III.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are both Dafeng District and Dazhou located in the same province?",
+    "golds": [
+      "Dafeng_District.txt",
+      "Dazhou.txt"
+    ],
+    "base": [
+      "Dafeng_District.txt",
+      "Dazhou.txt",
+      "Yandu_District.txt"
+    ],
+    "bridged": [
+      [
+        0.4226,
+        "Tinghu_District.txt"
+      ],
+      [
+        0.3691,
+        "Wolong_Special_Administrative_Region.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What occupation do Chris Menges and Aram Avakian share?",
+    "golds": [
+      "Aram_Avakian.txt",
+      "Chris_Menges.txt"
+    ],
+    "base": [
+      "Aram_Avakian.txt",
+      "Chris_Menges.txt",
+      "Mark_Arm.txt"
+    ],
+    "bridged": [
+      [
+        0.319,
+        "CrissCross.txt"
+      ],
+      [
+        0.2664,
+        "Linda_Mvusi.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "which is larger Asante Traditional Buildings or Gulangyu?",
+    "golds": [
+      "Asante_Traditional_Buildings.txt",
+      "Gulangyu.txt"
+    ],
+    "base": [
+      "Asante_Traditional_Buildings.txt",
+      "Gulangyu.txt"
+    ],
+    "bridged": [
+      [
+        0.4175,
+        "Omodos.txt"
+      ],
+      [
+        0.3308,
+        "Raffles_Place.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are Local H and For Against both from the United States?",
+    "golds": [
+      "For_Against.txt",
+      "Local_H.txt"
+    ],
+    "base": [
+      "For_Against.txt",
+      "Hallelujah!_I_m_a_Bum_album.txt",
+      "Local_H.txt"
+    ],
+    "bridged": [
+      [
+        0.3616,
+        "McLean_Virginia.txt"
+      ],
+      [
+        0.2913,
+        "List_of_liberal_arts_colleges.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are both Dictyosperma, and Huernia described as a genus?",
+    "golds": [
+      "Dictyosperma.txt",
+      "Huernia.txt"
+    ],
+    "base": [
+      "Ajugeae.txt",
+      "Dictyosperma.txt",
+      "Huernia.txt"
+    ],
+    "bridged": [
+      [
+        0.3806,
+        "Stenocereus.txt"
+      ],
+      [
+        0.3768,
+        "Myiodynastes.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are both Cypress and Ajuga genera?",
+    "golds": [
+      "Ajuga.txt",
+      "Cypress.txt"
+    ],
+    "base": [
+      "Ajuga.txt",
+      "Ajugeae.txt",
+      "Cupressus.txt"
+    ],
+    "bridged": [
+      [
+        0.4923,
+        "Cypress.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "Hayden is a singer-songwriter from Canada, but where does Buck-Tick hail from?",
+    "golds": [
+      "Buck-Tick.txt",
+      "Hayden_musician.txt"
+    ],
+    "base": [
+      "Buck-Tick.txt",
+      "Hayden_musician.txt",
+      "Skyscraper_National_Park.txt"
+    ],
+    "bridged": [
+      [
+        0.4302,
+        "Atsushi_Sakurai.txt"
+      ],
+      [
+        0.416,
+        "Mild_and_Hazy.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+    "golds": [
+      "Henry_Roth.txt",
+      "Robert_Erskine_Childers.txt"
+    ],
+    "base": [
+      "Erskine_Barton_Childers.txt",
+      "Henry_Roth.txt",
+      "Robert_Erskine_Childers.txt"
+    ],
+    "bridged": [
+      [
+        0.5513,
+        "Robert_Caesar_Childers.txt"
+      ],
+      [
+        0.5145,
+        "Robert_Barton.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are Ferocactus and Silene both types of plant?",
+    "golds": [
+      "Ferocactus.txt",
+      "Silene.txt"
+    ],
+    "base": [
+      "Ferocactus.txt",
+      "Silene.txt",
+      "Silene_conoidea.txt"
+    ],
+    "bridged": [
+      [
+        0.5188,
+        "Sex_determination_in_Silene.txt"
+      ],
+      [
+        0.4683,
+        "Silene_stenophylla.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+    "golds": [
+      "Ambroise_Thomas.txt",
+      "Giuseppe_Verdi.txt"
+    ],
+    "base": [
+      "Ambroise_Thomas.txt",
+      "Giuseppe_Verdi.txt",
+      "Giuseppe_Verdi_film.txt"
+    ],
+    "bridged": [
+      [
+        0.4821,
+        "Ferdinando_Provesi.txt"
+      ],
+      [
+        0.4728,
+        "List_of_major_opera_composers.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What occupation was shared by David Yates and Pietro Germi?",
+    "golds": [
+      "David_Yates.txt",
+      "Pietro_Germi.txt"
+    ],
+    "base": [
+      "David_Yates.txt",
+      "Ottavio_Alessi.txt",
+      "Pietro_Germi.txt"
+    ],
+    "bridged": [
+      [
+        0.3956,
+        "Divorce_Italian_Style.txt"
+      ],
+      [
+        0.368,
+        "The_Testimony_1946_film.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Do The Importance of Being Icelandic and The Five Obstructions belong to different film genres ?",
+    "golds": [
+      "The_Five_Obstructions.txt",
+      "The_Importance_of_Being_Icelandic.txt"
+    ],
+    "base": [
+      "The_Five_Obstructions.txt",
+      "The_Importance_of_Being_Icelandic.txt"
+    ],
+    "bridged": [
+      [
+        0.3646,
+        "Three_are_Three.txt"
+      ],
+      [
+        0.2902,
+        "Music_composition_and_composers_in_Pristina.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which film was released first: Sacred Planet or Oz the Great and Powerful?",
+    "golds": [
+      "Oz_the_Great_and_Powerful.txt",
+      "Sacred_Planet.txt"
+    ],
+    "base": [
+      "Oz_the_Great_and_Powerful.txt",
+      "Sacred_Planet.txt"
+    ],
+    "bridged": [
+      [
+        0.3113,
+        "Flyboys_film.txt"
+      ],
+      [
+        0.3056,
+        "Dinosaur_film.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Who was born earlier, Emma Bull or Virginia Woolf?",
+    "golds": [
+      "Emma_Bull.txt",
+      "Virginia_Woolf.txt"
+    ],
+    "base": [
+      "Emma_Bull.txt",
+      "Moments_of_Being.txt",
+      "Virginia_Woolf.txt"
+    ],
+    "bridged": [
+      [
+        0.454,
+        "Jane_Marcus.txt"
+      ],
+      [
+        0.4354,
+        "Orlando_A_Biography.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Is the Marsilea or the Brabejum the genus of more individual species of plants?",
+    "golds": [
+      "Brabejum.txt",
+      "Marsilea.txt"
+    ],
+    "base": [
+      "Brabejum.txt",
+      "Marsilea.txt",
+      "Marsileaceae.txt"
+    ],
+    "bridged": [
+      [
+        0.4458,
+        "Ajuga.txt"
+      ],
+      [
+        0.3876,
+        "Leptospermum.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Who died first, George Archainbaud or Ralph Murphy?",
+    "golds": [
+      "George_Archainbaud.txt",
+      "Ralph_Murphy.txt"
+    ],
+    "base": [
+      "George_Archainbaud.txt",
+      "Ralph_Charles.txt",
+      "Ralph_Murphy.txt"
+    ],
+    "bridged": [
+      [
+        0.3278,
+        "Arthur_Roberts_editor.txt"
+      ],
+      [
+        0.298,
+        "Alias_French_Gertie.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which board game was published most recently, Pirate's Cove or Catan?",
+    "golds": [
+      "Catan.txt",
+      "Pirate_s_Cove.txt"
+    ],
+    "base": [
+      "Catan_Card_Game.txt",
+      "Pirate_s_Cove.txt",
+      "The_Rivals_for_Catan.txt"
+    ],
+    "bridged": [
+      [
+        0.3508,
+        "Poleconomy.txt"
+      ],
+      [
+        0.2287,
+        "Andy_Straka.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Which case came first, Craig v. Boren or United States v. Paramount Pictures, Inc.?",
+    "golds": [
+      "Craig_v._Boren.txt",
+      "United_States_v._Paramount_Pictures_Inc..txt"
+    ],
+    "base": [
+      "Craig_v._Boren.txt",
+      "Criminal_law_in_the_Waite_Court.txt",
+      "United_States_v._Paramount_Pictures_Inc..txt"
+    ],
+    "bridged": [
+      [
+        0.3717,
+        "Gregory_B._Craig.txt"
+      ],
+      [
+        0.3454,
+        "Lau_Kong_Yung_v_Director_of_Immigration.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Can Stenocereus and Pachypodium both include tree like plants?",
+    "golds": [
+      "Pachypodium.txt",
+      "Stenocereus.txt"
+    ],
+    "base": [
+      "Pachypodium.txt",
+      "Stenocereus.txt",
+      "William_Henry_Nicholls.txt"
+    ],
+    "bridged": [],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+    "golds": [
+      "888_7th_Avenue.txt",
+      "Random_House_Tower.txt"
+    ],
+    "base": [
+      "712_Fifth_Avenue.txt",
+      "888_7th_Avenue.txt",
+      "Random_House_Tower.txt"
+    ],
+    "bridged": [
+      [
+        0.4622,
+        "New_York_Life_Insurance_Building_Montreal.txt"
+      ],
+      [
+        0.4128,
+        "New_York_Life_Building.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are Broughtonia and Laeliocattleya both orchids?",
+    "golds": [
+      "Broughtonia.txt",
+      "Laeliocattleya.txt"
+    ],
+    "base": [
+      "Broughtonia.txt",
+      "Cattleytonia.txt",
+      "Laeliocattleya.txt"
+    ],
+    "bridged": [
+      [
+        0.486,
+        "Broughtonia_sanguinea.txt"
+      ],
+      [
+        0.4544,
+        "Otaara.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Who is older, Ferdi Taygan or Mahesh Bhupathi?",
+    "golds": [
+      "Ferdi_Taygan.txt",
+      "Mahesh_Bhupathi.txt"
+    ],
+    "base": [
+      "1982_Volvo_Masters_Doubles_a2b294.txt",
+      "Ferdi_Taygan.txt",
+      "Mahesh_Bhupathi.txt"
+    ],
+    "bridged": [
+      [
+        0.4003,
+        "Mahesh_Bhupathi_Tennis_Academy.txt"
+      ],
+      [
+        0.3918,
+        "1983_Volvo_International_Doubles_d345b1.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which director had the longest career, Alain Resnais or Scott Sidney?",
+    "golds": [
+      "Alain_Resnais.txt",
+      "Scott_Sidney.txt"
+    ],
+    "base": [
+      "Alain_Resnais.txt",
+      "Muriel_film.txt",
+      "Scott_Sidney.txt"
+    ],
+    "bridged": [
+      [
+        0.435,
+        "Life_of_Riley_2014_film.txt"
+      ],
+      [
+        0.4254,
+        "Last_Year_at_Marienbad.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Were the bands Skin Yard and Ostava from the U.S.?",
+    "golds": [
+      "Ostava.txt",
+      "Skin_Yard.txt"
+    ],
+    "base": [
+      "Ostava.txt",
+      "Skin_Yard.txt",
+      "Skin_Yard_album.txt"
+    ],
+    "bridged": [
+      [
+        0.3798,
+        "The_Rats_American_band.txt"
+      ],
+      [
+        0.3403,
+        "Daniel_House.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Josey Scott and Ian Watkins were both promising musicians. Which of these talented men was incarcerated, impacting his career with a rock band?",
+    "golds": [
+      "Ian_Watkins_Lostprophets.txt",
+      "Josey_Scott.txt"
+    ],
+    "base": [
+      "Ian_Watkins_Lostprophets.txt",
+      "Josey_Scott.txt",
+      "The_Rats_American_band.txt"
+    ],
+    "bridged": [
+      [
+        0.3869,
+        "Lostprophets.txt"
+      ],
+      [
+        0.3668,
+        "We_Bring_an_Arsenal.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Are  Chrysalis and Look both women's magazines?",
+    "golds": [
+      "Chrysalis_magazine.txt",
+      "Look_UK_magazine.txt"
+    ],
+    "base": [
+      "Chrysalis_magazine.txt",
+      "Look_UK_magazine.txt"
+    ],
+    "bridged": [
+      [
+        0.4303,
+        "List_of_magazines_in_Malaysia.txt"
+      ],
+      [
+        0.3857,
+        "Lifestyle_magazine.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which Genus has more species Eucryphia or Lepidozamia ?",
+    "golds": [
+      "Eucryphia.txt",
+      "Lepidozamia.txt"
+    ],
+    "base": [
+      "Eucryphia.txt",
+      "Lepidozamia.txt",
+      "Libocedrus.txt"
+    ],
+    "bridged": [
+      [
+        0.3982,
+        "Leptospermum.txt"
+      ],
+      [
+        0.3831,
+        "Huernia.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+    "golds": [
+      "Badly_Drawn_Boy.txt",
+      "Wolf_Alice.txt"
+    ],
+    "base": [
+      "Badly_Drawn_Boy.txt",
+      "Badly_Drawn_Boy_discography.txt",
+      "Wolf_Alice.txt"
+    ],
+    "bridged": [
+      [
+        0.4396,
+        "About_a_Boy_soundtrack.txt"
+      ],
+      [
+        0.4384,
+        "The_Hour_of_Bewilderbeast.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which dog's ancestors include Gordon and Irish Setters: the Manchester Terrier or the Scotch Collie?",
+    "golds": [
+      "Manchester_Terrier.txt",
+      "Scotch_Collie.txt"
+    ],
+    "base": [
+      "Scotch_Collie.txt",
+      "Teddy_Roosevelt_Terrier.txt"
+    ],
+    "bridged": [
+      [
+        0.5304,
+        "Manchester_Terrier.txt"
+      ],
+      [
+        0.5163,
+        "Florence_Nagle.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  }
+]

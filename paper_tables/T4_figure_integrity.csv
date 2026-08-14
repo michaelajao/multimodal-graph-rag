@@ -1,0 +1,21 @@
+set / tier,n,model,text-only baseline acc,+multimodal acc
+publaynet_figures,35,gpt4o-mini,0.000,0.086
+publaynet_figures,35,gemini-flash-lite,0.000,0.057
+publaynet_figures,35,llama4-scout,0.000,0.114
+publaynet_figures,35,llama4-maverick,0.000,0.086
+publaynet_figures_caption,35,gpt4o-mini,0.200,0.371
+publaynet_figures_caption,35,gemini-flash-lite,0.200,0.314
+publaynet_figures_caption,35,llama4-scout,0.143,0.257
+publaynet_figures_caption,35,llama4-maverick,0.171,0.314
+spiqa_figures [caption-contaminated],5,gpt4o-mini,2/5,2/5
+spiqa_figures [strict-pixel],26,gpt4o-mini,2/26,2/26
+spiqa_figures [text-recoverable],4,gpt4o-mini,1/4,1/4
+spiqa_figures [caption-contaminated],5,gemini-flash-lite,2/5,2/5
+spiqa_figures [strict-pixel],26,gemini-flash-lite,3/26,0/26
+spiqa_figures [text-recoverable],4,gemini-flash-lite,1/4,0/4
+spiqa_figures [caption-contaminated],5,llama4-scout,2/5,2/5
+spiqa_figures [strict-pixel],26,llama4-scout,3/26,1/26
+spiqa_figures [text-recoverable],4,llama4-scout,0/4,0/4
+spiqa_figures [caption-contaminated],5,llama4-maverick,2/5,1/5
+spiqa_figures [strict-pixel],26,llama4-maverick,2/26,2/26
+spiqa_figures [text-recoverable],4,llama4-maverick,1/4,1/4

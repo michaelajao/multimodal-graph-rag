@@ -1,0 +1,212 @@
+[
+  {
+    "q": "What is the name of the algorithm proposed for mining informative (feature, value) pairs in coreference resolution?",
+    "source": "1708.00160v2.txt",
+    "answer": "EPM",
+    "type": "text"
+  },
+  {
+    "q": "What approach is proposed to safely collect demonstrations for training a deep neural network based assistive robot controller?",
+    "source": "1603.03833v4.txt",
+    "answer": "users demonstrate the tasks in a virtual environment",
+    "type": "text"
+  },
+  {
+    "q": "What are the two categories into which self-attention mechanisms are divided based on the type of dependency they model?",
+    "source": "1805.00912v4.txt",
+    "answer": "token2token self-attention and source2token self-attention",
+    "type": "text"
+  },
+  {
+    "q": "What is the name of the model introduced by Pedarsani et al. in 2011 for studying de-anonymization?",
+    "source": "1805.02349v2.txt",
+    "answer": "the correlated Erdös-Rényi model",
+    "type": "text"
+  },
+  {
+    "q": "What is the weight of a loss in the adaptive weighted sum used for anytime neural networks?",
+    "source": "1708.06832v3.txt",
+    "answer": "inversely proportional to the empirical mean of the loss on the training set",
+    "type": "text"
+  },
+  {
+    "q": "What loss function is proposed for end-to-end F-measure maximization in salient object detection?",
+    "source": "1805.07567v2.txt",
+    "answer": "FLoss",
+    "type": "text"
+  },
+  {
+    "q": "What is the name of the tensor factorization-based method proposed for Higher-order Relation Schema Induction?",
+    "source": "1707.01917v2.txt",
+    "answer": "Tensor Factorization with Back-off and Aggregation (TFBA)",
+    "type": "text"
+  },
+  {
+    "q": "What method does the Multi-X approach use to reduce the label space and speed up energy minimization?",
+    "source": "1706.00827v2.txt",
+    "answer": "mode seeking",
+    "type": "text"
+  },
+  {
+    "q": "What is the average length of a merge-and-run block when two residual branches are assembled in parallel?",
+    "source": "1611.07718v2.txt",
+    "answer": "2/3",
+    "type": "text"
+  },
+  {
+    "q": "What is the maximum number of daily submissions allowed for contestants in the 2017 Intel & MobileODT Cervical Cancer Screening competition hosted by Kaggle?",
+    "source": "1709.02418v2.txt",
+    "answer": "5 times per day",
+    "type": "text"
+  },
+  {
+    "q": "What method is proposed to introduce constraints such as smoothness and sparsity into PARAFAC2 modeling?",
+    "source": "1803.04572v2.txt",
+    "answer": "the COnstrained PARAFAC2 method (COPA)",
+    "type": "text"
+  },
+  {
+    "q": "What is the name of the representation proposed to explicitly model scene layout for action recognition using semantic segmentation maps?",
+    "source": "1804.01429v3.txt",
+    "answer": "Layout-Induced Video Representation (LIVR)",
+    "type": "text"
+  },
+  {
+    "q": "What model is proposed to jointly learn a low-dimension embedding space and a linear mapping function from that space to classification parameters for base classes?",
+    "source": "1710.06177v2.txt",
+    "answer": "Visual Analogy Graph Embedded Regression (VAGER) model",
+    "type": "text"
+  },
+  {
+    "q": "What technique is applied to high-level state features to generate binary codes for each state in the proposed informed exploration framework?",
+    "source": "1707.00524v2.txt",
+    "answer": "locality-sensitive hashing (LSH)",
+    "type": "text"
+  },
+  {
+    "q": "What is the query complexity lower bound for envy-free cake cutting in the Robertson-Webb model?",
+    "source": "1705.02946v3.txt",
+    "answer": "Ω(n²)",
+    "type": "text"
+  },
+  {
+    "q": "What is the name of the framework that treats click bias as a counterfactual effect and debiases user feedback by weighting each click with Inverse Propensity Weights?",
+    "source": "1804.05938v2.txt",
+    "answer": "unbiased learning to rank",
+    "type": "text"
+  },
+  {
+    "q": "What is the dimension of a Grassmann manifold Gr(q,D)?",
+    "source": "1611.05742v3.txt",
+    "answer": "q(D-q)",
+    "type": "text"
+  },
+  {
+    "q": "What is the goal when performing low-rank matrix and tensor factorizations directly on compressed data?",
+    "source": "1706.08146v3.txt",
+    "answer": "to approximately recover the original factors W and H given the compressed data as accurately and efficiently as possible",
+    "type": "text"
+  },
+  {
+    "q": "What is the primary advantage of UI-based surveys over traditional survey mediums in mapping survey responses to treatment exposure?",
+    "source": "1906.10843v1.txt",
+    "answer": "surveys are attached to experiences",
+    "type": "text"
+  },
+  {
+    "q": "What is the time complexity of key parts of the fast incremental support vector data description (FISVDD) algorithm?",
+    "source": "1709.00139v4.txt",
+    "answer": "O(k^2), where k is the number of support vectors.",
+    "type": "text"
+  },
+  {
+    "q": "What is the computational cost per iteration of the state-of-the-art models for learning weighted undirected graphs by Dong et al. (2015) and Kalofolias (2016)?",
+    "source": "1710.05654v2.txt",
+    "answer": "O(n^2) per iteration for n nodes",
+    "type": "text"
+  },
+  {
+    "q": "What is the name of the recommender system model proposed by Hongwei Wang et al. in their 2018 CIKM paper?",
+    "source": "1803.03467v4.txt",
+    "answer": "RippleNet",
+    "type": "text"
+  },
+  {
+    "q": "What is the exact match (EM) score of the single Reinforced Mnemonic Reader model on the SQuAD dataset?",
+    "source": "1705.02798v6.txt",
+    "answer": "79.5%",
+    "type": "text"
+  },
+  {
+    "q": "What percentage of all English Wikipedia articles are considered stubs?",
+    "source": "1804.05995v2.txt",
+    "answer": "37%",
+    "type": "text"
+  },
+  {
+    "q": "What framework is introduced to generate intermediate frames with varying content for long-term intervals in low frame rate videos?",
+    "source": "1809.00263v5.txt",
+    "answer": "stochastic dynamic video infilling (SDVI) framework",
+    "type": "text"
+  },
+  {
+    "q": "What is the average slowdown for drawing a segmentation annotation compared to labeling the presence of objects in images?",
+    "source": "1811.07073v3.txt",
+    "answer": "approximately 78 times slower",
+    "type": "text"
+  },
+  {
+    "q": "What does w-ownership guarantee each agent receives in the re-division setting?",
+    "source": "1603.00286v5.txt",
+    "answer": "at least w times their old value",
+    "type": "text"
+  },
+  {
+    "q": "How many HD cameras were used to capture the HUMBI dataset as of November 2019?",
+    "source": "1812.00281v3.txt",
+    "answer": "107 HD synchronized cameras",
+    "type": "text"
+  },
+  {
+    "q": "What does one-bit compressed sensing use as the measurement transformation for the signal?",
+    "source": "1811.06635v1.txt",
+    "answer": "sign(Xβ*)",
+    "type": "text"
+  },
+  {
+    "q": "What term do Wilson and Sperber use to describe the cognitive principle driving warrant reconstruction?",
+    "source": "1708.01425v4.txt",
+    "answer": "the cognitive principle of relevance",
+    "type": "text"
+  },
+  {
+    "q": "What is the name of the secure CNN prediction approach based on Fourier Transform?",
+    "source": "1811.08257v1.txt",
+    "answer": "FALCON",
+    "type": "text"
+  },
+  {
+    "q": "What is the Loewenstein information gap used to capitalize on in clickbaiting?",
+    "source": "1710.01507v4.txt",
+    "answer": "the Loewenstein information gap",
+    "type": "text"
+  },
+  {
+    "q": "What percentage of fake news data traffic did online social networks account for during the 2016 US president election?",
+    "source": "1805.08751v2.txt",
+    "answer": "41.8%",
+    "type": "text"
+  },
+  {
+    "q": "What unit does the Simple Recurrent Unit (SRU) replace convolutions with?",
+    "source": "1709.02755v5.txt",
+    "answer": "more recurrent connections",
+    "type": "text"
+  },
+  {
+    "q": "What is the new problem proposed for efficient action search in videos?",
+    "source": "1706.04269v2.txt",
+    "answer": "action spotting in video",
+    "type": "text"
+  }
+]

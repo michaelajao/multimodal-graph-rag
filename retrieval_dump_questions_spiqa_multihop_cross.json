@@ -1,0 +1,1102 @@
+[
+  {
+    "q": "How does the use of bidirectional gated recurrent units in encoding sequences relate to the implementation of sentence-level BLEU as an objective for the generator?",
+    "source": "1611.04684v1.txt",
+    "source2": "1703.04887v4.txt",
+    "top_k": [
+      [
+        0.6631,
+        "1703.04887v4.txt"
+      ],
+      [
+        0.6291,
+        "1703.04887v4.txt"
+      ],
+      [
+        0.6176,
+        "1703.04887v4.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "How are pretrained word2vec embeddings utilized in the training process, and what effect do they have on internal coherence in models for IMDB and Yahoo answers?",
+    "source": "1804.07707v2.txt",
+    "source2": "1705.09296v2.txt",
+    "top_k": [
+      [
+        0.6269,
+        "1705.09296v2.txt"
+      ],
+      [
+        0.5701,
+        "1710.01507v4.txt"
+      ],
+      [
+        0.5375,
+        "1804.07707v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How is maximum likelihood estimation applied in supervised summarization approaches, and what role does it play in pre-training the generator in GANs?",
+    "source": "1812.00108v4.txt",
+    "source2": "1703.04887v4.txt",
+    "top_k": [
+      [
+        0.5631,
+        "1812.00108v4.txt"
+      ],
+      [
+        0.5605,
+        "1703.04887v4.txt"
+      ],
+      [
+        0.5594,
+        "1809.04276v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does knowledge transfer in action recognition utilize a large amount of training data, and what challenges do deep generative models face regarding a large amount of training data?",
+    "source": "1804.01429v3.txt",
+    "source2": "1703.10730v2.txt",
+    "top_k": [
+      [
+        0.6026,
+        "1804.01429v3.txt"
+      ],
+      [
+        0.595,
+        "1710.06177v2.txt"
+      ],
+      [
+        0.5808,
+        "1705.10667v4.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does the baseline model in the smoke dataset learn spatial and temporal features, and what method is used to process spatial features across frames in the independent views?",
+    "source": "1811.09393v4.txt",
+    "source2": "1812.00108v4.txt",
+    "top_k": [
+      [
+        0.5803,
+        "1812.00108v4.txt"
+      ],
+      [
+        0.5437,
+        "1811.09393v4.txt"
+      ],
+      [
+        0.5389,
+        "1812.00108v4.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "What datasets are introduced for temporal action localization, and what is a key requirement for efficient search in temporal action localization?",
+    "source": "1804.01429v3.txt",
+    "source2": "1706.04269v2.txt",
+    "top_k": [
+      [
+        0.7268,
+        "1706.04269v2.txt"
+      ],
+      [
+        0.6962,
+        "1706.04269v2.txt"
+      ],
+      [
+        0.6953,
+        "1706.04269v2.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "What challenges do tensor factorization methods face in modeling time modes, and what novel approach is proposed to address the gap in their application to HRSI?",
+    "source": "1803.04572v2.txt",
+    "source2": "1707.01917v2.txt",
+    "top_k": [
+      [
+        0.6937,
+        "1707.01917v2.txt"
+      ],
+      [
+        0.6557,
+        "1803.04572v2.txt"
+      ],
+      [
+        0.568,
+        "1803.04572v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does mutual information estimation contribute to the talking face generation task, and what is the objective of generating a sequence of frames in this task?",
+    "source": "1812.06589v2.txt",
+    "source2": "1804.04786v3.txt",
+    "top_k": [
+      [
+        0.704,
+        "1812.06589v2.txt"
+      ],
+      [
+        0.6656,
+        "1804.04786v3.txt"
+      ],
+      [
+        0.6635,
+        "1812.06589v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does MTSA contribute to question-type classification, and what classification type is question-type classification categorized as in TREC?",
+    "source": "1805.00912v4.txt",
+    "source2": "1809.02731v3.txt",
+    "top_k": [
+      [
+        0.6267,
+        "1809.02731v3.txt"
+      ],
+      [
+        0.5267,
+        "1809.02731v3.txt"
+      ],
+      [
+        0.4999,
+        "1805.00912v4.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "What challenges do semantic segmentation models face when tested on different datasets, and how does a semi-supervised method improve the training of semantic segmentation models?",
+    "source": "1805.04687v2.txt",
+    "source2": "1811.07073v3.txt",
+    "top_k": [
+      [
+        0.65,
+        "1811.07073v3.txt"
+      ],
+      [
+        0.6185,
+        "1811.07073v3.txt"
+      ],
+      [
+        0.615,
+        "1811.07073v3.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does the feed-forward neural network predict the next joint configuration of a robot, and what role does it play in evaluating the coherence of sentence embeddings?",
+    "source": "1603.03833v4.txt",
+    "source2": "1611.02654v2.txt",
+    "top_k": [
+      [
+        0.5927,
+        "1603.03833v4.txt"
+      ],
+      [
+        0.584,
+        "1611.02654v2.txt"
+      ],
+      [
+        0.5477,
+        "1611.02654v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How do sequence-to-sequence models utilize a hierarchical structure for combinatorial optimization, and what challenges do they face when applied to the AMR dataset?",
+    "source": "1611.02654v2.txt",
+    "source2": "1804.07707v2.txt",
+    "top_k": [
+      [
+        0.5803,
+        "1611.02654v2.txt"
+      ],
+      [
+        0.5444,
+        "1804.07707v2.txt"
+      ],
+      [
+        0.5361,
+        "1804.07707v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does the uniqueness of factorizations relate to standard compressed sensing, and what role does sparsity play in applications of standard compressed sensing?",
+    "source": "1706.08146v3.txt",
+    "source2": "1811.06635v1.txt",
+    "top_k": [
+      [
+        0.7011,
+        "1811.06635v1.txt"
+      ],
+      [
+        0.6753,
+        "1706.08146v3.txt"
+      ],
+      [
+        0.6746,
+        "1706.08146v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How is the Stanford sentiment treebank utilized in binary classification tasks, and what classification type is associated with TREC?",
+    "source": "1709.02755v5.txt",
+    "source2": "1809.02731v3.txt",
+    "top_k": [
+      [
+        0.6894,
+        "1809.02731v3.txt"
+      ],
+      [
+        0.6137,
+        "1805.00912v4.txt"
+      ],
+      [
+        0.5723,
+        "1709.02755v5.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How do deep neural network models capture semantic dependencies in natural language, and what privacy concerns arise when using deep neural network models for prediction services?",
+    "source": "1802.07459v2.txt",
+    "source2": "1811.08257v1.txt",
+    "top_k": [
+      [
+        0.6011,
+        "1811.08257v1.txt"
+      ],
+      [
+        0.5886,
+        "1811.08257v1.txt"
+      ],
+      [
+        0.5509,
+        "1811.08257v1.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does the negative sampling strategy enhance the performance of AMAN in CVR modeling, and what role does it play in the training iterations of RippleNet?",
+    "source": "1804.07931v2.txt",
+    "source2": "1803.03467v4.txt",
+    "top_k": [
+      [
+        0.5669,
+        "1803.03467v4.txt"
+      ],
+      [
+        0.5433,
+        "1804.07931v2.txt"
+      ],
+      [
+        0.5147,
+        "1803.03467v4.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does the exponential moving average contribute to the unsupervised loss term in the temporal ensemble, and what role does it play in boosting performance during model evaluation?",
+    "source": "1805.06431v4.txt",
+    "source2": "1809.03449v3.txt",
+    "top_k": [
+      [
+        0.6202,
+        "1805.06431v4.txt"
+      ],
+      [
+        0.5599,
+        "1708.06832v3.txt"
+      ],
+      [
+        0.5238,
+        "1708.06832v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does gradient back-propagation affect the optimization of deep neural models like DSPR, and what conclusion is drawn about its role in improving information flow in networks?",
+    "source": "1611.07718v2.txt",
+    "source2": "1708.03797v1.txt",
+    "top_k": [
+      [
+        0.6457,
+        "1708.03797v1.txt"
+      ],
+      [
+        0.583,
+        "1811.02553v4.txt"
+      ],
+      [
+        0.5708,
+        "1706.03847v3.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "How is dropout applied to non-recurrent connections in the r-LSTM model, and what dropout probability is used for non-recurrent connections in the LSTM cell?",
+    "source": "1704.00774v3.txt",
+    "source2": "1804.07707v2.txt",
+    "top_k": [
+      [
+        0.5811,
+        "1804.07707v2.txt"
+      ],
+      [
+        0.558,
+        "1706.04269v2.txt"
+      ],
+      [
+        0.5042,
+        "1706.03847v3.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "How are training and testing sets utilized in constructing noisy training targets, and what method is used to ensure a fair comparison in the performance evaluation of video datasets?",
+    "source": "1803.05776v2.txt",
+    "source2": "1804.04786v3.txt",
+    "top_k": [
+      [
+        0.6331,
+        "1804.04786v3.txt"
+      ],
+      [
+        0.592,
+        "1805.06431v4.txt"
+      ],
+      [
+        0.5339,
+        "1805.06431v4.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "How are pre-trained word vectors utilized in the neural network model for embedding, and what challenges do they present when used with recurrent neural networks like BiLSTM?",
+    "source": "1802.07459v2.txt",
+    "source2": "1809.03449v3.txt",
+    "top_k": [
+      [
+        0.5679,
+        "1710.01507v4.txt"
+      ],
+      [
+        0.5661,
+        "1703.02507v3.txt"
+      ],
+      [
+        0.5508,
+        "1703.02507v3.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does FALCON evaluate the relu activation function, and what network structure does the BASE model use that includes the relu activation function?",
+    "source": "1811.08257v1.txt",
+    "source2": "1804.07931v2.txt",
+    "top_k": [
+      [
+        0.6359,
+        "1811.08257v1.txt"
+      ],
+      [
+        0.5529,
+        "1811.08257v1.txt"
+      ],
+      [
+        0.5289,
+        "1811.08257v1.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How is the categorical distribution utilized in segmentation models, and what role does the categorical distribution play in determining attention probabilities?",
+    "source": "1811.07073v3.txt",
+    "source2": "1805.00912v4.txt",
+    "top_k": [
+      [
+        0.4726,
+        "1811.07073v3.txt"
+      ],
+      [
+        0.4687,
+        "1804.05936v2.txt"
+      ],
+      [
+        0.4662,
+        "1811.07073v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does a mixture density network utilize LSTM layers for error signaling, and what role does the Cholesky Block play in estimating target distributions in relation to a mixture density network?",
+    "source": "1603.03833v4.txt",
+    "source2": "1805.06431v4.txt",
+    "top_k": [
+      [
+        0.6171,
+        "1603.03833v4.txt"
+      ],
+      [
+        0.6021,
+        "1805.06431v4.txt"
+      ],
+      [
+        0.6009,
+        "1805.06431v4.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does the VAGER model utilize a linear mapping function to relate embedding similarity to classification parameters, and what role does the linear mapping function $f_{fr}$ play in transforming input orthonormal matrices in the FRMap layers?",
+    "source": "1710.06177v2.txt",
+    "source2": "1611.05742v3.txt",
+    "top_k": [
+      [
+        0.66,
+        "1611.05742v3.txt"
+      ],
+      [
+        0.6536,
+        "1710.06177v2.txt"
+      ],
+      [
+        0.6206,
+        "1710.06177v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "What tasks are included in the unsupervised evaluation for Semantic Textual Similarity, and how is the correlation of cosine similarity utilized in the unsupervised evaluation for sentence similarity?",
+    "source": "1809.02731v3.txt",
+    "source2": "1703.02507v3.txt",
+    "top_k": [
+      [
+        0.7043,
+        "1809.02731v3.txt"
+      ],
+      [
+        0.6709,
+        "1809.02731v3.txt"
+      ],
+      [
+        0.6688,
+        "1703.02507v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How have Recurrent Neural Networks (RNNs) been applied in time series forecasting, and what challenge does multivariate time series forecasting face regarding variable dependencies?",
+    "source": "1706.03847v3.txt",
+    "source2": "1703.07015v3.txt",
+    "top_k": [
+      [
+        0.6023,
+        "1703.07015v3.txt"
+      ],
+      [
+        0.5699,
+        "1703.07015v3.txt"
+      ],
+      [
+        0.5622,
+        "1703.07015v3.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "What challenges do ARIMA models face in high dimensional multivariate time series forecasting due to high computational cost, and how does the generative adversarial network (GAN) also relate to high computational cost in its performance of untargeted attacks?",
+    "source": "1703.07015v3.txt",
+    "source2": "1803.01128v3.txt",
+    "top_k": [
+      [
+        0.5668,
+        "1811.09393v4.txt"
+      ],
+      [
+        0.5636,
+        "1703.07015v3.txt"
+      ],
+      [
+        0.5605,
+        "1705.10667v4.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does the performance on the unseen imagenet validation set relate to the construction of Imagenet-Random, and what role does the imagenet validation set play in the k-shot learning scenario?",
+    "source": "1705.08016v3.txt",
+    "source2": "1710.06177v2.txt",
+    "top_k": [
+      [
+        0.593,
+        "1710.06177v2.txt"
+      ],
+      [
+        0.5488,
+        "1705.08016v3.txt"
+      ],
+      [
+        0.5177,
+        "1705.08016v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does the attention-based listwise loss improve model efficiency compared to traditional listwise loss functions, and what issue do the new family of listwise loss functions aim to address regarding the gradients of negative samples?",
+    "source": "1804.05936v2.txt",
+    "source2": "1706.03847v3.txt",
+    "top_k": [
+      [
+        0.7353,
+        "1706.03847v3.txt"
+      ],
+      [
+        0.632,
+        "1804.05936v2.txt"
+      ],
+      [
+        0.5975,
+        "1706.03847v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How is one convolutional layer utilized in feature encoding with residual blocks, and what role does one convolutional layer play in generating a fixed-length vector in a basic CNN model?",
+    "source": "1706.04284v3.txt",
+    "source2": "1709.08294v3.txt",
+    "top_k": [
+      [
+        0.6195,
+        "1706.04284v3.txt"
+      ],
+      [
+        0.5459,
+        "1809.00263v5.txt"
+      ],
+      [
+        0.5226,
+        "1804.07931v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How is reconstruction accuracy measured in shape-from-silhouette, and what does Factorize-Recover achieve in terms of reconstruction accuracy when applied to compressed data?",
+    "source": "1812.00281v3.txt",
+    "source2": "1706.08146v3.txt",
+    "top_k": [
+      [
+        0.6054,
+        "1706.08146v3.txt"
+      ],
+      [
+        0.6044,
+        "1706.08146v3.txt"
+      ],
+      [
+        0.5857,
+        "1706.08146v3.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "What benefits do element-wise operations provide in handling large data, and how do they contribute to better GPU utilization in the SRU model?",
+    "source": "1803.04572v2.txt",
+    "source2": "1709.02755v5.txt",
+    "top_k": [
+      [
+        0.6549,
+        "1709.02755v5.txt"
+      ],
+      [
+        0.6148,
+        "1709.02755v5.txt"
+      ],
+      [
+        0.5867,
+        "1709.02755v5.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "What efficient protocols does SecureML propose for training machine learning models, and how are graphs utilized in regularizing machine learning models?",
+    "source": "1811.08257v1.txt",
+    "source2": "1710.05654v2.txt",
+    "top_k": [
+      [
+        0.5314,
+        "1811.08257v1.txt"
+      ],
+      [
+        0.5314,
+        "1906.06589v3.txt"
+      ],
+      [
+        0.5267,
+        "1906.06589v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does the curse of dimensionality affect the feasibility of word embeddings in optimization problems, and what challenges does it pose when taking photos of geometric objects under varying conditions?",
+    "source": "1803.01128v3.txt",
+    "source2": "1804.00863v3.txt",
+    "top_k": [
+      [
+        0.5629,
+        "1809.02731v3.txt"
+      ],
+      [
+        0.5306,
+        "1803.01128v3.txt"
+      ],
+      [
+        0.508,
+        "1707.06320v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does the concatenation of ID embedding and averaged word embedding provide more useful information for recommendation, and what is the relationship between higher entropy predictions and classification performance in θp?",
+    "source": "1803.03467v4.txt",
+    "source2": "1906.06589v3.txt",
+    "top_k": [
+      [
+        0.5846,
+        "1906.06589v3.txt"
+      ],
+      [
+        0.5337,
+        "1803.03467v4.txt"
+      ],
+      [
+        0.5093,
+        "1803.03467v4.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does the accuracy of positional information from a Kinect sensor affect object manipulation, and what role does positional information play in extracting inter-word semantic connections in a MRC model?",
+    "source": "1603.03833v4.txt",
+    "source2": "1809.03449v3.txt",
+    "top_k": [
+      [
+        0.5371,
+        "1603.03833v4.txt"
+      ],
+      [
+        0.5331,
+        "1603.03833v4.txt"
+      ],
+      [
+        0.5261,
+        "1809.03449v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does the availability of training data affect the prediction performance of Gaussian processes, and what role do correlations play in improving the prediction performance of WeakFG?",
+    "source": "1803.05776v2.txt",
+    "source2": "1611.04363v2.txt",
+    "top_k": [
+      [
+        0.6137,
+        "1611.04363v2.txt"
+      ],
+      [
+        0.5982,
+        "1611.04363v2.txt"
+      ],
+      [
+        0.5845,
+        "1803.05776v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does training deep networks with structured layers improve performance, and what challenges arise in generalization when training deep networks on limited data?",
+    "source": "1805.06447v3.txt",
+    "source2": "1611.05742v3.txt",
+    "top_k": [
+      [
+        0.6488,
+        "1705.10667v4.txt"
+      ],
+      [
+        0.5622,
+        "1805.06447v3.txt"
+      ],
+      [
+        0.5319,
+        "1611.07718v2.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How is the discrimination of the classifier h measured when using support vector machine, and what role does support vector data description play in fault diagnosis?",
+    "source": "1703.00060v2.txt",
+    "source2": "1709.00139v4.txt",
+    "top_k": [
+      [
+        0.659,
+        "1709.00139v4.txt"
+      ],
+      [
+        0.5894,
+        "1703.00060v2.txt"
+      ],
+      [
+        0.5425,
+        "1709.00139v4.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How are accuracy and f1 scores evaluated in binary classification results, and what method is used to compute accuracy and f1 scores on the test set?",
+    "source": "1802.07459v2.txt",
+    "source2": "1703.02507v3.txt",
+    "top_k": [
+      [
+        0.5478,
+        "1809.03550v3.txt"
+      ],
+      [
+        0.5287,
+        "1805.08751v2.txt"
+      ],
+      [
+        0.4871,
+        "1812.00108v4.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does a POS tagger improve concept identification in phrases, and what common mistakes are associated with concept identification in parsing?",
+    "source": "1803.06506v3.txt",
+    "source2": "1704.04539v2.txt",
+    "top_k": [
+      [
+        0.6394,
+        "1803.06506v3.txt"
+      ],
+      [
+        0.565,
+        "1704.04539v2.txt"
+      ],
+      [
+        0.5406,
+        "1803.06506v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How does the use of gaussian distributions in the Cholesky transform affect the correlation of output mean vectors, and how are embeddings for out of vocabulary words set from gaussian distributions during training?",
+    "source": "1805.06431v4.txt",
+    "source2": "1705.02798v6.txt",
+    "top_k": [
+      [
+        0.5814,
+        "1805.06431v4.txt"
+      ],
+      [
+        0.5469,
+        "1805.06431v4.txt"
+      ],
+      [
+        0.5359,
+        "1705.02798v6.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "What is the significance of the performance difference in task-oriented dialogs as shown by the Mem2Seq model, and how does Action Search improve performance difference compared to the Direction Baseline and Random Baseline?",
+    "source": "1805.01216v3.txt",
+    "source2": "1706.04269v2.txt",
+    "top_k": [
+      [
+        0.6061,
+        "1805.01216v3.txt"
+      ],
+      [
+        0.5811,
+        "1706.04269v2.txt"
+      ],
+      [
+        0.5764,
+        "1805.01216v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "How is the deep autoencoder model utilized in deep learning applications, and what unique aspect does it contribute to the hashing mechanism in state space exploration?",
+    "source": "1805.08751v2.txt",
+    "source2": "1707.00524v2.txt",
+    "top_k": [
+      [
+        0.6895,
+        "1707.00524v2.txt"
+      ],
+      [
+        0.6665,
+        "1707.00524v2.txt"
+      ],
+      [
+        0.6352,
+        "1707.00524v2.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "What challenges in robust principal component analysis relate to theoretical guarantees, and what theoretical guarantees does LIME provide when using cosine similarity?",
+    "source": "1809.03550v3.txt",
+    "source2": "1708.02153v2.txt",
+    "top_k": [
+      [
+        0.5998,
+        "1708.02153v2.txt"
+      ],
+      [
+        0.5235,
+        "1708.02153v2.txt"
+      ],
+      [
+        0.5154,
+        "1809.03550v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  },
+  {
+    "q": "What is the function of fully-connected layers in a CNN model, and how are fully-connected layers utilized in generating an RGB output value?",
+    "source": "1811.08257v1.txt",
+    "source2": "1804.00863v3.txt",
+    "top_k": [
+      [
+        0.5721,
+        "1811.08257v1.txt"
+      ],
+      [
+        0.5493,
+        "1811.08257v1.txt"
+      ],
+      [
+        0.5451,
+        "1811.08257v1.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How do node degrees in real-world graphs relate to the power law distribution, and what does the creator-article publishing record reveal about the power law distribution?",
+    "source": "1809.01246v1.txt",
+    "source2": "1805.08751v2.txt",
+    "top_k": [
+      [
+        0.5437,
+        "1805.08751v2.txt"
+      ],
+      [
+        0.5152,
+        "1805.02349v2.txt"
+      ],
+      [
+        0.4584,
+        "1805.02349v2.txt"
+      ]
+    ],
+    "source_in_topk": false,
+    "source2_in_topk": true,
+    "both_in_topk": false
+  },
+  {
+    "q": "How does relying on human-annotated labels enhance the learning of behavioral patterns, and what metric is used to report performance in relation to human-annotated labels in supervised evaluation?",
+    "source": "1812.00108v4.txt",
+    "source2": "1809.02731v3.txt",
+    "top_k": [
+      [
+        0.6448,
+        "1812.00108v4.txt"
+      ],
+      [
+        0.5467,
+        "1804.05938v2.txt"
+      ],
+      [
+        0.5225,
+        "1805.01216v3.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": false,
+    "both_in_topk": false
+  },
+  {
+    "q": "How are geometric constraints utilized in unsupervised monocular depth estimation, and what is the impact of lacking geometric constraints on the price of fairness in welfare allocation?",
+    "source": "1701.03077v10.txt",
+    "source2": "1603.00286v5.txt",
+    "top_k": [
+      [
+        0.5484,
+        "1701.03077v10.txt"
+      ],
+      [
+        0.5266,
+        "1603.00286v5.txt"
+      ],
+      [
+        0.524,
+        "1603.00286v5.txt"
+      ]
+    ],
+    "source_in_topk": true,
+    "source2_in_topk": true,
+    "both_in_topk": true
+  }
+]

@@ -1,0 +1,4 @@
+run_id,question_set,question_type,model,vendor,access,n_questions,system,recall,complete,mrr,acc,faith,rel,mean_in_tok,mean_out_tok,mean_latency_ms,total_cost_usd,cost_per_100q_usd,n_errors,error_rate
+2026-08-12_19:46:27,questions_hotpotqa_comparison,hotpot_comparison,llama4-maverick,Meta/DeepInfra,open,50,baseline,0.93,0.86,0.98,0.92,0.84,1.0,309.0,53.4,1598.7,0.00392,0.0078,0,0.0
+2026-08-12_19:46:27,questions_hotpotqa_comparison,hotpot_comparison,llama4-maverick,Meta/DeepInfra,open,50,+KG,0.93,0.86,0.98,0.92,0.7,1.0,395.8,120.0,2608.7,0.006569,0.0131,0,0.0
+2026-08-12_19:46:27,questions_hotpotqa_comparison,hotpot_comparison,llama4-maverick,Meta/DeepInfra,open,50,+KGret,0.99,0.98,0.98,0.92,0.9,1.0,478.7,55.6,1513.1,0.005258,0.0105,0,0.0

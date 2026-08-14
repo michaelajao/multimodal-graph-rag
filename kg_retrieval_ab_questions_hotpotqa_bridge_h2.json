@@ -1,0 +1,1395 @@
+[
+  {
+    "q": "According to the 2001 census, what was the population of the city in which Kirton End is located?",
+    "golds": [
+      "Boston_Lincolnshire.txt",
+      "Kirton_End.txt"
+    ],
+    "base": [
+      "Kirton_End.txt",
+      "Kirton_Nottinghamshire.txt",
+      "Kirton_Suffolk.txt"
+    ],
+    "bridged": [
+      [
+        0.4089,
+        "Borough_of_Berwick-upon-Tweed.txt"
+      ],
+      [
+        0.3951,
+        "Willoughton.txt"
+      ]
+    ],
+    "n_candidates": 64,
+    "missing_gold_status": {
+      "Boston_Lincolnshire.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Andrew Jaspan was the co-founder of what not-for-profit media outlet?",
+    "golds": [
+      "Andrew_Jaspan.txt",
+      "The_Conversation_website.txt"
+    ],
+    "base": [
+      "Andrew_Jaspan.txt",
+      "EvidenceNetwork.ca.txt",
+      "The_Conversation_website.txt"
+    ],
+    "bridged": [
+      [
+        0.2942,
+        "Journal_of_Thoracic_Disease.txt"
+      ],
+      [
+        0.2674,
+        "Advice_column.txt"
+      ]
+    ],
+    "n_candidates": 7,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Who was Chamberlain and Colonel of the military staff of The Merrie Monarch?",
+    "golds": [
+      "Charles_Hastings_Judd.txt",
+      "Kalakaua_055843.txt"
+    ],
+    "base": [
+      "Claude_Auchinleck.txt",
+      "Corps_of_Military_Staff_Clerks.txt",
+      "Stapleton_Cotton_1st_Viscount_Combermere.txt"
+    ],
+    "bridged": [
+      [
+        0.3413,
+        "Staff_military.txt"
+      ],
+      [
+        0.3229,
+        "Charles_Hastings_Judd.txt"
+      ]
+    ],
+    "n_candidates": 70,
+    "missing_gold_status": {
+      "Kalakaua_055843.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Which song was behind the third single on the album  \"A Lot About Livin' (And a Little 'bout Love)\" for two weeks on the country charts?",
+    "golds": [
+      "Chattahoochee_song.txt",
+      "We_ll_Burn_That_Bridge.txt"
+    ],
+    "base": [
+      "A_Lot_About_Livin_And_a_Little_bout_Love.txt",
+      "Chattahoochee_song.txt",
+      "Who_Says_You_Can_t_Have_It_All.txt"
+    ],
+    "bridged": [
+      [
+        0.5217,
+        "Nashville_Rebel_box_set.txt"
+      ],
+      [
+        0.5021,
+        "High_Lonesome_Randy_Travis_album.txt"
+      ]
+    ],
+    "n_candidates": 235,
+    "missing_gold_status": {
+      "We_ll_Burn_That_Bridge.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What is the name of the Isles who were led by Aonghus Mór and covered a total land area of over 8300 km2?",
+    "golds": [
+      "Aonghus_Mor_b5e643.txt",
+      "Kingdom_of_the_Isles.txt"
+    ],
+    "base": [
+      "Kingdom_of_the_Isles.txt",
+      "List_of_rulers_of_the_Kingdom_of_the_Isles.txt"
+    ],
+    "bridged": [
+      [
+        0.5522,
+        "Aonghus_Mor_b5e643.txt"
+      ],
+      [
+        0.4907,
+        "Lord_of_Islay.txt"
+      ]
+    ],
+    "n_candidates": 12,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "Which country did the Falkland Islands beat in the 2010 Commonwealth games that has eleven administrative divisions?",
+    "golds": [
+      "Gerald_Reive.txt",
+      "Samoa.txt"
+    ],
+    "base": [
+      "Falkland_Islands_at_the_2010_Commonwealth_Games.txt",
+      "Falkland_Islands_at_the_2014_Commonwealth_Games.txt",
+      "Falkland_Islands_official_football_team.txt"
+    ],
+    "bridged": [
+      [
+        0.4607,
+        "Gerald_Reive.txt"
+      ],
+      [
+        0.4398,
+        "George_Paice_bowls.txt"
+      ]
+    ],
+    "n_candidates": 97,
+    "missing_gold_status": {
+      "Samoa.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+    "golds": [
+      "End_of_Days_film.txt",
+      "Oh_My_God_Guns_N_Roses_song.txt"
+    ],
+    "base": [
+      "Arnold_Schwarzenegger_filmography.txt",
+      "Guns_N_Roses_discography.txt",
+      "Oh_My_God_Guns_N_Roses_song.txt"
+    ],
+    "bridged": [
+      [
+        0.4681,
+        "Last_Action_Hero.txt"
+      ],
+      [
+        0.4456,
+        "End_of_Days_film.txt"
+      ]
+    ],
+    "n_candidates": 86,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "What station broadcast the episode \"Marry Me a Little, Marry Me a Little More\" , of the series created by Max Mutchnick and David Kohan?",
+    "golds": [
+      "Marry_Me_a_Little_Marry_Me_a_Little_More.txt",
+      "Will_&amp;_Grace.txt"
+    ],
+    "base": [
+      "David_Kohan.txt",
+      "Marry_Me_a_Little_Marry_Me_a_Little_More.txt",
+      "Partners_2012_TV_series.txt"
+    ],
+    "bridged": [
+      [
+        0.4853,
+        "Pilot_Will_&amp;_Grace.txt"
+      ],
+      [
+        0.4821,
+        "Boston_Common_TV_series.txt"
+      ]
+    ],
+    "n_candidates": 140,
+    "missing_gold_status": {
+      "Will_&amp;_Grace.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Which professional baseball player and National 1993 Baseball Hall of Fame inductee is featured in the Greatest Sports Legends anthology? ",
+    "golds": [
+      "Greatest_Sports_Legends.txt",
+      "Reggie_Jackson.txt"
+    ],
+    "base": [
+      "Greatest_Sports_Legends.txt",
+      "Mickey_Mantle.txt",
+      "Robin_Ventura.txt"
+    ],
+    "bridged": [
+      [
+        0.501,
+        "Babe_Ruth.txt"
+      ],
+      [
+        0.4981,
+        "Dizzy_Dean.txt"
+      ]
+    ],
+    "n_candidates": 41,
+    "missing_gold_status": {
+      "Reggie_Jackson.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "During Siege of Bharatpur, which Commander-in-Chief of Ireland and Commander-in-Chief of India contributed to the storming of the castle?",
+    "golds": [
+      "Siege_of_Bharatpur.txt",
+      "Stapleton_Cotton_1st_Viscount_Combermere.txt"
+    ],
+    "base": [
+      "Claude_Auchinleck.txt",
+      "Commander-in-Chief_India.txt",
+      "Stapleton_Cotton_1st_Viscount_Combermere.txt"
+    ],
+    "bridged": [
+      [
+        0.5114,
+        "Siege_of_Bharatpur.txt"
+      ],
+      [
+        0.5053,
+        "Siege_of_Bharatpur_1805.txt"
+      ]
+    ],
+    "n_candidates": 150,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+    "golds": [
+      "2014_S_S.txt",
+      "Winner_band.txt"
+    ],
+    "base": [
+      "2014_S_S.txt",
+      "BTS_discography.txt",
+      "List_of_awards_and_nominations_received_by_Shinee.txt"
+    ],
+    "bridged": [
+      [
+        0.4518,
+        "Seventeen_discography.txt"
+      ],
+      [
+        0.4475,
+        "History_band.txt"
+      ]
+    ],
+    "n_candidates": 166,
+    "missing_gold_status": {
+      "Winner_band.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What is the name of the singer who's song was released as the lead single from the album \"Confessions\", and that had popular song stuck behind for eight consecutive weeks?",
+    "golds": [
+      "I_Don_t_Wanna_Know.txt",
+      "Yeah!_Usher_song.txt"
+    ],
+    "base": [
+      "Always_Saliva_song.txt",
+      "Can_t_Touch_It.txt",
+      "I_Don_t_Wanna_Know.txt"
+    ],
+    "bridged": [
+      [
+        0.4081,
+        "Stay_Shakespears_Sister_song.txt"
+      ],
+      [
+        0.4077,
+        "Yeah!_Usher_song.txt"
+      ]
+    ],
+    "n_candidates": 273,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "Which American film director hosted the 18th Independent Spirit Awards in 2002?",
+    "golds": [
+      "18th_Independent_Spirit_Awards.txt",
+      "John_Waters.txt"
+    ],
+    "base": [
+      "18th_Independent_Spirit_Awards.txt",
+      "28th_Independent_Spirit_Awards.txt",
+      "32nd_Independent_Spirit_Awards.txt"
+    ],
+    "bridged": [
+      [
+        0.5736,
+        "Independent_Spirit_Award_for_Best_First_Feature.txt"
+      ],
+      [
+        0.5707,
+        "Independent_Spirit_Awards.txt"
+      ]
+    ],
+    "n_candidates": 95,
+    "missing_gold_status": {
+      "John_Waters.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What is the nickname of the city where Darling's Waterfront Pavilion is located?",
+    "golds": [
+      "Bangor_Maine.txt",
+      "Darling_s_Waterfront_Pavilion.txt"
+    ],
+    "base": [
+      "Chicago_Public_Media.txt",
+      "Darling_s_Waterfront_Pavilion.txt",
+      "Grandview_Park_Music_Pavilion.txt"
+    ],
+    "bridged": [
+      [
+        0.3596,
+        "Oleson_Park_Music_Pavilion.txt"
+      ],
+      [
+        0.3437,
+        "Nashville_Terminal_Subdivision.txt"
+      ]
+    ],
+    "n_candidates": 17,
+    "missing_gold_status": {
+      "Bangor_Maine.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": " The name \"Mountbatten-Windsor\" applies to male-line descendants of the Queen without royal styles and titles which is a Eurpean dynasty resulting in what family?",
+    "golds": [
+      "Mountbatten-Windsor.txt",
+      "Mountbatten_family.txt"
+    ],
+    "base": [
+      "List_of_members_of_the_House_of_Windsor.txt",
+      "Mountbatten-Windsor.txt",
+      "Mountbatten_family.txt"
+    ],
+    "bridged": [
+      [
+        0.4572,
+        "Cadet_branch.txt"
+      ],
+      [
+        0.3771,
+        "Viscount_Wimborne.txt"
+      ]
+    ],
+    "n_candidates": 16,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Which American film actor and dancer starred in the 1945 film Johnny Angel?",
+    "golds": [
+      "George_Raft.txt",
+      "Johnny_Angel.txt"
+    ],
+    "base": [
+      "Johnny_Angel.txt",
+      "Johnny_Angel_song.txt"
+    ],
+    "bridged": [
+      [
+        0.4097,
+        "George_Raft.txt"
+      ],
+      [
+        0.4051,
+        "City_of_Angels_film.txt"
+      ]
+    ],
+    "n_candidates": 90,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "James Fieser received his B.A. from what liberal arts work college that was founded in 1855?",
+    "golds": [
+      "Berea_College.txt",
+      "James_Fieser.txt"
+    ],
+    "base": [
+      "James_Fieser.txt",
+      "Liberal_arts_college.txt",
+      "List_of_liberal_arts_colleges.txt"
+    ],
+    "bridged": [
+      [
+        0.4349,
+        "Work_college.txt"
+      ],
+      [
+        0.417,
+        "Berea_College.txt"
+      ]
+    ],
+    "n_candidates": 12,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "What is the name for the adventure in \"Tunnels and Trolls\", a game designed by Ken St. Andre?",
+    "golds": [
+      "Arena_of_Khazan.txt",
+      "Tunnels_&amp;_Trolls.txt"
+    ],
+    "base": [
+      "Arena_of_Khazan.txt",
+      "Ken_St._Andre.txt",
+      "Tunnels_&amp;_Trolls.txt"
+    ],
+    "bridged": [
+      [
+        0.5769,
+        "Tunnels_&amp;_Trolls_Crusaders_of_Khazan.txt"
+      ],
+      [
+        0.4713,
+        "Starfaring.txt"
+      ]
+    ],
+    "n_candidates": 9,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What year was the film that starred the composer for \"The Naked Brothers Band\"?",
+    "golds": [
+      "Nat_Wolff.txt",
+      "The_Fault_in_Our_Stars_film.txt"
+    ],
+    "base": [
+      "The_Naked_Brothers_Band_Music_from_the_Movie.txt",
+      "The_Naked_Brothers_Band_album.txt",
+      "The_Premiere_film.txt"
+    ],
+    "bridged": [
+      [
+        0.578,
+        "Operation_Mojo.txt"
+      ],
+      [
+        0.5712,
+        "Alex_Wolff.txt"
+      ]
+    ],
+    "n_candidates": 117,
+    "missing_gold_status": {
+      "Nat_Wolff.txt": "slot_lost",
+      "The_Fault_in_Our_Stars_film.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "When was the palace founded at which Columba de Dunbar died in 1435?",
+    "golds": [
+      "Columba_de_Dunbar.txt",
+      "Spynie_Palace.txt"
+    ],
+    "base": [
+      "Bishop_Dunbar_s_Hospital.txt",
+      "Columba_de_Dunbar.txt",
+      "Gospatric_Earl_of_Northumbria.txt"
+    ],
+    "bridged": [
+      [
+        0.4058,
+        "Spynie_Palace.txt"
+      ],
+      [
+        0.3706,
+        "Mike_Dunbar.txt"
+      ]
+    ],
+    "n_candidates": 4,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "What arcade game is named after the only player in major league history to have a 0.300 batting average for 7 consecutive seasons?",
+    "golds": [
+      "Frank_Thomas_Big_Hurt.txt",
+      "Frank_Thomas_designated_hitter.txt"
+    ],
+    "base": [
+      "Frank_Thomas_designated_hitter.txt",
+      "List_of_Major_League_Baseball_batting_champions.txt"
+    ],
+    "bridged": [
+      [
+        0.4934,
+        "1921_Detroit_Tigers_season.txt"
+      ],
+      [
+        0.2642,
+        "200607_QMJHL_season_cd6047.txt"
+      ]
+    ],
+    "n_candidates": 28,
+    "missing_gold_status": {
+      "Frank_Thomas_Big_Hurt.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What was the position of Jean Baptiste Androuet du Cerceau under the man who was King of the Polish-Lithuanian Commonwealth from 1573 to 1575?",
+    "golds": [
+      "Henry_III_of_France.txt",
+      "Jean_Baptiste_Androuet_du_Cerceau.txt"
+    ],
+    "base": [
+      "Jacques_Androuet_II_du_Cerceau.txt",
+      "Jacques_I_Androuet_du_Cerceau.txt",
+      "Jean_Androuet_du_Cerceau.txt"
+    ],
+    "bridged": [
+      [
+        0.5264,
+        "Paul_Androuet_du_Cerceau.txt"
+      ],
+      [
+        0.4954,
+        "Jean_Baptiste_Androuet_du_Cerceau.txt"
+      ]
+    ],
+    "n_candidates": 34,
+    "missing_gold_status": {
+      "Henry_III_of_France.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What is the middle name of the actress who plays Bobbi Bacha in Suburban Madness?",
+    "golds": [
+      "Bobbi_Bacha.txt",
+      "Sela_Ward.txt"
+    ],
+    "base": [
+      "Bobbi_Bacha.txt",
+      "Citizen_Khan.txt",
+      "Suburban_Madness.txt"
+    ],
+    "bridged": [
+      [
+        0.3449,
+        "Penny_The_Big_Bang_Theory.txt"
+      ],
+      [
+        0.3075,
+        "Jillian_Bell.txt"
+      ]
+    ],
+    "n_candidates": 45,
+    "missing_gold_status": {
+      "Sela_Ward.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "A Japanese manga series based on a 16 year old high school student Ichitaka Seto, is written and illustrated by someone born in what year?",
+    "golds": [
+      "I&quot;s.txt",
+      "Masakazu_Katsura.txt"
+    ],
+    "base": [
+      "Haven_t_You_Heard_I_m_Sakamoto.txt",
+      "I&quot;s.txt",
+      "Manga_Bible_series.txt"
+    ],
+    "bridged": [
+      [
+        0.4386,
+        "The_Kindaichi_Case_Files.txt"
+      ],
+      [
+        0.4162,
+        "Please_Twins!.txt"
+      ]
+    ],
+    "n_candidates": 156,
+    "missing_gold_status": {
+      "Masakazu_Katsura.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "The songs from the sountrack to \"When Harry Met Sally\" are performed by a singer that has had how many top 20 US albums?",
+    "golds": [
+      "Harry_Connick_Jr..txt",
+      "When_Harry_Met_Sally..._soundtrack.txt"
+    ],
+    "base": [
+      "5_55.txt",
+      "When_Harry_Met_Sally....txt",
+      "When_Harry_Met_Sally..._soundtrack.txt"
+    ],
+    "bridged": [
+      [
+        0.413,
+        "Meg_Ryan.txt"
+      ],
+      [
+        0.4108,
+        "My_Fair_Lady_Broadway_cast_recording.txt"
+      ]
+    ],
+    "n_candidates": 52,
+    "missing_gold_status": {
+      "Harry_Connick_Jr..txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Which suburb is a soap opera featuring a character named Beverly Marshall set in?",
+    "golds": [
+      "Beverly_Marshall.txt",
+      "Ramsay_Street.txt"
+    ],
+    "base": [
+      "Beverly_Marshall.txt",
+      "Ramsay_Street.txt",
+      "Shaunna_O_Grady.txt"
+    ],
+    "bridged": [
+      [
+        0.4773,
+        "Katie_Landers.txt"
+      ],
+      [
+        0.4086,
+        "Phil_Mitchell.txt"
+      ]
+    ],
+    "n_candidates": 34,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Chris Williams last played for which football club from the National League North?",
+    "golds": [
+      "Chris_Williams_English_footballer.txt",
+      "Salford_City_F.C..txt"
+    ],
+    "base": [
+      "Chris_Williams_English_footballer.txt",
+      "National_League_North.txt"
+    ],
+    "bridged": [
+      [
+        0.4829,
+        "National_League_English_football.txt"
+      ],
+      [
+        0.4739,
+        "Salford_City_F.C..txt"
+      ]
+    ],
+    "n_candidates": 19,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "What distinction is held by the former NBA player who was a member of the Charlotte Hornets during their 1992-93 season and was head coach for the WNBA team Charlotte Sting?",
+    "golds": [
+      "199293_Charlotte_Hornets_season_5737e5.txt",
+      "Muggsy_Bogues.txt"
+    ],
+    "base": [
+      "2003_WNBA_season.txt",
+      "Ayana_Walker.txt",
+      "Muggsy_Bogues.txt"
+    ],
+    "bridged": [
+      [
+        0.5016,
+        "201415_Charlotte_Hornets_season_bca1a1.txt"
+      ],
+      [
+        0.4947,
+        "199293_Charlotte_Hornets_season_5737e5.txt"
+      ]
+    ],
+    "n_candidates": 103,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "Who is Bruce Spizer an expert on, known as the most influential act of the rock era?",
+    "golds": [
+      "Bruce_Spizer.txt",
+      "The_Beatles.txt"
+    ],
+    "base": [
+      "Bruce_Spizer.txt",
+      "Cultural_depictions_of_Elvis_Presley.txt",
+      "Keith_Richards.txt"
+    ],
+    "bridged": [
+      [
+        0.3659,
+        "Cultural_impact_of_the_Beatles.txt"
+      ],
+      [
+        0.3502,
+        "Marsha_Albert.txt"
+      ]
+    ],
+    "n_candidates": 14,
+    "missing_gold_status": {
+      "The_Beatles.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Which Netflix series \"Unbreakable\" character is Elizabeth Claire Kemper known for playing?",
+    "golds": [
+      "Ellie_Kemper.txt",
+      "Kimmy_Schmidt.txt"
+    ],
+    "base": [
+      "Ellie_Kemper.txt",
+      "Kimmy_Schmidt.txt",
+      "List_of_Unbreakable_Kimmy_Schmidt_episodes.txt"
+    ],
+    "bridged": [
+      [
+        0.5687,
+        "Unbreakable_Kimmy_Schmidt.txt"
+      ],
+      [
+        0.468,
+        "Claire_Temple_Marvel_Cinematic_Universe.txt"
+      ]
+    ],
+    "n_candidates": 118,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Alvaro Mexia had a diplomatic mission with which tribe of indigenous people?",
+    "golds": [
+      "Alvaro_Mexia.txt",
+      "Indigenous_peoples_of_Florida.txt"
+    ],
+    "base": [
+      "Alvaro_Mexia.txt",
+      "Mascogos.txt",
+      "Montezuma_Castle_National_Monument.txt"
+    ],
+    "bridged": [
+      [
+        0.2733,
+        "Seminole_Nation_of_Oklahoma.txt"
+      ],
+      [
+        0.26,
+        "Christmas_in_the_Basque_Country.txt"
+      ]
+    ],
+    "n_candidates": 22,
+    "missing_gold_status": {
+      "Indigenous_peoples_of_Florida.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Marcus Wayne Garland spent nine seasons with an American professional baseball team that is based in Baltimore, Maryland, and was one of the AMerican League's original eight charter franchises when the league was established in what year?",
+    "golds": [
+      "Baltimore_Orioles.txt",
+      "Wayne_Garland.txt"
+    ],
+    "base": [
+      "Baltimore_Orioles.txt",
+      "List_of_Detroit_Tigers_managers.txt",
+      "Wayne_Garland.txt"
+    ],
+    "bridged": [
+      [
+        0.443,
+        "Detroit_Tigers.txt"
+      ],
+      [
+        0.4275,
+        "Boston_Red_Sox.txt"
+      ]
+    ],
+    "n_candidates": 69,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "The lamp used in many lighthouses is similiar to this type of lamp patented in 1780 by Aimé Argand?",
+    "golds": [
+      "Argand_lamp.txt",
+      "Lewis_lamp.txt"
+    ],
+    "base": [
+      "Argand_lamp.txt",
+      "Lewis_lamp.txt"
+    ],
+    "bridged": [
+      [
+        0.3508,
+        "Antoine_Quinquet.txt"
+      ]
+    ],
+    "n_candidates": 1,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What amount was the settlement that the character from the Son of al Quada got in 2017?",
+    "golds": [
+      "Omar_Khadr.txt",
+      "Son_of_al_Qaeda.txt"
+    ],
+    "base": [
+      "List_of_largest_pharmaceutical_settlements.txt",
+      "Omar_Khadr.txt"
+    ],
+    "bridged": [
+      [
+        0.3499,
+        "Fraley_v._Facebook_Inc..txt"
+      ],
+      [
+        0.3028,
+        "Al_Utouriya.txt"
+      ]
+    ],
+    "n_candidates": 25,
+    "missing_gold_status": {
+      "Son_of_al_Qaeda.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Where was the world cup hosted that Algeria qualified for the first time into the round of 16?",
+    "golds": [
+      "2014_FIFA_World_Cup.txt",
+      "Algeria_at_the_FIFA_World_Cup.txt"
+    ],
+    "base": [
+      "Algeria_at_the_FIFA_World_Cup.txt",
+      "Orvar_Bergmark.txt"
+    ],
+    "bridged": [
+      [
+        0.4827,
+        "1991_Rugby_World_Cup.txt"
+      ],
+      [
+        0.4764,
+        "2018_and_2022_FIFA_World_Cup_bids.txt"
+      ]
+    ],
+    "n_candidates": 112,
+    "missing_gold_status": {
+      "2014_FIFA_World_Cup.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What airport serviced by American Airlines Shuttle, is also the largest airport in the New England region and 17th busiest in the U.S?",
+    "golds": [
+      "American_Airlines_Shuttle.txt",
+      "Logan_International_Airport.txt"
+    ],
+    "base": [
+      "American_Airlines_Shuttle.txt",
+      "Charlotte_Douglas_International_Airport.txt",
+      "Logan_International_Airport.txt"
+    ],
+    "bridged": [
+      [
+        0.4873,
+        "Eastern_Air_Lines_Shuttle.txt"
+      ],
+      [
+        0.4747,
+        "Denver_International_Airport.txt"
+      ]
+    ],
+    "n_candidates": 32,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "In which city is the ambassador of the Rabat-Salé-Kénitra administrative region to China based?",
+    "golds": [
+      "Moroccan_Ambassador_to_China.txt",
+      "Rabat.txt"
+    ],
+    "base": [
+      "Mana_Al_Otaiba.txt",
+      "Moroccan_Ambassador_to_China.txt",
+      "Rabat.txt"
+    ],
+    "bridged": [
+      [
+        0.3019,
+        "Robert_Hormats.txt"
+      ],
+      [
+        0.2911,
+        "Sinuiju_Special_Administrative_Region.txt"
+      ]
+    ],
+    "n_candidates": 21,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Alice David is the voice of Lara Croft in a video game developed by which company ?",
+    "golds": [
+      "Alice_David.txt",
+      "Tomb_Raider_2013_video_game.txt"
+    ],
+    "base": [
+      "Lara_Croft.txt",
+      "List_of_Tomb_Raider_media.txt",
+      "Tomb_Raider.txt"
+    ],
+    "bridged": [
+      [
+        0.6528,
+        "Lara_Croft_and_the_Temple_of_Osiris.txt"
+      ],
+      [
+        0.6298,
+        "Alice_David.txt"
+      ]
+    ],
+    "n_candidates": 112,
+    "missing_gold_status": {
+      "Tomb_Raider_2013_video_game.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+    "golds": [
+      "America_East_Conference.txt",
+      "Vermont_Catamounts_men_s_soccer.txt"
+    ],
+    "base": [
+      "Vermont_Catamounts_men_s_basketball.txt",
+      "Vermont_Catamounts_men_s_ice_hockey.txt",
+      "Vermont_Catamounts_men_s_soccer.txt"
+    ],
+    "bridged": [
+      [
+        0.6068,
+        "201011_Vermont_Catamounts_men_s_basketball_team_9ab2ab.txt"
+      ],
+      [
+        0.6068,
+        "201314_Vermont_Catamounts_men_s_basketball_team_6a6c64.txt"
+      ]
+    ],
+    "n_candidates": 14,
+    "missing_gold_status": {
+      "America_East_Conference.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Which Kentucky Writers Hall of Fame author has had works published by Dim Gray Bar Press?",
+    "golds": [
+      "Dim_Gray_Bar_Press.txt",
+      "Wendell_Berry.txt"
+    ],
+    "base": [
+      "Dim_Gray_Bar_Press.txt",
+      "Nancy_K._Pearson.txt",
+      "Wendell_Berry.txt"
+    ],
+    "bridged": [
+      [
+        0.31,
+        "Man_Booker_International_Prize.txt"
+      ],
+      [
+        0.3079,
+        "Lenelle_Moise_09b55b.txt"
+      ]
+    ],
+    "n_candidates": 74,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "Considered the strongest recorded tropical cyclone, which cyclone had a film made about it in 2007?",
+    "golds": [
+      "1999_Odisha_cyclone.txt",
+      "Kathantara.txt"
+    ],
+    "base": [
+      "1999_Odisha_cyclone.txt",
+      "Cyclone_Gonu.txt",
+      "Cyclone_Hondo.txt"
+    ],
+    "bridged": [
+      [
+        0.5614,
+        "Cyclone_Kesiny.txt"
+      ],
+      [
+        0.5206,
+        "Cyclone_Anne.txt"
+      ]
+    ],
+    "n_candidates": 15,
+    "missing_gold_status": {
+      "Kathantara.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Ralph Hefferline was a psychology professor at a university that is located in what city?",
+    "golds": [
+      "Columbia_University.txt",
+      "Ralph_Hefferline.txt"
+    ],
+    "base": [
+      "David_C._Funder.txt",
+      "Ralph_Hefferline.txt",
+      "The_Grassroot_Deviation.txt"
+    ],
+    "bridged": [
+      [
+        0.3954,
+        "Stanley_Coren.txt"
+      ],
+      [
+        0.3203,
+        "University_of_MissouriKansas_City_58ffe7.txt"
+      ]
+    ],
+    "n_candidates": 42,
+    "missing_gold_status": {
+      "Columbia_University.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What year was the brother of this first round draft pick by the Washington Redskins drafted?",
+    "golds": [
+      "Boss_Bailey.txt",
+      "Champ_Bailey.txt"
+    ],
+    "base": [
+      "Fred_Hageman.txt",
+      "Jeris_White.txt",
+      "Ron_Snidow.txt"
+    ],
+    "bridged": [
+      [
+        0.4378,
+        "Champ_Bailey.txt"
+      ],
+      [
+        0.3942,
+        "LaRon_Landry.txt"
+      ]
+    ],
+    "n_candidates": 156,
+    "missing_gold_status": {
+      "Boss_Bailey.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What american actress/singer born in 1956 recorded the song Something there for beauty and the beast?",
+    "golds": [
+      "Paige_O_Hara.txt",
+      "Something_There.txt"
+    ],
+    "base": [
+      "Beauty_and_the_Beast_Disney_song.txt",
+      "Belle_Disney_song.txt",
+      "Something_There.txt"
+    ],
+    "bridged": [
+      [
+        0.553,
+        "Be_Our_Guest.txt"
+      ],
+      [
+        0.5478,
+        "Belle_Disney.txt"
+      ]
+    ],
+    "n_candidates": 119,
+    "missing_gold_status": {
+      "Paige_O_Hara.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "The Memphis Hustle are based in a suburb of a city with a population of what in 2010?",
+    "golds": [
+      "Memphis_Hustle.txt",
+      "Southaven_Mississippi.txt"
+    ],
+    "base": [
+      "Memphis_Hustle.txt",
+      "Memphis_metropolitan_area.txt",
+      "Millington_Tennessee.txt"
+    ],
+    "bridged": [
+      [
+        0.4946,
+        "Lakeland_Tennessee.txt"
+      ],
+      [
+        0.4874,
+        "Southaven_Mississippi.txt"
+      ]
+    ],
+    "n_candidates": 146,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+    "golds": [
+      "199596_Manchester_United_F.C._season_3f9756.txt",
+      "Alex_Ferguson.txt"
+    ],
+    "base": [
+      "David_Beckham_Academy.txt",
+      "David_Beckham_s_Soccer_USA.txt",
+      "Matt_Busby.txt"
+    ],
+    "bridged": [
+      [
+        0.4868,
+        "199596_Manchester_United_F.C._season_3f9756.txt"
+      ],
+      [
+        0.4827,
+        "Alex_Ferguson.txt"
+      ]
+    ],
+    "n_candidates": 69,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "What major city is the Faith Lutheran Middle School and High School located by?",
+    "golds": [
+      "Faith_Lutheran_Middle_School_&amp;_High_School.txt",
+      "Summerlin_Nevada.txt"
+    ],
+    "base": [
+      "Faith_Lutheran_High_School.txt",
+      "Faith_Lutheran_Middle_School_&amp;_High_School.txt",
+      "Lutheran_High_School_La_Verne_California.txt"
+    ],
+    "bridged": [
+      [
+        0.5386,
+        "Faith_Lutheran_College_Redlands.txt"
+      ],
+      [
+        0.3533,
+        "Cotter_High_School_Winona_Minnesota.txt"
+      ]
+    ],
+    "n_candidates": 33,
+    "missing_gold_status": {
+      "Summerlin_Nevada.txt": "not_candidate"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "Where did the descendants of the group of black Indians associated with the Seminole people settle?",
+    "golds": [
+      "Black_Seminoles.txt",
+      "Mascogos.txt"
+    ],
+    "base": [
+      "Black_Seminoles.txt",
+      "Seminole.txt",
+      "Seminole_music.txt"
+    ],
+    "bridged": [
+      [
+        0.5831,
+        "Seminole_Nation_of_Oklahoma.txt"
+      ],
+      [
+        0.4848,
+        "Seminole_County_Oklahoma.txt"
+      ]
+    ],
+    "n_candidates": 48,
+    "missing_gold_status": {
+      "Mascogos.txt": "slot_lost"
+    },
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "D1NZ is a series based on what oversteering technique?",
+    "golds": [
+      "D1NZ.txt",
+      "Drifting_motorsport.txt"
+    ],
+    "base": [
+      "D1NZ.txt",
+      "Drifting_motorsport.txt"
+    ],
+    "bridged": [
+      [
+        0.2355,
+        "Romper_Stomper_TV_series.txt"
+      ],
+      [
+        0.2286,
+        "Damon_Dark.txt"
+      ]
+    ],
+    "n_candidates": 86,
+    "missing_gold_status": {},
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What is the population according to the 2007 population census of the city in which the National Archives and Library of Ethiopia is located?",
+    "golds": [
+      "Addis_Ababa.txt",
+      "National_Archives_and_Library_of_Ethiopia.txt"
+    ],
+    "base": [
+      "List_of_ethnic_groups_in_Ethiopia.txt",
+      "National_Archives_and_Library_of_Ethiopia.txt",
+      "National_Archives_of_Bangladesh.txt"
+    ],
+    "bridged": [
+      [
+        0.4712,
+        "Addis_Ababa.txt"
+      ],
+      [
+        0.4377,
+        "National_Archives_of_Zambia.txt"
+      ]
+    ],
+    "n_candidates": 102,
+    "missing_gold_status": {},
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  }
+]

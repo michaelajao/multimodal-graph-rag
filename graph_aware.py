@@ -109,7 +109,10 @@ def extract_triples(chunk):
     raw = resp.choices[0].message.content.strip().replace("```json", "").replace("```", "").strip()
     try:
         triples = json.loads(raw)
-        return [t for t in triples if isinstance(t, list) and len(t) == 3]   # keep well-formed only
+        # Keep well-formed triples; coerce elements to str (the model sometimes
+        # emits numbers, e.g. ["accuracy", "is", 0.95]).
+        return [[str(x) for x in t]
+                for t in triples if isinstance(t, list) and len(t) == 3]
     except json.JSONDecodeError:
         return []
 
@@ -196,8 +199,11 @@ def build_graph(triples):
         else:
             subject, relation, obj = t
             src = None
-        graph.add_edge(subject.lower().strip(), obj.lower().strip(),
-                       relation=relation, source=src)
+        # The extractor occasionally returns numbers as subjects/objects
+        # (e.g. ["accuracy", "is", 0.95]) — common in CS papers. These are
+        # legitimate facts, so coerce to str rather than drop.
+        graph.add_edge(str(subject).lower().strip(), str(obj).lower().strip(),
+                       relation=str(relation), source=src)
     print(f"Graph: {graph.number_of_nodes()} nodes, {graph.number_of_edges()} edges")
     return graph
 

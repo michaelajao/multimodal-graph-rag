@@ -1,0 +1,1104 @@
+[
+  {
+    "q": "How does the use of bidirectional gated recurrent units in encoding sequences relate to the implementation of sentence-level BLEU as an objective for the generator?",
+    "source": "1611.04684v1.txt",
+    "source2": "1703.04887v4.txt",
+    "base": [
+      "1703.04887v4.txt"
+    ],
+    "bridged": [
+      [
+        0.5745,
+        "1809.04276v2.txt"
+      ],
+      [
+        0.5605,
+        "1809.02731v3.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How are pretrained word2vec embeddings utilized in the training process, and what effect do they have on internal coherence in models for IMDB and Yahoo answers?",
+    "source": "1804.07707v2.txt",
+    "source2": "1705.09296v2.txt",
+    "base": [
+      "1705.09296v2.txt",
+      "1710.01507v4.txt",
+      "1804.07707v2.txt"
+    ],
+    "bridged": [
+      [
+        0.5315,
+        "1611.02654v2.txt"
+      ],
+      [
+        0.5252,
+        "1703.02507v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How is maximum likelihood estimation applied in supervised summarization approaches, and what role does it play in pre-training the generator in GANs?",
+    "source": "1812.00108v4.txt",
+    "source2": "1703.04887v4.txt",
+    "base": [
+      "1703.04887v4.txt",
+      "1809.04276v2.txt",
+      "1812.00108v4.txt"
+    ],
+    "bridged": [
+      [
+        0.544,
+        "1803.01128v3.txt"
+      ],
+      [
+        0.5182,
+        "1705.09966v2.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does knowledge transfer in action recognition utilize a large amount of training data, and what challenges do deep generative models face regarding a large amount of training data?",
+    "source": "1804.01429v3.txt",
+    "source2": "1703.10730v2.txt",
+    "base": [
+      "1705.10667v4.txt",
+      "1710.06177v2.txt",
+      "1804.01429v3.txt"
+    ],
+    "bridged": [
+      [
+        0.5571,
+        "1805.06447v3.txt"
+      ],
+      [
+        0.5383,
+        "1809.04276v2.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How does the baseline model in the smoke dataset learn spatial and temporal features, and what method is used to process spatial features across frames in the independent views?",
+    "source": "1811.09393v4.txt",
+    "source2": "1812.00108v4.txt",
+    "base": [
+      "1811.09393v4.txt",
+      "1812.00108v4.txt"
+    ],
+    "bridged": [
+      [
+        0.53,
+        "1805.04687v2.txt"
+      ],
+      [
+        0.5269,
+        "1809.00263v5.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What datasets are introduced for temporal action localization, and what is a key requirement for efficient search in temporal action localization?",
+    "source": "1804.01429v3.txt",
+    "source2": "1706.04269v2.txt",
+    "base": [
+      "1706.04269v2.txt"
+    ],
+    "bridged": [
+      [
+        0.6061,
+        "1804.01429v3.txt"
+      ],
+      [
+        0.5187,
+        "1809.00263v5.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "What challenges do tensor factorization methods face in modeling time modes, and what novel approach is proposed to address the gap in their application to HRSI?",
+    "source": "1803.04572v2.txt",
+    "source2": "1707.01917v2.txt",
+    "base": [
+      "1707.01917v2.txt",
+      "1803.04572v2.txt"
+    ],
+    "bridged": [
+      [
+        0.4941,
+        "1706.00827v2.txt"
+      ],
+      [
+        0.4932,
+        "1706.08146v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does mutual information estimation contribute to the talking face generation task, and what is the objective of generating a sequence of frames in this task?",
+    "source": "1812.06589v2.txt",
+    "source2": "1804.04786v3.txt",
+    "base": [
+      "1804.04786v3.txt",
+      "1812.06589v2.txt"
+    ],
+    "bridged": [
+      [
+        0.5198,
+        "1809.04276v2.txt"
+      ],
+      [
+        0.4898,
+        "1705.09966v2.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does MTSA contribute to question-type classification, and what classification type is question-type classification categorized as in TREC?",
+    "source": "1805.00912v4.txt",
+    "source2": "1809.02731v3.txt",
+    "base": [
+      "1805.00912v4.txt",
+      "1809.02731v3.txt"
+    ],
+    "bridged": [
+      [
+        0.4368,
+        "1704.04539v2.txt"
+      ],
+      [
+        0.4328,
+        "1805.06447v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What challenges do semantic segmentation models face when tested on different datasets, and how does a semi-supervised method improve the training of semantic segmentation models?",
+    "source": "1805.04687v2.txt",
+    "source2": "1811.07073v3.txt",
+    "base": [
+      "1811.07073v3.txt"
+    ],
+    "bridged": [
+      [
+        0.5708,
+        "1805.04687v2.txt"
+      ],
+      [
+        0.548,
+        "1703.02507v3.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "How does the feed-forward neural network predict the next joint configuration of a robot, and what role does it play in evaluating the coherence of sentence embeddings?",
+    "source": "1603.03833v4.txt",
+    "source2": "1611.02654v2.txt",
+    "base": [
+      "1603.03833v4.txt",
+      "1611.02654v2.txt"
+    ],
+    "bridged": [
+      [
+        0.5156,
+        "1707.06320v2.txt"
+      ],
+      [
+        0.5148,
+        "1809.02731v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How do sequence-to-sequence models utilize a hierarchical structure for combinatorial optimization, and what challenges do they face when applied to the AMR dataset?",
+    "source": "1611.02654v2.txt",
+    "source2": "1804.07707v2.txt",
+    "base": [
+      "1611.02654v2.txt",
+      "1804.07707v2.txt"
+    ],
+    "bridged": [
+      [
+        0.4898,
+        "1707.08608v3.txt"
+      ],
+      [
+        0.4871,
+        "1805.01216v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does the uniqueness of factorizations relate to standard compressed sensing, and what role does sparsity play in applications of standard compressed sensing?",
+    "source": "1706.08146v3.txt",
+    "source2": "1811.06635v1.txt",
+    "base": [
+      "1706.08146v3.txt",
+      "1811.06635v1.txt"
+    ],
+    "bridged": [
+      [
+        0.523,
+        "1803.04572v2.txt"
+      ],
+      [
+        0.4774,
+        "1809.03550v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How is the Stanford sentiment treebank utilized in binary classification tasks, and what classification type is associated with TREC?",
+    "source": "1709.02755v5.txt",
+    "source2": "1809.02731v3.txt",
+    "base": [
+      "1709.02755v5.txt",
+      "1805.00912v4.txt",
+      "1809.02731v3.txt"
+    ],
+    "bridged": [
+      [
+        0.4791,
+        "1702.08694v3.txt"
+      ],
+      [
+        0.4768,
+        "1707.06320v2.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How do deep neural network models capture semantic dependencies in natural language, and what privacy concerns arise when using deep neural network models for prediction services?",
+    "source": "1802.07459v2.txt",
+    "source2": "1811.08257v1.txt",
+    "base": [
+      "1811.08257v1.txt"
+    ],
+    "bridged": [
+      [
+        0.5409,
+        "1802.07459v2.txt"
+      ],
+      [
+        0.5375,
+        "1705.10667v4.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "How does the negative sampling strategy enhance the performance of AMAN in CVR modeling, and what role does it play in the training iterations of RippleNet?",
+    "source": "1804.07931v2.txt",
+    "source2": "1803.03467v4.txt",
+    "base": [
+      "1803.03467v4.txt",
+      "1804.07931v2.txt"
+    ],
+    "bridged": [
+      [
+        0.4681,
+        "1809.04276v2.txt"
+      ],
+      [
+        0.46,
+        "1706.03847v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does the exponential moving average contribute to the unsupervised loss term in the temporal ensemble, and what role does it play in boosting performance during model evaluation?",
+    "source": "1805.06431v4.txt",
+    "source2": "1809.03449v3.txt",
+    "base": [
+      "1708.06832v3.txt",
+      "1805.06431v4.txt"
+    ],
+    "bridged": [
+      [
+        0.5081,
+        "1812.00108v4.txt"
+      ],
+      [
+        0.5029,
+        "1811.09393v4.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How does gradient back-propagation affect the optimization of deep neural models like DSPR, and what conclusion is drawn about its role in improving information flow in networks?",
+    "source": "1611.07718v2.txt",
+    "source2": "1708.03797v1.txt",
+    "base": [
+      "1706.03847v3.txt",
+      "1708.03797v1.txt",
+      "1811.02553v4.txt"
+    ],
+    "bridged": [
+      [
+        0.5095,
+        "1705.10667v4.txt"
+      ],
+      [
+        0.5037,
+        "1611.07718v2.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "How is dropout applied to non-recurrent connections in the r-LSTM model, and what dropout probability is used for non-recurrent connections in the LSTM cell?",
+    "source": "1704.00774v3.txt",
+    "source2": "1804.07707v2.txt",
+    "base": [
+      "1706.03847v3.txt",
+      "1706.04269v2.txt",
+      "1804.07707v2.txt"
+    ],
+    "bridged": [
+      [
+        0.5008,
+        "1709.02755v5.txt"
+      ],
+      [
+        0.496,
+        "1703.07015v3.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How are training and testing sets utilized in constructing noisy training targets, and what method is used to ensure a fair comparison in the performance evaluation of video datasets?",
+    "source": "1803.05776v2.txt",
+    "source2": "1804.04786v3.txt",
+    "base": [
+      "1804.04786v3.txt",
+      "1805.06431v4.txt"
+    ],
+    "bridged": [
+      [
+        0.5136,
+        "1805.06447v3.txt"
+      ],
+      [
+        0.4806,
+        "1706.04284v3.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How are pre-trained word vectors utilized in the neural network model for embedding, and what challenges do they present when used with recurrent neural networks like BiLSTM?",
+    "source": "1802.07459v2.txt",
+    "source2": "1809.03449v3.txt",
+    "base": [
+      "1703.02507v3.txt",
+      "1710.01507v4.txt"
+    ],
+    "bridged": [
+      [
+        0.522,
+        "1809.02731v3.txt"
+      ],
+      [
+        0.5205,
+        "1803.01128v3.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How does FALCON evaluate the relu activation function, and what network structure does the BASE model use that includes the relu activation function?",
+    "source": "1811.08257v1.txt",
+    "source2": "1804.07931v2.txt",
+    "base": [
+      "1811.08257v1.txt"
+    ],
+    "bridged": [
+      [
+        0.5233,
+        "1709.02755v5.txt"
+      ],
+      [
+        0.5091,
+        "1804.07931v2.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "How is the categorical distribution utilized in segmentation models, and what role does the categorical distribution play in determining attention probabilities?",
+    "source": "1811.07073v3.txt",
+    "source2": "1805.00912v4.txt",
+    "base": [
+      "1804.05936v2.txt",
+      "1811.07073v3.txt"
+    ],
+    "bridged": [
+      [
+        0.464,
+        "1705.09296v2.txt"
+      ],
+      [
+        0.4508,
+        "1705.02798v6.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How does a mixture density network utilize LSTM layers for error signaling, and what role does the Cholesky Block play in estimating target distributions in relation to a mixture density network?",
+    "source": "1603.03833v4.txt",
+    "source2": "1805.06431v4.txt",
+    "base": [
+      "1603.03833v4.txt",
+      "1805.06431v4.txt"
+    ],
+    "bridged": [
+      [
+        0.436,
+        "1705.08016v3.txt"
+      ],
+      [
+        0.4323,
+        "1701.03077v10.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does the VAGER model utilize a linear mapping function to relate embedding similarity to classification parameters, and what role does the linear mapping function $f_{fr}$ play in transforming input orthonormal matrices in the FRMap layers?",
+    "source": "1710.06177v2.txt",
+    "source2": "1611.05742v3.txt",
+    "base": [
+      "1611.05742v3.txt",
+      "1710.06177v2.txt"
+    ],
+    "bridged": [
+      [
+        0.5083,
+        "1709.02755v5.txt"
+      ],
+      [
+        0.4927,
+        "1705.10667v4.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What tasks are included in the unsupervised evaluation for Semantic Textual Similarity, and how is the correlation of cosine similarity utilized in the unsupervised evaluation for sentence similarity?",
+    "source": "1809.02731v3.txt",
+    "source2": "1703.02507v3.txt",
+    "base": [
+      "1703.02507v3.txt",
+      "1809.02731v3.txt"
+    ],
+    "bridged": [
+      [
+        0.505,
+        "1811.09393v4.txt"
+      ],
+      [
+        0.4923,
+        "1802.07459v2.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How have Recurrent Neural Networks (RNNs) been applied in time series forecasting, and what challenge does multivariate time series forecasting face regarding variable dependencies?",
+    "source": "1706.03847v3.txt",
+    "source2": "1703.07015v3.txt",
+    "base": [
+      "1703.07015v3.txt"
+    ],
+    "bridged": [
+      [
+        0.5389,
+        "1704.00774v3.txt"
+      ],
+      [
+        0.5257,
+        "1709.02755v5.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What challenges do ARIMA models face in high dimensional multivariate time series forecasting due to high computational cost, and how does the generative adversarial network (GAN) also relate to high computational cost in its performance of untargeted attacks?",
+    "source": "1703.07015v3.txt",
+    "source2": "1803.01128v3.txt",
+    "base": [
+      "1703.07015v3.txt",
+      "1705.10667v4.txt",
+      "1811.09393v4.txt"
+    ],
+    "bridged": [
+      [
+        0.5373,
+        "1803.01128v3.txt"
+      ],
+      [
+        0.529,
+        "1703.04887v4.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "How does the performance on the unseen imagenet validation set relate to the construction of Imagenet-Random, and what role does the imagenet validation set play in the k-shot learning scenario?",
+    "source": "1705.08016v3.txt",
+    "source2": "1710.06177v2.txt",
+    "base": [
+      "1705.08016v3.txt",
+      "1710.06177v2.txt"
+    ],
+    "bridged": [
+      [
+        0.4723,
+        "1805.06447v3.txt"
+      ],
+      [
+        0.4595,
+        "1803.06506v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does the attention-based listwise loss improve model efficiency compared to traditional listwise loss functions, and what issue do the new family of listwise loss functions aim to address regarding the gradients of negative samples?",
+    "source": "1804.05936v2.txt",
+    "source2": "1706.03847v3.txt",
+    "base": [
+      "1706.03847v3.txt",
+      "1804.05936v2.txt"
+    ],
+    "bridged": [
+      [
+        0.4798,
+        "1805.07567v2.txt"
+      ],
+      [
+        0.4719,
+        "1803.01128v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How is one convolutional layer utilized in feature encoding with residual blocks, and what role does one convolutional layer play in generating a fixed-length vector in a basic CNN model?",
+    "source": "1706.04284v3.txt",
+    "source2": "1709.08294v3.txt",
+    "base": [
+      "1706.04284v3.txt",
+      "1804.07931v2.txt",
+      "1809.00263v5.txt"
+    ],
+    "bridged": [
+      [
+        0.5222,
+        "1709.08294v3.txt"
+      ],
+      [
+        0.5038,
+        "1611.04684v1.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "How is reconstruction accuracy measured in shape-from-silhouette, and what does Factorize-Recover achieve in terms of reconstruction accuracy when applied to compressed data?",
+    "source": "1812.00281v3.txt",
+    "source2": "1706.08146v3.txt",
+    "base": [
+      "1706.08146v3.txt"
+    ],
+    "bridged": [
+      [
+        0.5601,
+        "1812.00281v3.txt"
+      ],
+      [
+        0.5461,
+        "1803.04572v2.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "What benefits do element-wise operations provide in handling large data, and how do they contribute to better GPU utilization in the SRU model?",
+    "source": "1803.04572v2.txt",
+    "source2": "1709.02755v5.txt",
+    "base": [
+      "1709.02755v5.txt"
+    ],
+    "bridged": [
+      [
+        0.4679,
+        "1706.03847v3.txt"
+      ],
+      [
+        0.4456,
+        "1706.08146v3.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What efficient protocols does SecureML propose for training machine learning models, and how are graphs utilized in regularizing machine learning models?",
+    "source": "1811.08257v1.txt",
+    "source2": "1710.05654v2.txt",
+    "base": [
+      "1811.08257v1.txt",
+      "1906.06589v3.txt"
+    ],
+    "bridged": [
+      [
+        0.5239,
+        "1710.05654v2.txt"
+      ],
+      [
+        0.509,
+        "1811.08481v2.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "How does the curse of dimensionality affect the feasibility of word embeddings in optimization problems, and what challenges does it pose when taking photos of geometric objects under varying conditions?",
+    "source": "1803.01128v3.txt",
+    "source2": "1804.00863v3.txt",
+    "base": [
+      "1707.06320v2.txt",
+      "1803.01128v3.txt",
+      "1809.02731v3.txt"
+    ],
+    "bridged": [
+      [
+        0.4956,
+        "1704.05958v2.txt"
+      ],
+      [
+        0.4832,
+        "1710.01507v4.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How does the concatenation of ID embedding and averaged word embedding provide more useful information for recommendation, and what is the relationship between higher entropy predictions and classification performance in θp?",
+    "source": "1803.03467v4.txt",
+    "source2": "1906.06589v3.txt",
+    "base": [
+      "1803.03467v4.txt",
+      "1906.06589v3.txt"
+    ],
+    "bridged": [
+      [
+        0.5018,
+        "1704.05958v2.txt"
+      ],
+      [
+        0.4985,
+        "1706.03847v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does the accuracy of positional information from a Kinect sensor affect object manipulation, and what role does positional information play in extracting inter-word semantic connections in a MRC model?",
+    "source": "1603.03833v4.txt",
+    "source2": "1809.03449v3.txt",
+    "base": [
+      "1603.03833v4.txt",
+      "1809.03449v3.txt"
+    ],
+    "bridged": [
+      [
+        0.4797,
+        "1805.04687v2.txt"
+      ],
+      [
+        0.4724,
+        "1705.02798v6.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does the availability of training data affect the prediction performance of Gaussian processes, and what role do correlations play in improving the prediction performance of WeakFG?",
+    "source": "1803.05776v2.txt",
+    "source2": "1611.04363v2.txt",
+    "base": [
+      "1611.04363v2.txt",
+      "1803.05776v2.txt"
+    ],
+    "bridged": [
+      [
+        0.5565,
+        "1805.06431v4.txt"
+      ],
+      [
+        0.5178,
+        "1702.08694v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does training deep networks with structured layers improve performance, and what challenges arise in generalization when training deep networks on limited data?",
+    "source": "1805.06447v3.txt",
+    "source2": "1611.05742v3.txt",
+    "base": [
+      "1611.07718v2.txt",
+      "1705.10667v4.txt",
+      "1805.06447v3.txt"
+    ],
+    "bridged": [
+      [
+        0.5245,
+        "1804.01429v3.txt"
+      ],
+      [
+        0.5158,
+        "1708.06832v3.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How is the discrimination of the classifier h measured when using support vector machine, and what role does support vector data description play in fault diagnosis?",
+    "source": "1703.00060v2.txt",
+    "source2": "1709.00139v4.txt",
+    "base": [
+      "1703.00060v2.txt",
+      "1709.00139v4.txt"
+    ],
+    "bridged": [
+      [
+        0.4263,
+        "1811.09393v4.txt"
+      ],
+      [
+        0.4226,
+        "1805.06431v4.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How are accuracy and f1 scores evaluated in binary classification results, and what method is used to compute accuracy and f1 scores on the test set?",
+    "source": "1802.07459v2.txt",
+    "source2": "1703.02507v3.txt",
+    "base": [
+      "1805.08751v2.txt",
+      "1809.03550v3.txt",
+      "1812.00108v4.txt"
+    ],
+    "bridged": [
+      [
+        0.482,
+        "1802.07459v2.txt"
+      ],
+      [
+        0.4714,
+        "1710.06177v2.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How does a POS tagger improve concept identification in phrases, and what common mistakes are associated with concept identification in parsing?",
+    "source": "1803.06506v3.txt",
+    "source2": "1704.04539v2.txt",
+    "base": [
+      "1704.04539v2.txt",
+      "1803.06506v3.txt"
+    ],
+    "bridged": [
+      [
+        0.4821,
+        "1707.08608v3.txt"
+      ],
+      [
+        0.4601,
+        "1802.07459v2.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How does the use of gaussian distributions in the Cholesky transform affect the correlation of output mean vectors, and how are embeddings for out of vocabulary words set from gaussian distributions during training?",
+    "source": "1805.06431v4.txt",
+    "source2": "1705.02798v6.txt",
+    "base": [
+      "1705.02798v6.txt",
+      "1805.06431v4.txt"
+    ],
+    "bridged": [
+      [
+        0.4949,
+        "1809.02731v3.txt"
+      ],
+      [
+        0.4935,
+        "1803.05776v2.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What is the significance of the performance difference in task-oriented dialogs as shown by the Mem2Seq model, and how does Action Search improve performance difference compared to the Direction Baseline and Random Baseline?",
+    "source": "1805.01216v3.txt",
+    "source2": "1706.04269v2.txt",
+    "base": [
+      "1706.04269v2.txt",
+      "1805.01216v3.txt"
+    ],
+    "bridged": [
+      [
+        0.4955,
+        "1611.02654v2.txt"
+      ],
+      [
+        0.4899,
+        "1709.08294v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "How is the deep autoencoder model utilized in deep learning applications, and what unique aspect does it contribute to the hashing mechanism in state space exploration?",
+    "source": "1805.08751v2.txt",
+    "source2": "1707.00524v2.txt",
+    "base": [
+      "1707.00524v2.txt"
+    ],
+    "bridged": [
+      [
+        0.56,
+        "1708.03797v1.txt"
+      ],
+      [
+        0.5045,
+        "1804.05936v2.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "What challenges in robust principal component analysis relate to theoretical guarantees, and what theoretical guarantees does LIME provide when using cosine similarity?",
+    "source": "1809.03550v3.txt",
+    "source2": "1708.02153v2.txt",
+    "base": [
+      "1708.02153v2.txt",
+      "1809.03550v3.txt"
+    ],
+    "bridged": [
+      [
+        0.4062,
+        "1805.08465v3.txt"
+      ],
+      [
+        0.4028,
+        "1804.05936v2.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  },
+  {
+    "q": "What is the function of fully-connected layers in a CNN model, and how are fully-connected layers utilized in generating an RGB output value?",
+    "source": "1811.08257v1.txt",
+    "source2": "1804.00863v3.txt",
+    "base": [
+      "1811.08257v1.txt"
+    ],
+    "bridged": [
+      [
+        0.5418,
+        "1804.00863v3.txt"
+      ],
+      [
+        0.5376,
+        "1710.01507v4.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "How do node degrees in real-world graphs relate to the power law distribution, and what does the creator-article publishing record reveal about the power law distribution?",
+    "source": "1809.01246v1.txt",
+    "source2": "1805.08751v2.txt",
+    "base": [
+      "1805.02349v2.txt",
+      "1805.08751v2.txt"
+    ],
+    "bridged": [
+      [
+        0.4509,
+        "1710.05654v2.txt"
+      ],
+      [
+        0.4475,
+        "1809.01246v1.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": true,
+    "rescued": true
+  },
+  {
+    "q": "How does relying on human-annotated labels enhance the learning of behavioral patterns, and what metric is used to report performance in relation to human-annotated labels in supervised evaluation?",
+    "source": "1812.00108v4.txt",
+    "source2": "1809.02731v3.txt",
+    "base": [
+      "1804.05938v2.txt",
+      "1805.01216v3.txt",
+      "1812.00108v4.txt"
+    ],
+    "bridged": [
+      [
+        0.519,
+        "1804.05936v2.txt"
+      ],
+      [
+        0.5113,
+        "1707.00189v3.txt"
+      ]
+    ],
+    "complete_before": false,
+    "complete_after": false,
+    "rescued": false
+  },
+  {
+    "q": "How are geometric constraints utilized in unsupervised monocular depth estimation, and what is the impact of lacking geometric constraints on the price of fairness in welfare allocation?",
+    "source": "1701.03077v10.txt",
+    "source2": "1603.00286v5.txt",
+    "base": [
+      "1603.00286v5.txt",
+      "1701.03077v10.txt"
+    ],
+    "bridged": [
+      [
+        0.4633,
+        "1705.02946v3.txt"
+      ],
+      [
+        0.4568,
+        "1707.08608v3.txt"
+      ]
+    ],
+    "complete_before": true,
+    "complete_after": true,
+    "rescued": false
+  }
+]

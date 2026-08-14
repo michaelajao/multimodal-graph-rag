@@ -125,6 +125,32 @@ ANCHOR_PATTERN = re.compile(
     r"(?:%|mg|ml|kg|mm|cm|µg|nm|mmol|units?|years?|months?|weeks?|days?)\b"
 )
 
+# ── Container references and source-id leaks ─────────────────────────────────
+# A container reference talks ABOUT the source document ("this work", "the
+# passage", "the proposed loss") instead of naming the science. Unlike the
+# generic nouns above, these are NEVER rescued by an anchor: however many
+# proper nouns surround them, the answering system cannot resolve which
+# work/passage/proposal is meant. Hard reject, no exception.
+CONTAINER_PATTERN = re.compile(
+    r"\b(?:this|the|that)\s+(?:present\s+|current\s+)?"
+    r"(?:passage|work|paper|text|manuscript|article|excerpt)\b"
+    r"|\baccording to the (?:passage|text|authors?)\b"
+    r"|\b(?:the|this)\s+proposed\s+(?:loss|method|model|approach|framework|"
+    r"algorithm|system|technique|mechanism|architecture|network)\b",
+    re.I,
+)
+# A page key or arXiv id inside the question leaks the retrieval ground truth.
+SOURCE_ID_PATTERN = re.compile(r"\b\d{4}\.\d{4,5}(?:v\d+)?\b|\bPMC\d+\b", re.I)
+# Two-part multi-hop questions read fine up to ~220 chars; beyond that they are
+# two welded questions and judges start scoring the halves inconsistently.
+MAX_Q_CHARS = 220
+
+
+def bad_reference(question: str) -> bool:
+    """Container reference or source-id leak — rejected without anchor rescue."""
+    return bool(CONTAINER_PATTERN.search(question)
+                or SOURCE_ID_PATTERN.search(question))
+
 # Pages shorter than this rarely contain a well-formed answerable fact.
 MIN_PAGE_CHARS = 400
 # Multi-hop needs enough material for two distinct facts.
@@ -266,6 +292,10 @@ involved, so that exactly ONE page can answer it.
   workshop".
 - Do NOT copy a whole sentence from the passage. Rephrase in your own words
   while keeping the specific entity names.
+- NEVER write "this work", "the passage", "the present paper", or "the
+  proposed loss/method/model" — name the actual method, model, or subject.
+- NEVER include a page identifier or arXiv id in the question.
+- Keep the question under 30 words. Two short facts, not two welded questions.
 
 RULE 2 — DO NOT REVEAL WHERE THE ANSWER LIVES:
 The question must NOT contain: figure, table, chart, image, graph, diagram,
@@ -302,6 +332,10 @@ Respond with ONLY a JSON array containing exactly one object, no markdown fences
             return []                      # rejected; caller retries another page
         if has_orphan_reference(item["q"]):
             return []                      # "the study" etc — unretrievable
+        if bad_reference(item["q"]):
+            return []                      # "this work"/"the passage"/source id
+        if len(item["q"]) > MAX_Q_CHARS:
+            return []                      # two welded questions, not one
         return [{
             "q":      item["q"].strip(),
             "source": f"{page_id}.txt",    # .txt → scored on the text ranking

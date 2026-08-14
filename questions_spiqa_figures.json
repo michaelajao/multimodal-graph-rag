@@ -1,0 +1,212 @@
+[
+  {
+    "q": "In the Multi-DPP architecture, what are the three specific components or outputs labeled in the central processing unit?",
+    "source": "1812.00108v4-Figure2-1.png",
+    "answer": "Q_t, φ_t, and Max Pool MLP",
+    "type": "figure"
+  },
+  {
+    "q": "In the improved alignment section with parameters β₁ = 0.5, β₂ = 1, what geometric shape does the solution V display on the right side of the grid?",
+    "source": "1704.07854v4-Figure10-1.png",
+    "answer": "A circle (or circular disk)",
+    "type": "figure"
+  },
+  {
+    "q": "In the missing sequence frames 9-15 of the human motion sequence, which method produces red error markers at frames 9, 10, 11, 12, 13, 14, and 15?",
+    "source": "1809.00263v5-Figure12-1.png",
+    "answer": "SDVI random sample",
+    "type": "figure"
+  },
+  {
+    "q": "Which ATE estimation method produces the narrowest confidence interval around its point estimate?",
+    "source": "1906.10843v1-Figure5-1.png",
+    "answer": "Adversarial balancing (AB)",
+    "type": "figure"
+  },
+  {
+    "q": "What is the output channel dimension of the transformation layer in the autoencoder architecture?",
+    "source": "1707.00524v2-Figure2-1.png",
+    "answer": "2048",
+    "type": "figure"
+  },
+  {
+    "q": "What are the three main components that process the input frame $f_t$ in the Talking Face Generator architecture?",
+    "source": "1812.06589v2-Figure2-1.png",
+    "answer": "Audio Encoder, Identity Encoder, and Image Encoder",
+    "type": "figure"
+  },
+  {
+    "q": "What is the Extended training B metric value when tested on the Extended B condition?",
+    "source": "1811.08481v2-Table3-1.png",
+    "answer": "96.2",
+    "type": "figure"
+  },
+  {
+    "q": "What is the geographic distribution pattern of cities across the continental United States, and which regions show the highest concentration of urban centers?",
+    "source": "1611.03780v2-Figure3-1.png",
+    "answer": "The eastern United States and scattered areas throughout the midwest and west show the highest concentration of cities (indicated by white dots), with particularly dense clustering in the Northeast, Great Lakes region, and along the Mississippi River valley, while the Mountain West and Great Plains show significantly sparser distribution.",
+    "type": "figure"
+  },
+  {
+    "q": "What is the d60-140 performance value for the Devon model in the Clean category?",
+    "source": "1802.07351v2-Table3-1.png",
+    "answer": "0.82",
+    "type": "figure"
+  },
+  {
+    "q": "In the DCT + YUV method for face generation, how many distinct facial images are displayed in the rightmost column of the comparison?",
+    "source": "1701.03077v10-Figure3-1.png",
+    "answer": "8",
+    "type": "figure"
+  },
+  {
+    "q": "What is the F1 score for Net2 using the BS-9 backbone?",
+    "source": "1707.08608v3-Table2-1.png",
+    "answer": "86.63",
+    "type": "figure"
+  },
+  {
+    "q": "What is the Mean RMSE × 100 value at σ = 0.0025 for shape-annealed gFGR?",
+    "source": "1701.03077v10-Table3-1.png",
+    "answer": "0.510",
+    "type": "figure"
+  },
+  {
+    "q": "What is the classification accuracy percentage for ZDDA₃ at a training sample size of 20 with a testing sample size of 80?",
+    "source": "1707.01922v5-Figure4-1.png",
+    "answer": "52.63%",
+    "type": "figure"
+  },
+  {
+    "q": "What is the value in the [m, n] column for variable V₂?",
+    "source": "1705.02946v3-Figure6-1.png",
+    "answer": "0.01k",
+    "type": "figure"
+  },
+  {
+    "q": "At a budget of 1×10^9 FLOPS on CIFAR100, what is the approximate test error rate for the EANN+CONST method?",
+    "source": "1708.06832v3-Figure5-1.png",
+    "answer": "approximately 23-24%",
+    "type": "figure"
+  },
+  {
+    "q": "What is the average input length in words for the Multi30K dataset?",
+    "source": "1803.01128v3-Table2-1.png",
+    "answer": "11.5 words",
+    "type": "figure"
+  },
+  {
+    "q": "What is the accuracy of the Semantic self-supervision method on the Flickr30k dataset?",
+    "source": "1803.06506v3-Table2-1.png",
+    "answer": "49.10",
+    "type": "figure"
+  },
+  {
+    "q": "In the 80% Random Shuffle condition, what is the approximate final accuracy achieved by the CNN+Mixup (train) method after 300 epochs?",
+    "source": "1805.06431v4-Figure14-1.png",
+    "answer": "approximately 70-75%",
+    "type": "figure"
+  },
+  {
+    "q": "What is the performance of SPDNet on the PaSC1 dataset?",
+    "source": "1611.05742v3-Table1-1.png",
+    "answer": "80.12%",
+    "type": "figure"
+  },
+  {
+    "q": "What notation is used to denote the extraction of the diagonal elements from a matrix Y?",
+    "source": "1803.04572v2-Table2-1.png",
+    "answer": "diag(Y)",
+    "type": "figure"
+  },
+  {
+    "q": "What is the radio duty cycle percentage for CoAP with batching enabled?",
+    "source": "1811.02721v3-Figure9-1.png",
+    "answer": "approximately 1%",
+    "type": "figure"
+  },
+  {
+    "q": "At β² = 1.0, what is the approximate difference in performance between Precision and Recall?",
+    "source": "1805.07567v2-Figure6-1.png",
+    "answer": "approximately 0.02 to 0.03 (Precision is higher than Recall)",
+    "type": "figure"
+  },
+  {
+    "q": "How many basis functions are required for the CHOA algorithm at R=40?",
+    "source": "1803.04572v2-Table4-1.png",
+    "answer": "81",
+    "type": "figure"
+  },
+  {
+    "q": "In the optical flow visualization for the highway scene, which method produces output with the most prominent cyan-colored flow vectors in the lower left region?",
+    "source": "1802.07351v2-Figure10-1.png",
+    "answer": "LiteFlowNet",
+    "type": "figure"
+  },
+  {
+    "q": "What is the Overall performance score for the UnCoRD-VG-E method?",
+    "source": "1811.08481v2-Table7-1.png",
+    "answer": "76.0",
+    "type": "figure"
+  },
+  {
+    "q": "What two cities are listed as census-designated places in Santa Clara County, California?",
+    "source": "1804.05995v2-Figure3-1.png",
+    "answer": "Loyola, CA and Fruitvale, CA",
+    "type": "figure"
+  },
+  {
+    "q": "At epoch 60, what is the approximate value of Rs Loss (dashed red line)?",
+    "source": "1812.10735v2-Figure5-1.png",
+    "answer": "approximately 0.881",
+    "type": "figure"
+  },
+  {
+    "q": "What is the accuracy percentage of the MiniONN model on the CIFAR-10 dataset?",
+    "source": "1811.08257v1-Table6-1.png",
+    "answer": "81.61%",
+    "type": "figure"
+  },
+  {
+    "q": "What is the F1 score achieved by CIG-Sim&Siam-GCN-BERT^η on the CNSS dataset?",
+    "source": "1802.07459v2-Table2-1.png",
+    "answer": "89.71",
+    "type": "figure"
+  },
+  {
+    "q": "What is the transmission ratio with BP+RR for the GCounter-Tree benchmark using the Delta-based approach?",
+    "source": "1803.02750v3-Figure7-1.png",
+    "answer": "1",
+    "type": "figure"
+  },
+  {
+    "q": "What is the F1 score for ATAE-CAN-R_o on the Rest15 binary classification task?",
+    "source": "1812.10735v2-Table2-1.png",
+    "answer": "80.91",
+    "type": "figure"
+  },
+  {
+    "q": "In the heat maps comparing original and reconstructed facial images, which reconstruction method produces the darkest (most black) heat map in the bottom right position?",
+    "source": "1804.04786v3-Figure5-1.png",
+    "answer": "Baseline",
+    "type": "figure"
+  },
+  {
+    "q": "What is the AP₅₀ value when training on City data and testing on Non-City data?",
+    "source": "1805.04687v2-Table13-1.png",
+    "answer": "48.6",
+    "type": "figure"
+  },
+  {
+    "q": "In the Collision Avoidance experiment, at 150 simulator calls, what is the approximate runtime in seconds for the Naive algorithm compared to ALOQ?",
+    "source": "1605.07496v3-Figure6-1.png",
+    "answer": "Naive is approximately 1000 seconds while ALOQ is approximately 50 seconds",
+    "type": "figure"
+  },
+  {
+    "q": "How many subjects were used in the CMU pose (VGA) dataset?",
+    "source": "1812.00281v3-Figure2-1.png",
+    "answer": "500",
+    "type": "figure"
+  }
+]

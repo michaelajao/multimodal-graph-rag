@@ -35,7 +35,8 @@ from rag_basics import build_index, retrieve, CHAT_MODEL
 
 load_dotenv()
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-IMAGE_DIR = "publaynet_images"
+CORPUS_NAME = os.environ.get("RAG_CORPUS", "publaynet")
+IMAGE_DIR = f"{CORPUS_NAME}_images"
 
 # ---------- load CLIP once ----------
 print("Loading CLIP...")

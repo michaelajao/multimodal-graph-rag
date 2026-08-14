@@ -1,9 +1,12 @@
-.env
-__pycache__/
+spiqa_corpus/
+hotpotqa_corpus/
 publaynet_corpus/
 publaynet_images/
-results/
-triples_cache.json
-full_freeze.txt
-# Generated experiment results
-results_prefix_bugs/
+spiqa_download/
+spiqa_images/*.png
+.clip_cache*
+.index_cache*
+index_cache*
+__pycache__/
+*.pyc
+.env

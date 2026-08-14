@@ -1,0 +1,4 @@
+run_id,question_set,question_type,model,vendor,access,n_questions,system,recall,complete,mrr,acc,faith,rel,mean_in_tok,mean_out_tok,mean_latency_ms,total_cost_usd,cost_per_100q_usd,n_errors,error_rate
+2026-08-12_19:35:53,questions_hotpotqa_comparison,hotpot_comparison,gemini-flash-lite,Google,closed,50,baseline,0.93,0.86,0.98,0.92,0.84,1.0,313.1,26.4,575.5,0.002093,0.0042,0,0.0
+2026-08-12_19:35:53,questions_hotpotqa_comparison,hotpot_comparison,gemini-flash-lite,Google,closed,50,+KG,0.93,0.86,0.98,0.9,0.76,1.0,403.1,31.9,617.7,0.002652,0.0053,0,0.0
+2026-08-12_19:35:53,questions_hotpotqa_comparison,hotpot_comparison,gemini-flash-lite,Google,closed,50,+KGret,0.99,0.98,0.98,0.94,0.82,1.0,489.2,29.4,587.2,0.003033,0.0061,0,0.0

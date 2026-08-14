@@ -1,0 +1,182 @@
+[
+  {
+    "q": "Which coreference resolver ranks best on the CoNLL development and test sets, and what is the performance ranking of the same systems when evaluated on the WikiCoref dataset?",
+    "source": "1708.00160v2.txt",
+    "answer": "Lee et al. (2017) performs best on CoNLL, but on WikiCoref the ranking is reversed, so Clark and Manning (2016b) performs best and Lee et al. (2017) performs worst among the three.",
+    "type": "multihop"
+  },
+  {
+    "q": "In the MTSA mechanism, which type of self-attention captures pairwise dependency, and which type captures global dependency?",
+    "source": "1805.00912v4.txt",
+    "answer": "Pairwise dependency is captured by dot-product based token2token self-attention, and global dependency is modeled by feature-wise multi-dim source2token self-attention.",
+    "type": "multihop"
+  },
+  {
+    "q": "What percentage of fake news data traffic during the 2016 US president election came from online social networks, and what type of traditional medium had a smaller share than that?",
+    "source": "1805.08751v2.txt",
+    "answer": "Online social networks accounted for more than 41.8% of the fake news data traffic, which was greater than the shares of traditional TV/radio/print medium and online search engines.",
+    "type": "multihop"
+  },
+  {
+    "q": "In the Seq2Sick framework, which two techniques are combined to address the challenge posed by the discrete input space of sequence-to-sequence models?",
+    "source": "1803.01128v3.txt",
+    "answer": "projected gradient descent method combined with group lasso and gradient regularization",
+    "type": "multihop"
+  },
+  {
+    "q": "What speed-up does the Simple Recurrent Unit achieve compared to cuDNN LSTM, and on which two task types does it outperform common recurrent and non-recurrent architectures?",
+    "source": "1709.02755v5.txt",
+    "answer": "5–9x speed-up; classification and question answering datasets",
+    "type": "multihop"
+  },
+  {
+    "q": "What speed-up factor does the mobile device implementation achieve, and what type of function is used to represent a single 3D input surface over time?",
+    "source": "1704.07854v4.txt",
+    "answer": "More than 2000; a four-dimensional signed-distance function (SDF).",
+    "type": "multihop"
+  },
+  {
+    "q": "In the network traffic use case, what type of query is used to find malicious attackers, and in the social networks use case, what type of query is used to track the spreading path of news?",
+    "source": "1809.01246v1.txt",
+    "answer": "Node queries for malicious attackers; queries for tracking the spreading path of news (finding potential friends and tracking spreading path).",
+    "type": "multihop"
+  },
+  {
+    "q": "In the Taobao adaptive exposure framework, what two levels of constraints are considered when determining the maximum and average number of ads per user visit?",
+    "source": "1809.03149v2.txt",
+    "answer": "request-level (maximum ads per request) and platform-level (average ads over all requests within a time window)",
+    "type": "multihop"
+  },
+  {
+    "q": "What is the average path length of a merge-and-run block with two residual branches, and what testing error does the network built from these blocks achieve on CIFAR-100?",
+    "source": "1611.07718v2.txt",
+    "answer": "The average length is 2/3, and the testing error on CIFAR-100 is 19.00%.",
+    "type": "multihop"
+  },
+  {
+    "q": "In the 2017 Intel & MobileODT Cervical Cancer Screening competition hosted by Kaggle, how many times per day could a contestant submit guesses, and what accuracy metric did the oracle return for each submission?",
+    "source": "1709.02418v2.txt",
+    "answer": "Up to 5 times per day, and the oracle returned the log-loss of the guesses.",
+    "type": "multihop"
+  },
+  {
+    "q": "In the ChoiceNet framework, what transform is used for sampling the weights of a neural network to model correlated outputs, and what type of distributions are leveraged to handle inconsistencies in a dataset?",
+    "source": "1805.06431v4.txt",
+    "answer": "Cholesky transform; mixture distributions",
+    "type": "multihop"
+  },
+  {
+    "q": "In the comparison of RPCA methods on the changedetection.net baseline category, which method achieved the highest F1 score, and what was its run time per frame?",
+    "source": "1809.03550v3.txt",
+    "answer": "Our approach, with an F1 score of 0.80254 and a run time of 0.103 seconds per frame.",
+    "type": "multihop"
+  },
+  {
+    "q": "What is the computational complexity per word for the Sent2Vec model, and which training objective does it extend?",
+    "source": "1703.02507v3.txt",
+    "answer": "O(1) vector operations per word; it extends the C-BOW training objective.",
+    "type": "multihop"
+  },
+  {
+    "q": "In the Robertson-Webb query model, what is the lower bound for envy-free cake cutting, and what is the upper bound for the same problem?",
+    "source": "1705.02946v3.txt",
+    "answer": "Lower bound is Ω(n²), upper bound is O(n^(n^(n^(n^(n^n))))).",
+    "type": "multihop"
+  },
+  {
+    "q": "What limitation of the Stanford NLI Corpus does the Multi-Genre NLI Corpus address, and how many sentence pairs does the new corpus contain?",
+    "source": "1704.05426v4.txt",
+    "answer": "The limitation is that SNLI sentences are derived from only a single text genre (image captions); MultiNLI contains 433k pairs.",
+    "type": "multihop"
+  },
+  {
+    "q": "What limitation do the methods in references [25] and [36] share, and how does the proposed concept-learning proxy task differ from the reconstruction-based proxy task in reference [28]?",
+    "source": "1803.06506v3.txt",
+    "answer": "The methods in [25] and [36] only allow word-level grounding, averaging heatmaps for phrase-level output, whereas the proposed task deals with the full phrase and forces attention to concept-relevant regions, unlike [28]'s whole-phrase reconstruction which can be optimized via word co-occurrence statistics.",
+    "type": "multihop"
+  },
+  {
+    "q": "What is the dimensionality of the Grassmann manifold Gr(q,D), and what is the scale factor by which the projection metric approximates the true geodesic distance?",
+    "source": "1611.05742v3.txt",
+    "answer": "q(D-q) dimensional; up to a scale of sqrt(2)",
+    "type": "multihop"
+  },
+  {
+    "q": "In the compressed-domain matrix factorization approach described for recovering sparse factors, what is the role of the matrix P, and what assumption is made about the underlying factors to enable recovery?",
+    "source": "1706.08146v3.txt",
+    "answer": "P is the known measurement matrix used to compress the data (M̃ = PM), and the underlying factors are assumed to be sparse.",
+    "type": "multihop"
+  },
+  {
+    "q": "In the zero-shot deep domain adaptation (ZDDA) approach, which two datasets provide the task-irrelevant gray-RGB training pairs used to train digit classifiers for MNIST and MNIST-M?",
+    "source": "1707.01922v5.txt",
+    "answer": "Fashion-MNIST and Fashion-MNIST-M",
+    "type": "multihop"
+  },
+  {
+    "q": "In the RippleNet paper, which two commercial knowledge graphs are mentioned alongside the academic ones NELL and DBpedia?",
+    "source": "1803.03467v4.txt",
+    "answer": "Google Knowledge Graph and Microsoft Satori",
+    "type": "multihop"
+  },
+  {
+    "q": "In the Reinforced Mnemonic Reader, what two sampling strategies are used to dynamically decide the reward and baseline in the dynamic-critical reinforcement learning approach?",
+    "source": "1705.02798v6.txt",
+    "answer": "random inference and greedy inference",
+    "type": "multihop"
+  },
+  {
+    "q": "On Quora, what proportion of questions receive at most one answer, and what does setting the tunable parameter α to 1 reduce the expert-finding problem to?",
+    "source": "1611.04363v2.txt",
+    "answer": "More than half of Quora questions have only one or no answer; setting α=1 reduces the problem to the traditional expert finding problem without considering acceptance probability.",
+    "type": "multihop"
+  },
+  {
+    "q": "What term do Wilson and Sperber use for the reconstruction of warrants, and how many annotated arguments for stance are provided in the dataset?",
+    "source": "1708.01425v4.txt",
+    "answer": "The cognitive principle of relevance; 2,884 user-generated arguments.",
+    "type": "multihop"
+  },
+  {
+    "q": "What component did FALCON introduce the first privacy-preserving protocol for, and what transform does its approach rely on?",
+    "source": "1811.08257v1.txt",
+    "answer": "softmax function; Fourier Transform",
+    "type": "multihop"
+  },
+  {
+    "q": "For the query 'political news', which feature is prioritized over word matching, and what is the lower-priority feature for 'friends season 1 online watch'?",
+    "source": "1804.05936v2.txt",
+    "answer": "Freshness is prioritized for 'political news'; word matching is lower-priority for 'friends season 1 online watch'.",
+    "type": "multihop"
+  },
+  {
+    "q": "What is the primary challenge for collecting physical demonstrations from wheelchair-bound users, and what environment is proposed to overcome it?",
+    "source": "1603.03833v4.txt",
+    "answer": "Difficulty recovering from failed manipulations (e.g., dropped cup); virtual environment.",
+    "type": "multihop"
+  },
+  {
+    "q": "How many video clips does BDD100K contain, and what is the total number of tasks in its benchmarks?",
+    "source": "1805.04687v2.txt",
+    "answer": "Over 100K video clips; ten tasks.",
+    "type": "multihop"
+  },
+  {
+    "q": "What method is the first to find all higher-order interactions of continuous features while controlling the FWER, and what statistic does it use to estimate joint occurrence probabilities?",
+    "source": "1702.08694v3.txt",
+    "answer": "C-Tarone; rank order statistics (copula support)",
+    "type": "multihop"
+  },
+  {
+    "q": "What is the weight of a loss in the adaptive weighted sum, and what does this normalize?",
+    "source": "1708.06832v3.txt",
+    "answer": "The weight is inversely proportional to the empirical mean of the loss on the training set, normalizing losses to have the same scale.",
+    "type": "multihop"
+  },
+  {
+    "q": "What is the balance factor condition that biases the F-measure toward recall, and what loss do most CNN-based SOD solutions optimize?",
+    "source": "1805.07567v2.txt",
+    "answer": "β² > 1 biases toward recall; most optimize cross-entropy loss (CELoss).",
+    "type": "multihop"
+  }
+]

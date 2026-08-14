@@ -1,0 +1,5 @@
+run_id,question_set,question_type,model,vendor,access,n_questions,system,recall,complete,mrr,acc,faith,rel,mean_in_tok,mean_out_tok,mean_latency_ms,total_cost_usd,cost_per_100q_usd,n_errors,error_rate
+2026-08-11_13:45:48,questions_spiqa_multihop_cross,multihop_cross,llama4-maverick,Meta/DeepInfra,open,50,baseline,0.0,0.0,0.0,0.0,0.0,0.28,454.5,37.9,963.9,0.004545,0.0091,0,0.0
+2026-08-11_13:45:48,questions_spiqa_multihop_cross,multihop_cross,llama4-maverick,Meta/DeepInfra,open,50,+KG,0.0,0.0,0.0,0.0,0.0,0.22,475.5,64.0,1592.6,0.005485,0.011,0,0.0
+2026-08-11_13:45:48,questions_spiqa_multihop_cross,multihop_cross,llama4-maverick,Meta/DeepInfra,open,50,+multimodal,0.0,0.0,0.0,0.0,0.0,0.36,633.5,56.0,4309.0,0.00643,0.0129,0,0.0
+2026-08-11_13:45:48,questions_spiqa_multihop_cross,multihop_cross,llama4-maverick,Meta/DeepInfra,open,50,+both,0.0,0.0,0.0,0.02,0.0,0.44,658.5,67.0,1605.8,0.006949,0.0139,0,0.0
