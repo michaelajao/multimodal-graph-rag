@@ -3,8 +3,14 @@
 DeepSeek grades accuracy, relevancy, and faithfulness on text evidence; the
 vision judge grades faithfulness on figure questions with the crop attached,
 because a text-only model cannot check an answer against an image it cannot
-see. Every verdict is returned with the raw call so it can be audited against
-human labels.
+see. Every verdict is returned with the raw call so it can be audited later.
+
+These judges are NOT calibrated against human labels collected for this study.
+Where the reference answer is a short span, prefer the reference-based metrics
+in :mod:`..evaluation.answer_match`: exact match and token F1 are computed
+against answers the benchmark's own annotators wrote, so they carry human
+judgement without a judge model in the loop. Report a judge verdict as the
+primary outcome only where no reference-based metric applies, and say so.
 """
 
 from __future__ import annotations

@@ -157,17 +157,31 @@ the sets rather than something to normalise away.
 ### Audits and statistics
 
 ```powershell
-rag audit-graph data/graphs/triples_cache_spiqa_corpus.json --corpus spiqa --count 200
+# Check every extracted triple against its source chunk (whole graph, no sampling)
+rag graph-grounding data/graphs/triples_cache_spiqa_corpus.json --corpus-dir spiqa_corpus --corpus spiqa --collisions
+
 rag audit-figures data/questions/questions_spiqa_figures.json spiqa_images/captions.json spiqa_corpus
 rag paired-analysis artifacts/runs/detail_<run>.csv --treatment +KGret
 rag clean-questions data/questions/questions_spiqa_text.json
+
+# Draws a stratified sample for an optional human audit; nothing depends on it
+rag audit-graph data/graphs/triples_cache_spiqa_corpus.json --corpus spiqa --count 200
 ```
 
 The leakage screen labels a clean programmatic result `screened_unflagged`,
-never "verified"; semantic checks and human review follow the protocol in
-`protocols/ANNOTATION_GUIDE.md`. Paired contrasts report bootstrap confidence
+never "verified". `graph-grounding` reports **grounding, not precision**: it
+shows a triple's endpoints occur in the passage it claims to come from, which
+makes a low rate strong evidence of extraction error, but it cannot tell
+whether the relation is correct. Paired contrasts report bootstrap confidence
 intervals, exact McNemar tests, and continuity-corrected odds ratios;
 generator rows are not independent replications.
+
+Every run also scores answers against the reference with `em`, `f1`, and
+`contains` alongside the judge verdict. Where the reference is a short span —
+HotpotQA in particular — exact match and F1 are the benchmark's official
+metrics and should carry the headline claim, because they involve no judge
+model. `protocols/ANNOTATION_GUIDE.md` records what this does and does not
+license.
 
 ## Provenance rules
 
@@ -186,11 +200,18 @@ generator rows are not independent replications.
 
 The package implements the interfaces, controls, and safeguards for the major
 revision. The released runs under `artifacts/runs/legacy/` are historical
-evidence for the first submission; the 100-question sets, equal-budget
-retrieval comparators, established graph-retriever comparison, document
-visual retriever, oracle-image control, and 400-output human validation
-described in the revision plan have not been run yet and must not be reported
-as complete until their frozen manifests and adjudicated labels exist.
+evidence for the first submission; the equal-budget retrieval comparators, the
+established graph-retriever comparison, the document-image retriever, and the
+oracle-image control have not been run yet and must not be reported as
+complete until their frozen manifests exist.
+
+**No new human annotation is being collected.** The study rests on the human
+judgement already embedded in the benchmarks it uses — SPIQA's curated QA and
+HotpotQA's questions and supporting facts — plus reference-based scoring
+(`em`, `f1`, `contains`) computed against those human-written answers, the
+four control arms, and `rag graph-grounding`. The consequences, including what
+therefore cannot be claimed, are set out in `protocols/ANNOTATION_GUIDE.md`
+and must be carried into the limitations.
 
 ## Development
 

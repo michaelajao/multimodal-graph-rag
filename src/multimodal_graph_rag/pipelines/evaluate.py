@@ -27,6 +27,7 @@ from ..artifacts.manifest import file_sha256
 from ..clients import DIAGNOSTICS, GENERATORS, ModelClient
 from ..config import ExperimentConfig
 from ..errors import ConfigurationError, MultimodalGraphRagError
+from ..evaluation.answer_match import contains_reference, exact_match, token_f1
 from ..evaluation.judges import Judges
 from ..retrieval.graph import default_cache_path, load_graph
 from ..retrieval.metrics import retrieval_metrics
@@ -43,7 +44,17 @@ from .systems import (
     resolve_systems,
 )
 
-QUALITY_METRICS = ("recall", "complete", "mrr", "acc", "faith", "rel")
+QUALITY_METRICS = (
+    "recall",
+    "complete",
+    "mrr",
+    "acc",
+    "em",
+    "f1",
+    "contains",
+    "faith",
+    "rel",
+)
 EFFICIENCY_METRICS = ("in_tok", "out_tok", "latency_ms", "cost_usd")
 SUMMARY_FIELDS = (
     "run_id",
@@ -69,6 +80,9 @@ SUMMARY_FIELDS = (
     "complete",
     "mrr",
     "acc",
+    "em",
+    "f1",
+    "contains",
     "faith",
     "rel",
     "mean_in_tok",
@@ -339,6 +353,9 @@ def run_evaluation(settings: EvaluationSettings, client: ModelClient) -> RunOutp
                     "complete": complete,
                     "mrr": mrr,
                     "acc": answer.value,
+                    "em": exact_match(output.result.text, question.answer),
+                    "f1": token_f1(output.result.text, question.answer),
+                    "contains": contains_reference(output.result.text, question.answer),
                     "faith": faith.value,
                     "rel": relevancy.value,
                     "in_tok": output.result.input_tokens,
@@ -355,6 +372,9 @@ def run_evaluation(settings: EvaluationSettings, client: ModelClient) -> RunOutp
                 row.update(
                     {
                         f"{name}_acc": answer.value,
+                        f"{name}_em": values["em"],
+                        f"{name}_f1": round(values["f1"], 3),
+                        f"{name}_contains": values["contains"],
                         f"{name}_faith": faith.value,
                         f"{name}_rel": relevancy.value,
                         f"{name}_rec": round(recall, 3),
@@ -427,6 +447,9 @@ def run_evaluation(settings: EvaluationSettings, client: ModelClient) -> RunOutp
                 "complete": round(totals["complete"] / count, 3),
                 "mrr": round(totals["mrr"] / count, 3),
                 "acc": round(totals["acc"] / count, 3),
+                "em": round(totals["em"] / count, 3),
+                "f1": round(totals["f1"] / count, 3),
+                "contains": round(totals["contains"] / count, 3),
                 "faith": round(totals["faith"] / count, 3),
                 "rel": round(totals["rel"] / count, 3),
                 "mean_in_tok": round(totals["in_tok"] / count, 1),

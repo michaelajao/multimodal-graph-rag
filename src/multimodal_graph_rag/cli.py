@@ -37,6 +37,10 @@ from .evaluation.audits import (
     paired_accuracy,
     sample_triple_audit,
 )
+from .evaluation.graph_grounding import (
+    audit_triple_grounding,
+    canonicalisation_collisions,
+)
 from .evaluation.statistics import mcnemar_exact, paired_bootstrap_delta
 from .pipelines.evaluate import EvaluationSettings, run_evaluation
 from .questions import clean_question_file
@@ -44,7 +48,7 @@ from .questions.authoring import author_figure_questions, author_text_questions
 from .questions.caption_matched import author_caption_matched
 from .questions.cross_paper import author_cross_paper
 from .questions.spiqa_native import convert_spiqa_native
-from .retrieval.graph import default_cache_path, load_graph
+from .retrieval.graph import TripleStore, default_cache_path, load_graph
 from .retrieval.graph_expansion import bridge_report
 from .retrieval.text import TextIndex
 from .schemas import load_questions
@@ -363,6 +367,22 @@ def cmd_audit_graph(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_graph_grounding(args: argparse.Namespace) -> int:
+    report = audit_triple_grounding(args.corpus_dir, args.cache, corpus=args.corpus)
+    payload = report.to_dict()
+    if args.collisions:
+        store = TripleStore.load(args.cache)
+        collisions = canonicalisation_collisions(store.entries)
+        payload["surface_forms_merged_into_one_node"] = len(collisions)
+        payload["example_collisions"] = dict(list(collisions.items())[:10])
+    print(json.dumps(payload, indent=2))
+    print(
+        "\nGrounding is not precision: it shows the endpoints occur in the "
+        "source chunk, not that the relation is correct."
+    )
+    return 0
+
+
 def cmd_audit_figures(args: argparse.Namespace) -> int:
     rows = figure_integrity_rows(args.questions, args.captions, args.corpus)
     _write_csv(Path(args.output), FIGURE_AUDIT_FIELDS, rows)
@@ -526,7 +546,7 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.set_defaults(handler=cmd_freeze)
 
     audit_graph = commands.add_parser(
-        "audit-graph", help="sample triples for human audit"
+        "audit-graph", help="sample triples for an optional human audit"
     )
     audit_graph.add_argument("cache")
     audit_graph.add_argument("--corpus", required=True)
@@ -536,6 +556,20 @@ def build_parser() -> argparse.ArgumentParser:
         "--output", default="protocols/graph_triple_audit_sample.csv"
     )
     audit_graph.set_defaults(handler=cmd_audit_graph)
+
+    grounding = commands.add_parser(
+        "graph-grounding",
+        help="check every extracted triple against its source chunk",
+    )
+    grounding.add_argument("cache")
+    grounding.add_argument("--corpus-dir", required=True)
+    grounding.add_argument("--corpus", default=None)
+    grounding.add_argument(
+        "--collisions",
+        action="store_true",
+        help="also count surface forms that merge into one graph node",
+    )
+    grounding.set_defaults(handler=cmd_graph_grounding)
 
     audit_figures = commands.add_parser(
         "audit-figures", help="screen visual questions for text leakage"
