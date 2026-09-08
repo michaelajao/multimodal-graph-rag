@@ -52,6 +52,19 @@ Copy-Item .env.example .env      # add only the keys a run needs
 rag --help
 ```
 
+`environment.yml` is CPU-only and takes the whole numerical stack from
+conda-forge so that FAISS, NumPy, Matplotlib, and PyTorch share one OpenMP
+runtime. For a local judge, a local generator arm, or a document-image
+retriever, use `environment-gpu.yml` instead. It is also conda-forge only and
+pins `cuda-version=12.8`, which Blackwell cards (RTX 50-series, `sm_120`)
+require and which the CUDA 12.4 build behind PyTorch 2.6 does not provide.
+
+```powershell
+conda env create -f environment-gpu.yml
+conda activate rag-gpu
+python -c "import torch; print(torch.cuda.get_device_name(0), torch.version.cuda)"
+```
+
 Provider keys are read from the environment (and `.env`) when a command that
 needs them starts. `TESSERACT_CMD` points at the Tesseract binary if it is not
 on `PATH`. No key is required to run the tests or a dry run.
@@ -72,6 +85,10 @@ rag questions --protocol text  --config configs/publaynet_figures.json --corpus-
 rag questions --protocol figure --config configs/publaynet_figures.json --image-dir publaynet_images --out data/questions/questions_publaynet_figures.json --target 35
 rag questions --protocol caption-matched --config configs/spiqa_cross_paper.json --pixel-file data/questions/questions_spiqa_figures.json --image-dir spiqa_images --out data/questions/questions_spiqa_figures_caption.json
 rag questions --protocol cross-paper --config configs/spiqa_cross_paper.json --corpus-dir spiqa_corpus --out data/questions/questions_spiqa_multihop_cross.json --target 50
+
+# ...or convert SPIQA's own human-curated QA, which needs no model and no keys
+rag questions --protocol spiqa-native --gold-file data/questions/spiqa_gold_qa.json --image-dir spiqa_images --out data/questions/questions_spiqa_native.json --target 0
+rag questions --protocol spiqa-native --gold-file data/questions/spiqa_gold_qa.json --image-dir spiqa_images --out data/questions/questions_spiqa_native_primary.json --target 150 --exclude-flagged
 
 # 3. Inspect the plan without spending credit, then run
 rag evaluate --config configs/primary_revision.json --dry-run
@@ -112,6 +129,30 @@ after writing the completed rows as `detail_partial_*.csv`.
 | `control:partial-gold` | passages from the first gold document only                         |
 
 Controls are switched on per config through the `controls` list.
+
+### Question sets and who wrote them
+
+Authorship is recorded per question in `construction_method`, because it
+determines what a result can be claimed to show.
+
+| set                                           | n                   | authored by                                                                            |
+|-----------------------------------------------|---------------------|----------------------------------------------------------------------------------------|
+| `questions_spiqa_native`                      | 579 (447 unflagged) | **SPIQA test-A curators — human question, human answer, human crop-level provenance**  |
+| `questions_hotpotqa_bridge` / `_comparison`   | 50 + 50             | **HotpotQA annotators — human questions and human supporting facts**                   |
+| `questions_spiqa_multihop_cross`              | 50                  | DeepSeek, seeded from the triple store (`graph_seeded`)                                |
+| PubLayNet and SPIQA text/multihop/figure sets | 26–50 each          | DeepSeek (text) or Claude Haiku (figures)                                              |
+
+Two consequences worth keeping in view. The graph-seeded cross-document set
+is an **in-graph mechanism test**, not evidence that graph retrieval helps in
+general: its questions were built from entities the graph already contains.
+And the HotpotQA and SPIQA-native sets are independent of this project
+entirely, so they carry no such construction advantage.
+
+`spiqa-native` conversion runs the leakage screen against both the pipeline
+caption and the author caption and labels each item; it does not filter the
+benchmark. It also reports how many questions name their own modality (40 of
+579), which the model-authored protocols forbid — a real difference between
+the sets rather than something to normalise away.
 
 ### Audits and statistics
 
@@ -162,4 +203,3 @@ pytest
 The test suite runs offline against a deterministic fake client and a tiny
 corpus; it exercises the full evaluation loop, caches, graph expansion,
 manifests, tables, and figures without provider access.
-

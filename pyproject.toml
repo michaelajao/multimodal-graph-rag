@@ -23,8 +23,13 @@ dependencies = [
   "PyYAML>=6.0",
   "pytesseract==0.3.13",
   "requests>=2.32",
-  "torch==2.6.0",
-  "torchvision==0.21.0",
+  # Lower bounds, not pins: the accelerator build is chosen by the environment
+  # file. environment.yml pins the conda-forge CPU build (2.6.0) so FAISS,
+  # NumPy, Matplotlib, and PyTorch share one OpenMP runtime; environment-gpu.yml
+  # installs a CUDA 12.8 build, which Blackwell cards (RTX 50-series, sm_120)
+  # require and which 2.6 does not provide.
+  "torch>=2.6",
+  "torchvision>=0.21",
   "tqdm==4.68.3",
 ]
 
