@@ -226,8 +226,8 @@ license.
 The package implements the interfaces, controls, and safeguards for the major
 revision. The released runs under `artifacts/runs/legacy/` are historical
 evidence for the first submission; the equal-budget retrieval comparators, the
-established graph-retriever comparison, the document-image retriever, and the
-oracle-image control have not been run yet and must not be reported as
+established graph-retriever comparison, and the oracle-image control have not
+been run yet (the document-image retriever was dropped and is future work) and must not be reported as
 complete until their frozen manifests exist.
 
 **No new human annotation is being collected.** The study rests on the human

@@ -22,8 +22,9 @@ These are settled. Do not reopen them in the revision.
   rules in section 7, and is always labelled *model-reviewed* or
   *model-judged* in the paper, never *verified* or *human-annotated*.
 - **No local-GPU judge.** Judging and reviewing use large hosted models. The
-  local GPU (RTX 5060 Ti, `environment-gpu.yml`) is for the document-image
-  retriever and, optionally, a local generator arm.
+  document-image retriever that the local GPU (RTX 5060 Ti,
+  `environment-gpu.yml`) was reserved for was dropped on 2026-10-20 and is
+  future work, so the revision needs no GPU.
 - **Headline claims rest on human-authored benchmark questions.** SPIQA
   test-A curated QA (579 items, 447 clean of caption leakage, 150 sampled as
   the primary set) and HotpotQA bridge and comparison questions were written
@@ -396,8 +397,10 @@ Retire "verified pixel-only"; use "model-screened pixel-only".
 - Primary set: SPIQA-native primary (150, human). PubLayNet pixel-only grows
   to 100+ and is model-reviewed under 7.3.
 - Keep caption-authored and image-authored labels separate throughout.
-- Compare CLIP ViT-B/32 with one document-oriented visual retriever
-  (ColPali-class), run on the GPU env.
+- Dropped 2026-10-20: the comparison of CLIP ViT-B/32 with a
+  document-oriented visual retriever (ColPali-class). It needs a GPU, no
+  headline claim depends on it, and it is listed as future work. The paper
+  must say the visual results are for CLIP retrieval only.
 - Add an oracle-gold-image arm to separate image-retrieval failure from
   figure-reading failure.
 - Report Recall@1 as the production ceiling, since only the top-1 crop is
@@ -498,7 +501,7 @@ Apply them everywhere, not only where the result is favourable.
    and structural statistics.
 7. All five control arms complete for every primary condition.
 8. Visual leakage audit complete on the full pixel-only headline set;
-   document-image retriever and oracle-image arms run.
+   oracle-image arm run. (The document-image retriever is future work.)
 9. One frozen manifest produces every table and figure; the validator
    passes.
 10. PDF has correct metadata, authors, journal, denominators, and no clipped
@@ -590,7 +593,7 @@ current open-weight model (Qwen or DeepSeek family, via OpenRouter).
 | secondary retrieval arms | BM25, RRF, lexical entity expansion, random padding | 2 (one weak, one strong) | show whether a non-graph expansion matches +KGret |
 | controls, per-generator | closed-book, oracle | all 5 | the parametric floor and the ceiling are generator properties |
 | controls, shared | shuffled, partial-gold | 2 | context manipulations, not generator properties |
-| visual primary (SPIQA-native 150) | text-only, +MM CLIP, +MM document retriever, +both, oracle image, closed-book | all 5 | RQ3 headline |
+| visual primary (SPIQA-native 150) | text-only, +MM CLIP, +both, oracle image, closed-book | all 5 | RQ3 headline (document retriever dropped, future work) |
 | visual mechanism (PubLayNet figures 100+) | pixel-only, caption-matched, +both, closed-book | all 5 | small set, cheap |
 | text mechanism sets (about 200 q) | baseline, +KG, +KGret | 2 | continuity with the submitted results only |
 | repeats | primary arms, 10% stratified subset, two extra runs | all 5 | variability estimate |
