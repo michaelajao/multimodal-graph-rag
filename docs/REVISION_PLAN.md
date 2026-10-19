@@ -543,9 +543,10 @@ Sonnet 5.5 tier at the same price) replaces Claude Sonnet 5 as the primary
 judge; Claude Opus 5.5 replaces Opus 5 as adjudicator; Grok 4.7 replaces
 Grok 4.3 as the second vision judge. DeepSeek V4 Pro is unchanged. The roster
 table below reflects this. Because gpt4o-mini is a generator, a GPT judge now
-shares a family with one generator, which section 7.1 rules out: either score
-gpt4o-mini outputs with the second judge only, or report the overlap as a
-limitation. GPT-6.1 Sol and Opus 5.5 are reasoning models whose OpenRouter
+shares a family with one generator, which section 7.1 would rule out. Decided
+2026-10-20: no fallback judge. GPT-6.1 Sol scores every generator, including
+gpt4o-mini, and the paper reports the overlap as a limitation (possible
+same-family preference on the gpt4o-mini rows). GPT-6.1 Sol and Opus 5.5 are reasoning models whose OpenRouter
 listing omits `temperature`, and judges are called with an 8-token cap, so run
 the `--limit 5` pilot first and confirm every judge returns a bare 0 or 1.
 The five-key table below is the pre-2026-10-20 setup.
