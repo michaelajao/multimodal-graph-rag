@@ -527,6 +527,19 @@ Apply them everywhere, not only where the result is favourable.
 
 ## 15. Provider access and cost estimate (2026-09-10)
 
+**Update 2026-10-20: OpenRouter only.** Every registry entry, including the
+four legacy generators, the text and figure authors, and
+`text-embedding-3-small`, is now served through OpenRouter, so a run needs only
+`OPENROUTER_API_KEY`. Aliases are unchanged. `llama4-scout` is pinned to
+DeepInfra (the legacy backend); DeepInfra no longer serves `llama4-maverick`
+on OpenRouter, so it is pinned to Parasail's FP8 endpoint, the same FP8 build,
+and the paper should say so. Prices are frozen in
+`configs/pricing_2026-10-20.json`; Gemini Flash-Lite and Maverick cost more
+through OpenRouter than the direct rates in earlier snapshots. Still open: the
+HippoRAG indexer builds its own client from `OPENAI_API_KEY`; point it at
+OpenRouter (key plus `https://openrouter.ai/api/v1` base URL) and test once
+before indexing. The table below is the pre-2026-10-20 setup.
+
 ### Where the models come from today
 
 Every generator and judge is a hosted API; nothing runs locally. Five keys:

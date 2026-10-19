@@ -6,7 +6,7 @@
   "question_set": "data/questions/questions_spiqa_multihop_cross.json",
   "systems": ["baseline", "+KG", "+KGret"],
   "generators": ["gpt4o-mini", "gemini-flash-lite", "llama4-scout", "llama4-maverick", "qwen3.7-flash"],
-  "pricing_snapshot": "configs/pricing_2026-09-10.json",
+  "pricing_snapshot": "configs/pricing_2026-10-20.json",
   "retrieval_method": "dense-plus-graph-expansion",
   "candidate_budget": 5,
   "graph_version": "legacy-v1",

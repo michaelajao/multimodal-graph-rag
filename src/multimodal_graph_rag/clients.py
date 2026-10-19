@@ -61,86 +61,100 @@ class ModelSpec:
     access: str
     vision: bool
     base_url: str | None = None
+    # OpenRouter upstream providers to use, in order, with fallback disabled, so
+    # a model is always served by the same backend and quantisation.
+    providers: tuple[str, ...] = ()
 
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
 MODELS: dict[str, ModelSpec] = {
+    # Every model is served through OpenRouter (single OPENROUTER_API_KEY,
+    # adopted 2026-10-20). The aliases are unchanged from the legacy direct
+    # providers so run files, caches, and figures stay comparable.
     "gpt4o-mini": ModelSpec(
         name="gpt4o-mini",
         sdk="openai",
-        model="gpt-4o-mini",
-        api_key_env="OPENAI_API_KEY",
-        vendor="OpenAI",
+        model="openai/gpt-4o-mini",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="OpenAI/OpenRouter",
         access="closed",
         vision=True,
+        base_url=OPENROUTER_BASE_URL,
     ),
     "gemini-flash-lite": ModelSpec(
         name="gemini-flash-lite",
         sdk="openai",
-        model="gemini-3.1-flash-lite",
-        api_key_env="GEMINI_API_KEY",
-        vendor="Google",
+        model="google/gemini-3.1-flash-lite",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="Google/OpenRouter",
         access="closed",
         vision=True,
-        base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        base_url=OPENROUTER_BASE_URL,
     ),
     "llama4-maverick": ModelSpec(
         name="llama4-maverick",
         sdk="openai",
-        model="meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
-        api_key_env="DEEPINFRA_API_KEY",
-        vendor="Meta/DeepInfra",
+        model="meta-llama/llama-4-maverick",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="Meta/OpenRouter",
         access="open",
         vision=True,
-        base_url="https://api.deepinfra.com/v1/openai",
+        base_url=OPENROUTER_BASE_URL,
+        # DeepInfra (the legacy backend) no longer serves Maverick on
+        # OpenRouter; Parasail serves the same FP8 build.
+        providers=("Parasail",),
     ),
     "llama4-scout": ModelSpec(
         name="llama4-scout",
         sdk="openai",
-        model="meta-llama/Llama-4-Scout-17B-16E-Instruct",
-        api_key_env="DEEPINFRA_API_KEY",
-        vendor="Meta/DeepInfra",
+        model="meta-llama/llama-4-scout",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="Meta/OpenRouter",
         access="open",
         vision=True,
-        base_url="https://api.deepinfra.com/v1/openai",
+        base_url=OPENROUTER_BASE_URL,
+        providers=("DeepInfra",),
     ),
     "gpt4o": ModelSpec(
         name="gpt4o",
         sdk="openai",
-        model="gpt-4o",
-        api_key_env="OPENAI_API_KEY",
-        vendor="OpenAI",
+        model="openai/gpt-4o",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="OpenAI/OpenRouter",
         access="diagnostic",
         vision=True,
+        base_url=OPENROUTER_BASE_URL,
     ),
     "deepseek": ModelSpec(
         name="deepseek",
         sdk="openai",
-        model="deepseek-chat",
-        api_key_env="DEEPSEEK_API_KEY",
-        vendor="DeepSeek",
+        model="deepseek/deepseek-chat",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="DeepSeek/OpenRouter",
         access="judge",
         vision=False,
-        base_url="https://api.deepseek.com",
+        base_url=OPENROUTER_BASE_URL,
     ),
     "claude-haiku": ModelSpec(
         name="claude-haiku",
-        sdk="anthropic",
-        model="claude-haiku-4-5",
-        api_key_env="ANTHROPIC_API_KEY",
-        vendor="Anthropic",
+        sdk="openai",
+        model="anthropic/claude-haiku-4.5",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="Anthropic/OpenRouter",
         access="judge",
         vision=True,
+        base_url=OPENROUTER_BASE_URL,
     ),
     "text-embedding-3-small": ModelSpec(
         name="text-embedding-3-small",
         sdk="openai",
-        model="text-embedding-3-small",
-        api_key_env="OPENAI_API_KEY",
-        vendor="OpenAI",
+        model="openai/text-embedding-3-small",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="OpenAI/OpenRouter",
         access="embedding",
         vision=False,
+        base_url=OPENROUTER_BASE_URL,
     ),
     # --- OpenRouter roster, chosen 2026-09-10 (docs/REVISION_PLAN.md section 15).
     # One key covers every family below; OpenRouter is OpenAI-compatible.
@@ -503,6 +517,11 @@ class ModelClient:
         if system:
             messages.append({"role": "system", "content": system})
         messages.append({"role": "user", "content": content})
+        extra: dict[str, object] = {}
+        if spec.providers:
+            extra["extra_body"] = {
+                "provider": {"order": list(spec.providers), "allow_fallbacks": False}
+            }
 
         def request() -> GenResult:
             started = time.perf_counter()
@@ -511,6 +530,7 @@ class ModelClient:
                 temperature=temperature,
                 max_tokens=max_tokens,
                 messages=messages,
+                **extra,
             )
             latency = (time.perf_counter() - started) * 1000
             text = response.choices[0].message.content or ""

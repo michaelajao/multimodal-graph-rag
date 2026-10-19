@@ -35,6 +35,7 @@ class _StubProvider:
         self.embeddings = SimpleNamespace(create=self._embed)
 
     def _create(self, **kwargs):
+        self.last_kwargs = kwargs
         reply = self.replies.pop(0)
         if isinstance(reply, BaseException):
             raise reply
@@ -91,7 +92,7 @@ def test_load_pricing_rejects_unknown_model_and_bad_schema(tmp_path):
 
 
 def test_repository_pricing_snapshot_covers_every_registered_model():
-    snapshot = load_pricing("configs/pricing_2026-09-10.json")
+    snapshot = load_pricing("configs/pricing_2026-10-20.json")
     assert set(snapshot.models) == set(MODELS)
 
 
@@ -112,7 +113,7 @@ def test_missing_price_is_an_error_not_zero():
 
 def test_missing_api_key_is_reported_by_name():
     client = ModelClient(_snapshot(), environ={})
-    with pytest.raises(ConfigurationError, match="OPENAI_API_KEY"):
+    with pytest.raises(ConfigurationError, match="OPENROUTER_API_KEY"):
         client.call("gpt4o-mini", user="hello")
 
 
@@ -156,6 +157,14 @@ def test_embed_batches_and_prices_tokens():
 
 OPENROUTER_ROSTER = {
     # alias: (OpenRouter model id, vision)
+    "gpt4o-mini": ("openai/gpt-4o-mini", True),
+    "gemini-flash-lite": ("google/gemini-3.1-flash-lite", True),
+    "llama4-maverick": ("meta-llama/llama-4-maverick", True),
+    "llama4-scout": ("meta-llama/llama-4-scout", True),
+    "gpt4o": ("openai/gpt-4o", True),
+    "deepseek": ("deepseek/deepseek-chat", False),
+    "claude-haiku": ("anthropic/claude-haiku-4.5", True),
+    "text-embedding-3-small": ("openai/text-embedding-3-small", False),
     "qwen3.7-flash": ("qwen/qwen3.7-flash", True),
     "claude-sonnet-5": ("anthropic/claude-sonnet-5", True),
     "claude-opus-5": ("anthropic/claude-opus-5", True),
@@ -173,6 +182,22 @@ def test_openrouter_models_share_one_key_and_endpoint(alias):
     assert spec.api_key_env == "OPENROUTER_API_KEY"
     assert spec.base_url == "https://openrouter.ai/api/v1"
     assert spec.vision is vision
+
+
+def test_every_registered_model_needs_only_the_openrouter_key():
+    assert set(OPENROUTER_ROSTER) == set(MODELS)
+
+
+def test_pinned_models_send_a_no_fallback_provider_order():
+    client = _client(["ok", "ok"])
+    client._providers["llama4-scout"] = client._providers["gpt4o-mini"]
+    client.call("llama4-scout", user="q")
+    stub = client._providers["llama4-scout"]
+    assert stub.last_kwargs["extra_body"] == {
+        "provider": {"order": ["DeepInfra"], "allow_fallbacks": False}
+    }
+    client.call("gpt4o-mini", user="q")
+    assert "extra_body" not in stub.last_kwargs
 
 
 def test_fifth_generator_and_new_judges_are_registered_by_role():
