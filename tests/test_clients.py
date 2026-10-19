@@ -166,10 +166,10 @@ OPENROUTER_ROSTER = {
     "claude-haiku": ("anthropic/claude-haiku-4.5", True),
     "text-embedding-3-small": ("openai/text-embedding-3-small", False),
     "qwen3.7-flash": ("qwen/qwen3.7-flash", True),
-    "claude-sonnet-5": ("anthropic/claude-sonnet-5", True),
-    "claude-opus-5": ("anthropic/claude-opus-5", True),
+    "gpt-6.1-sol": ("openai/gpt-6.1-sol", True),
+    "claude-opus-5.5": ("anthropic/claude-opus-5.5", True),
     "deepseek-v4-pro": ("deepseek/deepseek-v4-pro-0813", False),
-    "grok-4.3": ("x-ai/grok-4.3", True),
+    "grok-4.7": ("x-ai/grok-4.7", True),
 }
 
 
@@ -208,7 +208,12 @@ def test_fifth_generator_and_new_judges_are_registered_by_role():
         "llama4-maverick",
         "llama4-scout",
     ), "legacy generator order feeds table columns and must not move"
-    for judge in ("claude-sonnet-5", "claude-opus-5", "deepseek-v4-pro", "grok-4.3"):
+    for judge in (
+        "gpt-6.1-sol",
+        "claude-opus-5.5",
+        "deepseek-v4-pro",
+        "grok-4.7",
+    ):
         assert judge in JUDGES
 
 
@@ -225,4 +230,4 @@ def test_openrouter_model_without_key_names_the_missing_variable():
         _snapshot(), environ={"OPENAI_API_KEY": "x"}, sleep=lambda s: None
     )
     with pytest.raises(ConfigurationError, match="OPENROUTER_API_KEY"):
-        client.api_key("claude-sonnet-5")
+        client.api_key("gpt-6.1-sol")

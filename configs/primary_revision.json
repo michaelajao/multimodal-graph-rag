@@ -12,7 +12,7 @@
   "graph_version": "legacy-v1",
   "visual_retriever": "clip-vit-b32",
   "judge": "deepseek-v4-pro",
-  "vision_judge": "claude-sonnet-5",
+  "vision_judge": "gpt-6.1-sol",
   "prompt_version": "evidence-attribution-v1",
   "seed": 20260903,
   "repetition": 1,

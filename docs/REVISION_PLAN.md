@@ -538,7 +538,17 @@ and the paper should say so. Prices are frozen in
 through OpenRouter than the direct rates in earlier snapshots. Still open: the
 HippoRAG indexer builds its own client from `OPENAI_API_KEY`; point it at
 OpenRouter (key plus `https://openrouter.ai/api/v1` base URL) and test once
-before indexing. The table below is the pre-2026-10-20 setup.
+before indexing. **Judges changed on 2026-10-20.** GPT-6.1 Sol (OpenAI, the
+Sonnet 5.5 tier at the same price) replaces Claude Sonnet 5 as the primary
+judge; Claude Opus 5.5 replaces Opus 5 as adjudicator; Grok 4.7 replaces
+Grok 4.3 as the second vision judge. DeepSeek V4 Pro is unchanged. The roster
+table below reflects this. Because gpt4o-mini is a generator, a GPT judge now
+shares a family with one generator, which section 7.1 rules out: either score
+gpt4o-mini outputs with the second judge only, or report the overlap as a
+limitation. GPT-6.1 Sol and Opus 5.5 are reasoning models whose OpenRouter
+listing omits `temperature`, and judges are called with an 8-token cap, so run
+the `--limit 5` pilot first and confirm every judge returns a bare 0 or 1.
+The five-key table below is the pre-2026-10-20 setup.
 
 ### Where the models come from today
 
@@ -620,10 +630,10 @@ the OpenAI key directly, because OpenRouter lists no embedding models.
 | generator (legacy) | llama4-scout | `meta-llama/llama-4-scout` | 0.10 / 0.30 | pin provider DeepInfra to match the legacy backend |
 | generator (legacy) | llama4-maverick | `meta-llama/llama-4-maverick` | 0.20 / 0.70 | pin provider DeepInfra |
 | generator (new, 5th) | qwen3.7-flash | `qwen/qwen3.7-flash` | 0.03 / 0.13 | cheapest current vision-capable open-weight model, Alibaba family, released 2026-07 |
-| primary judge, text and vision | claude-sonnet-5 | `anthropic/claude-sonnet-5` | 2.00 / 10.00 | outside every generator family; `:batch` variant at 1.00 / 5.00 |
-| adjudicator on disagreements | claude-opus-5 | `anthropic/claude-opus-5` | 5.00 / 25.00 | `:batch` at 2.50 / 12.50 |
+| primary judge, text and vision | gpt-6.1-sol | `openai/gpt-6.1-sol` | 2.00 / 10.00 | replaced Claude Sonnet 5 on 2026-10-20; same tier and price as Sonnet 5.5. OpenAI is also a generator family (gpt4o-mini): see the note above |
+| adjudicator on disagreements | claude-opus-5.5 | `anthropic/claude-opus-5.5` | 4.00 / 20.00 | replaced Opus 5 on 2026-10-20 |
 | second judge, text | deepseek-v4-pro | `deepseek/deepseek-v4-pro-0813` | 0.58 / 1.74 | a tier above the generators, no vision; replaces deepseek-chat |
-| second judge, vision (20%) | grok-4.3 | `x-ai/grok-4.3` | 1.25 / 2.50 | xAI is outside every generator and author family |
+| second judge, vision (20%) | grok-4.7 | `x-ai/grok-4.7` | 2.00 / 6.00 | xAI is outside every generator and author family; replaced Grok 4.3 on 2026-10-20 |
 | figure-question author | claude-haiku | `anthropic/claude-haiku-4.5` | 1.00 / 5.00 | unchanged, keeps the new PubLayNet items consistent with the old |
 | HippoRAG OpenIE | gpt4o-mini | OpenAI direct | 0.15 / 0.60 | matches our extractor |
 | embeddings | text-embedding-3-small | OpenAI direct | 0.02 / 0 | not on OpenRouter |

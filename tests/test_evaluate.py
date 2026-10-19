@@ -196,7 +196,7 @@ def test_config_budget_reaches_settings_and_identity(tmp_path):
         question_set="data/questions/questions_hotpotqa_bridge.json",
         systems=("baseline",),
         generators=("gpt4o-mini",),
-        pricing_snapshot="configs/pricing_2026-09-10.json",
+        pricing_snapshot="configs/pricing_2026-10-20.json",
     )
     capped = ExperimentConfig(**base, budget_usd=2.5)
     settings = EvaluationSettings.from_config(
@@ -270,7 +270,7 @@ def test_config_comparator_path_reaches_settings(tmp_path):
         question_set="data/questions/questions_hotpotqa_bridge.json",
         systems=("baseline", "+HippoRAG"),
         generators=("gpt4o-mini",),
-        pricing_snapshot="configs/pricing_2026-09-10.json",
+        pricing_snapshot="configs/pricing_2026-10-20.json",
         comparator_retrievals=".cache/hipporag/hotpotqa/retrievals.json",
     )
     settings = EvaluationSettings.from_config(

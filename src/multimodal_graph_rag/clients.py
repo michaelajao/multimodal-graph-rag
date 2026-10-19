@@ -156,7 +156,9 @@ MODELS: dict[str, ModelSpec] = {
         vision=False,
         base_url=OPENROUTER_BASE_URL,
     ),
-    # --- OpenRouter roster, chosen 2026-09-10 (docs/REVISION_PLAN.md section 15).
+    # --- OpenRouter roster, chosen 2026-09-10 (docs/REVISION_PLAN.md section 15);
+    # judges changed on 2026-10-20: GPT-6.1 Sol replaces Claude Sonnet 5 as
+    # primary judge, Opus 5.5 replaces Opus 5, Grok 4.7 replaces Grok 4.3.
     # One key covers every family below; OpenRouter is OpenAI-compatible.
     "qwen3.7-flash": ModelSpec(
         name="qwen3.7-flash",
@@ -168,20 +170,20 @@ MODELS: dict[str, ModelSpec] = {
         vision=True,
         base_url=OPENROUTER_BASE_URL,
     ),
-    "claude-sonnet-5": ModelSpec(
-        name="claude-sonnet-5",
+    "gpt-6.1-sol": ModelSpec(
+        name="gpt-6.1-sol",
         sdk="openai",
-        model="anthropic/claude-sonnet-5",
+        model="openai/gpt-6.1-sol",
         api_key_env="OPENROUTER_API_KEY",
-        vendor="Anthropic/OpenRouter",
+        vendor="OpenAI/OpenRouter",
         access="judge",
         vision=True,
         base_url=OPENROUTER_BASE_URL,
     ),
-    "claude-opus-5": ModelSpec(
-        name="claude-opus-5",
+    "claude-opus-5.5": ModelSpec(
+        name="claude-opus-5.5",
         sdk="openai",
-        model="anthropic/claude-opus-5",
+        model="anthropic/claude-opus-5.5",
         api_key_env="OPENROUTER_API_KEY",
         vendor="Anthropic/OpenRouter",
         access="judge",
@@ -198,10 +200,10 @@ MODELS: dict[str, ModelSpec] = {
         vision=False,
         base_url=OPENROUTER_BASE_URL,
     ),
-    "grok-4.3": ModelSpec(
-        name="grok-4.3",
+    "grok-4.7": ModelSpec(
+        name="grok-4.7",
         sdk="openai",
-        model="x-ai/grok-4.3",
+        model="x-ai/grok-4.7",
         api_key_env="OPENROUTER_API_KEY",
         vendor="xAI/OpenRouter",
         access="judge",
@@ -221,10 +223,10 @@ DIAGNOSTICS: tuple[str, ...] = ("gpt4o",)
 JUDGES: tuple[str, ...] = (
     "deepseek",
     "claude-haiku",
-    "claude-sonnet-5",
-    "claude-opus-5",
+    "gpt-6.1-sol",
+    "claude-opus-5.5",
     "deepseek-v4-pro",
-    "grok-4.3",
+    "grok-4.7",
 )
 EMBEDDING_MODEL = "text-embedding-3-small"
 CAPTION_MODEL = "gpt4o"
