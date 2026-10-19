@@ -75,6 +75,10 @@ These are settled. Do not reopen them in the revision.
 
 ## 3. Contribution and framing
 
+Title (changed 2026-10-20, no colon): *Attributing Answers to Evidence in
+Graph-Augmented and Multimodal RAG for Document Question Answering*. The
+2026-09-10 title below is superseded.
+
 Title (decided 2026-09-10): *Evidence Attribution in Graph-Augmented and
 Multimodal RAG: A Controlled Evaluation for Document Question Answering*.
 It keeps the "controlled evaluation" phrase from the arXiv title (2607.16604,
