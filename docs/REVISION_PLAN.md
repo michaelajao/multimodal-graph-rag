@@ -184,10 +184,13 @@ and its API separates indexing from retrieval:
 
 ```python
 from hipporag import HippoRAG
-rag = HippoRAG(save_dir=".cache/hipporag/hotpotqa", llm_model_name=..., embedding_model_name=...)
-rag.index(docs=[chunk.text for chunk in corpus_chunks])          # OpenIE + graph, once
+
+rag = HippoRAG(
+    save_dir=".cache/hipporag/hotpotqa", llm_model_name=..., embedding_model_name=...
+)
+rag.index(docs=[chunk.text for chunk in corpus_chunks])  # OpenIE + graph, once
 solutions = rag.retrieve(queries=[question], num_to_retrieve=k)  # docs + doc_scores
-rag.get_graph_info()                                              # node/triple counts
+rag.get_graph_info()  # node/triple counts
 ```
 
 **Secondary, only if time remains: LightRAG** (`lightrag-hku`). Retrieval
