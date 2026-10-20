@@ -635,6 +635,20 @@ figure, the cheapest cuts are judging the caption-mode runs of the flagged
 set with a sample instead of in full, and checking whether OpenRouter serves
 a half-price `:batch` id for Sol. The lean-design tables below predate this.
 
+**Cost measured by the pilots, 2026-10-20.** Five-question pilots on all
+seven generators, billed by OpenRouter, cost $0.49 for HotpotQA bridge (12
+arms, DeepSeek V4 Pro judging), $0.90 for SPIQA native in pixel mode and
+$0.85 in caption mode (6 arms, GPT-6.1 Sol judging). Per question that is
+about $0.10 for a HotpotQA set with +HippoRAG added, and $0.35 for a SPIQA
+set run in both vision modes. Scaled to the configs, HotpotQA bridge and
+comparison come to about $21, SPIQA primary (150) $53, the flagged set (132)
+$46, PubLayNet figures (35, both modes) about $10, and the SPIQA cross set
+(50) about $3, so about $133 for the evaluation runs. Adjudication, the second
+vision judge, sufficiency checks, and the repeat runs for hosted-model
+variability add roughly $30 to $50, which puts the revision near **$170 to
+$190**, close to the lower model estimate. Hidden reasoning stayed small. The
+pilot spend itself was about $2.80.
+
 ### Where the models come from today
 
 Every generator and judge is a hosted API; nothing runs locally. Five keys:
