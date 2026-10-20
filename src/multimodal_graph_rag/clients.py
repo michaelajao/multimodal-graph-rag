@@ -14,7 +14,7 @@ Generators under comparison, all vision-capable
     gemini-flash-lite   Google      closed  legacy
     llama4-maverick     Meta        open    legacy, pinned to Parasail (FP8)
     llama4-scout        Meta        open    legacy, pinned to DeepInfra
-    qwen3.7-flash       Alibaba     open    current, low cost
+    qwen3.7-flash       Alibaba     closed  current, low cost
     gemini-3.8-flash    Google      closed  current, strong tier
     qwen3.8-max         Alibaba     closed  current, strong tier
 The Gemini and Qwen 3.8 models think before answering; thinking tokens are
@@ -178,7 +178,9 @@ MODELS: dict[str, ModelSpec] = {
         model="qwen/qwen3.7-flash",
         api_key_env="OPENROUTER_API_KEY",
         vendor="Alibaba/OpenRouter",
-        access="open",
+        # API-only: OpenRouter lists no released weights for it, unlike the
+        # open Qwen 3.8 checkpoints.
+        access="closed",
         vision=True,
         base_url=OPENROUTER_BASE_URL,
     ),

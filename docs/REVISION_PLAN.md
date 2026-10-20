@@ -706,7 +706,7 @@ the OpenAI key directly, because OpenRouter lists no embedding models.
 | generator (legacy) | gemini-flash-lite | `google/gemini-3.1-flash-lite` | 0.25 / 1.50 | dearer than the direct rate in the 09-03 snapshot (0.10 / 0.40); keep the Google key if that matters |
 | generator (legacy) | llama4-scout | `meta-llama/llama-4-scout` | 0.10 / 0.30 | pin provider DeepInfra to match the legacy backend |
 | generator (legacy) | llama4-maverick | `meta-llama/llama-4-maverick` | 0.20 / 0.70 | pin provider DeepInfra |
-| generator (new, 5th) | qwen3.7-flash | `qwen/qwen3.7-flash` | 0.03 / 0.13 | cheapest current vision-capable open-weight model, Alibaba family, released 2026-07 |
+| generator (new, 5th) | qwen3.7-flash | `qwen/qwen3.7-flash` | 0.03 / 0.13 | cheapest current vision-capable model, Alibaba family, released 2026-07; API-only, not open-weight (corrected 2026-10-20: OpenRouter lists no released weights for it) |
 | primary judge, text and vision | gpt-6.1-sol | `openai/gpt-6.1-sol` | 2.00 / 10.00 | replaced Claude Sonnet 5 on 2026-10-20; same tier and price as Sonnet 5.5. OpenAI is also a generator family (gpt4o-mini): see the note above |
 | adjudicator on disagreements | claude-opus-5.5 | `anthropic/claude-opus-5.5` | 4.00 / 20.00 | replaced Opus 5 on 2026-10-20 |
 | second judge, text | deepseek-v4-pro | `deepseek/deepseek-v4-pro-0813` | 0.58 / 1.74 | a tier above the generators, no vision; replaces deepseek-chat |
