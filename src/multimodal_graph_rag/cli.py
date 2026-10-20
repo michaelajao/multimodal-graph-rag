@@ -115,7 +115,9 @@ def cmd_ingest(args: argparse.Namespace) -> int:
             gold_qa_path=QUESTIONS_DIR / "spiqa_gold_qa.json",
             client=client,
             papers=args.papers,
-            seed=config.seed or spiqa.DEFAULT_SEED,
+            # The released corpus and spiqa_gold_qa.json were sampled at the
+            # default seed; the configs' seed samples questions, not papers.
+            seed=spiqa.DEFAULT_SEED,
             smoke=args.smoke,
         )
     elif config.corpus == "hotpotqa":
