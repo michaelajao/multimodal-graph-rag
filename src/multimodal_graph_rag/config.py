@@ -14,7 +14,14 @@ from .errors import ConfigurationError
 from .schemas import content_hash
 
 VISION_MODES = ("pixels", "captions")
-EVIDENCE_CONTROLS = ("normal", "closed-book", "shuffled", "oracle", "partial-gold")
+EVIDENCE_CONTROLS = (
+    "normal",
+    "closed-book",
+    "shuffled",
+    "oracle",
+    "partial-gold",
+    "oracle-image",
+)
 
 
 @dataclass(frozen=True)

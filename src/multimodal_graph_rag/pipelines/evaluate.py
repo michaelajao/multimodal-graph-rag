@@ -33,6 +33,7 @@ from ..errors import (
 )
 from ..evaluation.answer_match import contains_reference, exact_match, token_f1
 from ..evaluation.judges import Judges
+from ..retrieval.baselines import chunk_lexicon
 from ..retrieval.comparators import PrecomputedRetrievals
 from ..retrieval.graph import default_cache_path, load_graph
 from ..retrieval.metrics import retrieval_metrics
@@ -44,6 +45,7 @@ from .systems import (
     COMPARATOR_SYSTEMS,
     GRAPH_SYSTEMS,
     IMAGE_SYSTEMS,
+    LEXICON_SYSTEMS,
     SYSTEMS,
     RunContext,
     SystemOutput,
@@ -313,6 +315,7 @@ def run_evaluation(settings: EvaluationSettings, client: ModelClient) -> RunOutp
         )
         stats = graph.statistics()
         print(f"Graph     : {stats.node_count} nodes, {stats.edge_count} edges")
+    lexicon = chunk_lexicon(text_index) if LEXICON_SYSTEMS & set(systems) else None
     comparator = None
     if COMPARATOR_SYSTEMS & set(systems):
         if settings.comparator_file is None:
@@ -345,6 +348,7 @@ def run_evaluation(settings: EvaluationSettings, client: ModelClient) -> RunOutp
         comparator=comparator,
         image_index=image_index,
         image_dir=settings.image_dir,
+        lexicon=lexicon,
         bridge_base_k=settings.bridge_base_k,
         bridge_hops=settings.bridge_hops,
         seed=settings.seed,

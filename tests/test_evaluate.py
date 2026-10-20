@@ -8,11 +8,22 @@ from multimodal_graph_rag.config import ExperimentConfig
 from multimodal_graph_rag.errors import (
     BudgetExceededError,
     ConfigurationError,
+    MissingEvidenceError,
     ProviderError,
 )
 from multimodal_graph_rag.pipelines.evaluate import EvaluationSettings, run_evaluation
+from multimodal_graph_rag.pipelines.systems import (
+    PASSAGE_RETRIEVERS,
+    RunContext,
+    passage_arm_report,
+    run_bm25,
+    run_lexical,
+    run_oracle_image,
+)
+from multimodal_graph_rag.retrieval.baselines import chunk_lexicon
 from multimodal_graph_rag.retrieval.comparators import write_retrievals
-from multimodal_graph_rag.retrieval.graph import default_cache_path
+from multimodal_graph_rag.retrieval.graph import default_cache_path, load_graph
+from multimodal_graph_rag.retrieval.text import TextIndex
 from multimodal_graph_rag.schemas import load_questions
 
 pytest.importorskip("faiss")
@@ -277,3 +288,204 @@ def test_config_comparator_path_reaches_settings(tmp_path):
         config, "gpt4o-mini", pricing_captured_on="x", root=tmp_path
     )
     assert settings.comparator_file == tmp_path / config.comparator_retrievals
+
+
+def test_passage_arm_report_scores_what_each_arm_would_retrieve(
+    tmp_path, corpus_dir, question_file, triple_cache, fake_client
+):
+    index = TextIndex.build(corpus_dir, fake_client, cache_dir=tmp_path / ".cache")
+    ctx = RunContext(
+        client=fake_client,
+        model="",
+        text_index=index,
+        candidate_budget=5,
+        graph=load_graph(corpus_dir, triple_cache),
+        lexicon=chunk_lexicon(index),
+    )
+    arms = [arm for arm in PASSAGE_RETRIEVERS if arm != "+HippoRAG"]
+    report = passage_arm_report(load_questions(question_file), ctx, arms)
+    summary = report["summary"]
+    assert list(summary) == arms
+    assert summary["dense-top3"]["mean_passages"] == 3
+    assert summary["baseline"]["mean_passages"] == 5
+    assert summary["+random"]["mean_passages"] == 5
+    for arm in arms:
+        assert summary[arm]["complete"] <= summary[arm]["any_gold"] <= 3
+    assert not fake_client.calls, "a retrieval report must not generate"
+    first = report["outcomes"][0]
+    assert first["baseline"]["sources"][:3] == first["dense-top3"]["sources"]
+
+
+EQUAL_BUDGET_ARMS = (
+    "dense-top3",
+    "baseline",
+    "bm25",
+    "hybrid-rrf",
+    "+KG",
+    "+KGret",
+    "+lexical",
+    "+random",
+)
+
+
+def test_equal_budget_arms_run_end_to_end(
+    tmp_path, corpus_dir, question_file, triple_cache, fake_client
+):
+    settings = _settings(
+        tmp_path, corpus_dir, question_file, triple_cache, EQUAL_BUDGET_ARMS
+    )
+    outputs = run_evaluation(settings, fake_client)
+    with outputs.summary_path.open(newline="", encoding="utf-8") as stream:
+        assert [row["system"] for row in csv.DictReader(stream)] == list(
+            EQUAL_BUDGET_ARMS
+        )
+    traces = [
+        json.loads(line)
+        for line in outputs.trace_path.read_text(encoding="utf-8").splitlines()
+    ]
+
+    def text_items(system):
+        return [
+            [item for item in t["evidence"]["items"] if item["modality"] == "text"]
+            for t in traces
+            if t["system"] == system
+        ]
+
+    for system, count in (("dense-top3", 3), ("+KG", 3), ("baseline", 5)):
+        assert {len(items) for items in text_items(system)} == {count}, system
+    assert {len(items) for items in text_items("+random")} == {5}
+    for system in ("bm25", "hybrid-rrf"):
+        assert {
+            item["selection_reason"] for items in text_items(system) for item in items
+        } == {system}
+    for system in ("+KGret", "+lexical", "+random"):
+        for items in text_items(system):
+            assert len(items) <= 5
+            assert all(item["selection_reason"] == "dense" for item in items[:3])
+    padded = [items[3:] for items in text_items("+random")]
+    assert {item["selection_reason"] for extra in padded for item in extra} == {
+        "random padding"
+    }
+
+
+def test_passage_arms_show_the_generator_no_marker_of_the_arm(
+    tmp_path, corpus_dir, question_file, triple_cache, fake_client
+):
+    settings = _settings(
+        tmp_path, corpus_dir, question_file, triple_cache, ("+KGret", "+lexical")
+    )
+    run_evaluation(settings, fake_client)
+    prompts = [user for name, user, _ in fake_client.calls if name == "gpt4o-mini"]
+    assert prompts
+    assert not any("graph-bridged" in user or " | " in user for user in prompts)
+
+
+def test_lexical_arms_need_their_index_and_graph_arms_their_graph(
+    corpus_dir, fake_client, tmp_path
+):
+    index = TextIndex.build(corpus_dir, fake_client, cache_dir=tmp_path / ".cache")
+    question = load_questions(_question_path(tmp_path))[0]
+    ctx = RunContext(
+        client=fake_client, model="gpt4o-mini", text_index=index, candidate_budget=5
+    )
+    with pytest.raises(ConfigurationError, match="BM25"):
+        run_bm25(question, ctx, False)
+    with pytest.raises(MissingEvidenceError, match="knowledge graph"):
+        run_lexical(question, ctx, False)
+
+
+def _question_path(tmp_path):
+    path = tmp_path / "one_question.json"
+    path.write_text(
+        json.dumps(
+            [
+                {
+                    "q": "Which receptor does compound Zeta bind?",
+                    "source": "beta.txt",
+                    "answer": "the kappa receptor",
+                    "type": "text",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return path
+
+
+class _StubImageIndex:
+    def __init__(self, captions):
+        self.captions = captions
+
+
+def _figure_question(tmp_path):
+    path = tmp_path / "figure_questions.json"
+    path.write_text(
+        json.dumps(
+            [
+                {
+                    "q": "What dose of compound Zeta does the figure show?",
+                    "source": "fig_zeta.png",
+                    "answer": "40 mg",
+                    "type": "figure",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return load_questions(path)[0]
+
+
+@pytest.mark.parametrize("use_pixels", [True, False])
+def test_oracle_image_supplies_the_gold_crop_with_the_baseline_text(
+    tmp_path, corpus_dir, fake_client, use_pixels
+):
+    image_dir = tmp_path / "images"
+    image_dir.mkdir()
+    (image_dir / "fig_zeta.png").write_bytes(b"png")
+    (image_dir / "fig_other.png").write_bytes(b"png")
+    ctx = RunContext(
+        client=fake_client,
+        model="gpt4o-mini",
+        text_index=TextIndex.build(
+            corpus_dir, fake_client, cache_dir=tmp_path / ".cache"
+        ),
+        candidate_budget=5,
+        image_index=_StubImageIndex(
+            {"fig_zeta.png": "Dose schedule", "fig_other.png": "Distractor plot"}
+        ),
+        image_dir=image_dir,
+    )
+    output = run_oracle_image(_figure_question(tmp_path), ctx, use_pixels)
+    assert output.ranked_image_sources == ["fig_zeta.png"]
+    assert len(output.text_passages) == 5
+    _, user, images = fake_client.calls[-1]
+    if use_pixels:
+        assert output.image_paths == (image_dir / "fig_zeta.png",)
+        assert images == (str(image_dir / "fig_zeta.png"),)
+    else:
+        assert output.image_paths == ()
+        assert "(fig_zeta.png) Dose schedule" in user
+        assert "Distractor plot" not in user
+    reasons = {
+        item.selection_reason
+        for item in output.evidence_bundle(5).items
+        if item.modality == "image"
+    }
+    assert reasons == {"oracle-gold (sent)"}
+
+
+def test_oracle_image_refuses_a_question_without_a_gold_crop(
+    tmp_path, corpus_dir, fake_client
+):
+    ctx = RunContext(
+        client=fake_client,
+        model="gpt4o-mini",
+        text_index=TextIndex.build(
+            corpus_dir, fake_client, cache_dir=tmp_path / ".cache"
+        ),
+        candidate_budget=5,
+        image_index=_StubImageIndex({}),
+        image_dir=tmp_path,
+    )
+    with pytest.raises(MissingEvidenceError, match="no gold image"):
+        run_oracle_image(load_questions(_question_path(tmp_path))[0], ctx, True)

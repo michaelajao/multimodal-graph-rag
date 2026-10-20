@@ -43,11 +43,18 @@ from .evaluation.graph_grounding import (
 )
 from .evaluation.statistics import mcnemar_exact, paired_bootstrap_delta
 from .pipelines.evaluate import EvaluationSettings, run_evaluation
+from .pipelines.systems import (
+    COMPARATOR_SYSTEMS,
+    PASSAGE_RETRIEVERS,
+    RunContext,
+    passage_arm_report,
+)
 from .questions import clean_question_file
 from .questions.authoring import author_figure_questions, author_text_questions
 from .questions.caption_matched import author_caption_matched
 from .questions.cross_paper import author_cross_paper
 from .questions.spiqa_native import convert_spiqa_native
+from .retrieval.baselines import chunk_lexicon
 from .retrieval.comparators import PrecomputedRetrievals, comparator_report
 from .retrieval.graph import TripleStore, default_cache_path, load_graph
 from .retrieval.graph_expansion import bridge_report
@@ -176,6 +183,7 @@ def cmd_questions(args: argparse.Namespace) -> int:
             target=args.target if args.target > 0 else None,
             seed=args.seed,
             exclude_flagged=args.exclude_flagged,
+            only_flagged=args.only_flagged,
         )
         _print_question_report(report)
         return 0
@@ -277,15 +285,39 @@ def cmd_retrieval_ab(args: argparse.Namespace) -> int:
         config.corpus_dir, default_cache_path(config.corpus_dir, GRAPHS_DIR)
     )
     hops = args.hops or config.bridge_hops
+    base_k = min(3, config.candidate_budget)
     report = bridge_report(
         questions,
         index,
         graph,
         client,
-        k=min(3, config.candidate_budget),
-        n_bridge=config.candidate_budget - min(3, config.candidate_budget),
+        k=base_k,
+        n_bridge=config.candidate_budget - base_k,
         hops=hops,
     )
+    comparator = None
+    arms = [arm for arm in PASSAGE_RETRIEVERS if arm not in COMPARATOR_SYSTEMS]
+    if config.comparator_retrievals and Path(config.comparator_retrievals).is_file():
+        comparator = PrecomputedRetrievals.load(
+            config.comparator_retrievals, corpus_dir=config.corpus_dir
+        )
+        arms.extend(sorted(COMPARATOR_SYSTEMS))
+    elif config.comparator_retrievals:
+        print(f"skipping +HippoRAG: {config.comparator_retrievals} does not exist yet")
+    # Retrieval only: nothing is generated, so no generator is named.
+    context = RunContext(
+        client=client,
+        model="",
+        text_index=index,
+        candidate_budget=config.candidate_budget,
+        graph=graph,
+        comparator=comparator,
+        lexicon=chunk_lexicon(index),
+        bridge_base_k=base_k,
+        bridge_hops=hops,
+        seed=config.seed,
+    )
+    arm_report = passage_arm_report(questions, context, arms)
     output = Path(
         args.output
         or f"artifacts/runs/retrieval_ab_{Path(config.question_set).stem}_h{hops}.json"
@@ -296,11 +328,13 @@ def cmd_retrieval_ab(args: argparse.Namespace) -> int:
             {
                 "summary": report.summary(),
                 "outcomes": [o.to_dict() for o in report.outcomes],
+                "arms": arm_report,
             },
             stream,
             indent=2,
         )
     print(json.dumps(report.summary(), indent=2))
+    print(json.dumps(arm_report["summary"], indent=2))
     print(f"wrote {output}")
     return 0
 
@@ -508,6 +542,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="spiqa-native: sample only items the leakage screen did not flag",
     )
+    questions.add_argument(
+        "--only-flagged",
+        action="store_true",
+        help="spiqa-native: keep only the items the leakage screen flagged",
+    )
     questions.add_argument("--seed", type=int, default=42)
     questions.add_argument("--smoke", action="store_true")
     questions.add_argument("--verbose", action="store_true")
@@ -527,7 +566,7 @@ def build_parser() -> argparse.ArgumentParser:
     evaluate.set_defaults(handler=cmd_evaluate)
 
     retrieval_ab = commands.add_parser(
-        "retrieval-ab", help="retrieval-only graph expansion A/B"
+        "retrieval-ab", help="retrieval-only comparison of every passage arm"
     )
     retrieval_ab.add_argument("--config", required=True)
     retrieval_ab.add_argument("--hops", type=int, choices=[1, 2], default=None)

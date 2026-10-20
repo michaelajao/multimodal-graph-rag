@@ -69,14 +69,18 @@ def convert_spiqa_native(
     target: int | None = None,
     seed: int = 42,
     exclude_flagged: bool = False,
+    only_flagged: bool = False,
 ) -> ConversionReport:
     """Write a question set from SPIQA's curated QA for the ingested crops.
 
     Items whose referenced crop was not ingested are skipped, so the set always
     matches the corpus it will be evaluated against. ``target`` takes a
     deterministic uniform sample; ``exclude_flagged`` restricts that sample to
-    items the leakage screen did not flag in either caption channel.
+    items the leakage screen did not flag in either caption channel, and
+    ``only_flagged`` to the items it did flag (the caption-leakage contrast set).
     """
+    if exclude_flagged and only_flagged:
+        raise ConfigurationError("exclude_flagged and only_flagged are exclusive")
     gold = _load_json(gold_file, "SPIQA gold QA file")
     if not isinstance(gold, list) or not gold:
         raise ConfigurationError(
@@ -147,13 +151,15 @@ def convert_spiqa_native(
         )
 
     available = len(records)
-    pool = (
-        [r for r in records if r.leakage_status == "screened_unflagged"]
-        if exclude_flagged
-        else records
-    )
-    if exclude_flagged and not pool:
-        raise ConfigurationError("every item was flagged; nothing left to sample")
+    pool = records
+    if exclude_flagged:
+        pool = [r for r in records if r.leakage_status == "screened_unflagged"]
+        if not pool:
+            raise ConfigurationError("every item was flagged; nothing left to sample")
+    if only_flagged:
+        pool = [r for r in records if r.leakage_status == "flagged_for_human_review"]
+        if not pool:
+            raise ConfigurationError("no item was flagged; nothing left to sample")
     if target is not None:
         if target < 1:
             raise ConfigurationError("target must be positive")

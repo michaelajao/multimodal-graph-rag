@@ -97,6 +97,20 @@ def test_exclude_flagged_drops_the_caption_leak(tmp_path, gold_files):
     assert [r.gold_sources[0] for r in records] == ["1803.03467v4-Figure4-1.png"]
 
 
+def test_only_flagged_keeps_the_caption_leak_alone(tmp_path, gold_files):
+    gold, captions = gold_files
+    out = tmp_path / "flagged.json"
+    convert_spiqa_native(gold, captions, out, only_flagged=True)
+    records = load_questions(out)
+    assert len(records) == 1
+    assert records[0].leakage_status == "flagged_for_human_review"
+    assert records[0].gold_sources[0] != "1803.03467v4-Figure4-1.png"
+    with pytest.raises(ConfigurationError, match="exclusive"):
+        convert_spiqa_native(
+            gold, captions, out, exclude_flagged=True, only_flagged=True
+        )
+
+
 def test_target_larger_than_the_pool_is_refused(tmp_path, gold_files):
     gold, captions = gold_files
     with pytest.raises(ConfigurationError, match="only 2 are available"):
