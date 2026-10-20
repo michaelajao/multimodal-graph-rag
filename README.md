@@ -66,10 +66,12 @@ python -c "import torch; print(torch.cuda.get_device_name(0), torch.version.cuda
 ```
 
 Provider keys are read from the environment (and `.env`) when a command that
-needs them starts. The revision roster (the fifth generator and every judge)
-is served through OpenRouter under one `OPENROUTER_API_KEY`; the legacy
-generators keep their direct providers so results stay comparable with the
-first-submission runs. Prices are frozen per model in `configs/pricing_*.json`.
+needs them starts. Every model, generator, judge, and embedding alike, is
+served through OpenRouter under one `OPENROUTER_API_KEY`. The two open-weight
+Llama generators are pinned to one upstream provider each, so the served
+quantisation cannot change between runs. The roster is seven generators: the
+four legacy models, Qwen 3.7 Flash, and two strong-tier models (Gemini 3.8
+Flash and Qwen 3.8 Max). Prices are frozen per model in `configs/pricing_*.json`.
 `TESSERACT_CMD` points at the Tesseract binary if it is not on `PATH`. No key
 is required to run the tests or a dry run.
 
@@ -114,13 +116,14 @@ rag questions --protocol cross-paper --config configs/spiqa_cross_paper.json --c
 # ...or convert SPIQA's own human-curated QA, which needs no model and no keys
 rag questions --protocol spiqa-native --gold-file data/questions/spiqa_gold_qa.json --image-dir spiqa_images --out data/questions/questions_spiqa_native.json --target 0
 rag questions --protocol spiqa-native --gold-file data/questions/spiqa_gold_qa.json --image-dir spiqa_images --out data/questions/questions_spiqa_native_primary.json --target 150 --exclude-flagged
+rag questions --protocol spiqa-native --gold-file data/questions/spiqa_gold_qa.json --image-dir spiqa_images --out data/questions/questions_spiqa_native_flagged.json --target 0 --only-flagged
 
 # 3. Inspect the plan without spending credit, then run
 rag evaluate --config configs/primary_revision.json --dry-run
 rag evaluate --config configs/primary_revision.json --limit 5      # pilot
 rag evaluate --config configs/primary_revision.json
 
-# 4. Retrieval-only A/B for graph expansion (pre-registered primary outcome)
+# 4. Retrieval-only comparison of every passage arm (pre-registered primary outcome)
 rag retrieval-ab --config configs/primary_revision.json
 
 # 5. Freeze the runs a reported table may use, validate, and build tables and figures
@@ -143,17 +146,33 @@ after writing the completed rows as `detail_partial_*.csv`.
 
 | system                 | context supplied to the generator                                  |
 |------------------------|--------------------------------------------------------------------|
-| `baseline`             | dense top-`k` passages                                             |
-| `+KG`                  | baseline passages plus graph facts restricted to those passages    |
+| `dense-top3`           | dense top-3 passages                                               |
+| `baseline`             | dense top-`k` passages (`k` is the candidate budget, 5)            |
+| `bm25`                 | BM25 top-`k` over the same chunks                                  |
+| `hybrid-rrf`           | dense and BM25 rankings fused by reciprocal rank, top-`k`          |
+| `+KG`                  | dense top-3 plus graph facts restricted to those passages          |
 | `+KGret`               | dense top-3 plus graph-expanded passages, same total budget        |
+| `+lexical`             | dense top-3 plus chunks naming a question entity, no graph edges   |
+| `+random`              | dense top-3 plus random chunks from unretrieved sources            |
+| `+HippoRAG`            | HippoRAG 2 top-`k`, precomputed in its own environment             |
 | `+multimodal`          | baseline passages plus a CLIP-retrieved crop (pixels or caption)   |
-| `+both`                | `+KG` and `+multimodal` together                                   |
+| `+both`                | `+multimodal` plus graph facts restricted to its passages          |
 | `control:closed-book`  | no context                                                         |
 | `control:shuffled`     | unrelated passages of matched length                               |
 | `control:oracle`       | passages from every gold document                                  |
 | `control:partial-gold` | passages from the first gold document only                         |
+| `control:oracle-image` | baseline passages plus the gold crop in place of CLIP's            |
 
-Controls are switched on per config through the `controls` list.
+Controls are switched on per config through the `controls` list. Every
+passage-only arm uses the same prompt and shows passages without any marker of
+the arm that chose them, so the arms differ in retrieval alone. `dense-top3`
+is the control for `+KG` (same passages, no facts); `baseline` (dense top-5)
+is the reference for every five-passage arm.
+
+Judges write a one-sentence justification and then the verdict on its own
+line; the trace keeps the whole reply. Reasoning judges spend hidden tokens
+against the same cap, so run a `--limit 5` pilot and check the judge cost per
+call before a full run.
 
 ### Question sets and who wrote them
 
@@ -163,7 +182,8 @@ determines what a result can be claimed to show.
 | set                                           | n                   | authored by                                                                            |
 |-----------------------------------------------|---------------------|----------------------------------------------------------------------------------------|
 | `questions_spiqa_native`                      | 579 (447 unflagged) | **SPIQA test-A curators — human question, human answer, human crop-level provenance**  |
-| `questions_hotpotqa_bridge` / `_comparison`   | 50 + 50             | **HotpotQA annotators — human questions and human supporting facts**                   |
+| `questions_spiqa_native_primary` / `_flagged` | 150 + 132           | the screened sample and every caption-flagged item of the set above                    |
+| `questions_hotpotqa_bridge` / `_comparison`   | 100 + 100           | **HotpotQA annotators — human questions and human supporting facts**                   |
 | `questions_spiqa_multihop_cross`              | 50                  | DeepSeek, seeded from the triple store (`graph_seeded`)                                |
 | PubLayNet and SPIQA text/multihop/figure sets | 26–50 each          | DeepSeek (text) or Claude Haiku (figures)                                              |
 

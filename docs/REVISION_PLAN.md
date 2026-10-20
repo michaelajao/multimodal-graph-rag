@@ -158,17 +158,47 @@ Rules:
 Compare every retriever at the same candidate budget on HotpotQA bridge and
 comparison (100+ each) and, separately labelled, on the SPIQA cross set:
 
-| arm | status |
+| arm | system name |
 | --- | --- |
-| dense top-3 (current baseline) | exists |
-| dense top-5 (equal budget) | exists |
-| BM25 top-5 | `retrieval/baselines.py` |
-| BM25 + dense reciprocal-rank fusion top-5 | `retrieval/baselines.py` |
-| lexical entity expansion top-5, no graph edges | `retrieval/baselines.py` |
-| random passages matched to the +KGret budget | `retrieval/baselines.py` |
-| +KG (prompt-side injection) | exists |
-| +KGret top-5 | exists |
-| one published graph method (HippoRAG or LightRAG) on the primary sets | **not built; design in 5.1, HippoRAG 2 wrapped as a retrieval-only system** |
+| dense top-3 (current baseline) | `dense-top3` |
+| dense top-5 (equal budget) | `baseline` |
+| BM25 top-5 | `bm25` |
+| BM25 + dense reciprocal-rank fusion top-5 | `hybrid-rrf` |
+| lexical entity expansion top-5, no graph edges | `+lexical` |
+| random passages matched to the +KGret budget | `+random` |
+| +KG (prompt-side injection) | `+KG` |
+| +KGret top-5 | `+KGret` |
+| one published graph method on the primary sets | `+HippoRAG` (HippoRAG 2, retrieval file still to be produced, 5.1) |
+
+**Built 2026-10-20.** Every arm above is a generation system, and
+`rag retrieval-ab` reports gold completeness for all of them from the same
+retrieval functions the generation runs call. Decisions taken while building
+them:
+
+- **+KG uses dense top-3**, as the manuscript defines it and as the submitted
+  runs did; the package had silently moved it to the candidate budget (5).
+  `dense-top3` is its passage-matched control.
+- **One prompt for every passage arm, with no arm marker.** +KGret no longer
+  labels its added passages "graph-bridged" in the prompt or the judge
+  context, so the arms differ in retrieval alone. The trace still records
+  why each passage was chosen. The judge and +KGret prompts changed, so the
+  configs moved to `prompt_version` `evidence-attribution-v2`.
+- **BM25 and the hybrid run over the dense index's own chunks.** RRF fuses
+  the top 100 of each ranking with the usual constant 60; ties go to the
+  earlier chunk.
+- **Lexical expansion starts from the same entities as +KGret** (graph nodes
+  named in the question, whole word, at least five characters) but looks for
+  those names in chunk text instead of following edges to provenance. It
+  searches the same 300 dense candidates as +KGret and, like it, may add
+  fewer than two passages, so its passage count is at most five.
+- **Random padding** adds two random chunks from sources not in the dense
+  top-3, one per source, seeded per question.
+- **Every arm runs on all seven generators in one config per question type**
+  (`primary_revision.json` for bridge, `hotpotqa_comparison.json` for
+  comparison). The lean design ran the secondary arms on two generators, but
+  `rag paired-analysis` compares systems within one detail file, and the
+  manuscript's headline table pools every arm over the same generators. The
+  extra outputs are DeepSeek-judged text, about a dollar.
 
 Report for every arm: Recall@k, MRR, full-evidence completeness, candidate
 count, retrieved tokens, EM, F1, `contains`, judge accuracy, and the
@@ -318,7 +348,11 @@ Claude Haiku.
 
 - Keep the binary accuracy verdict, but have the strong judge write a
   one-sentence justification before the digit, stored in the run record for
-  audit. Parsing stays binary.
+  audit. Parsing stays binary. Built 2026-10-20 for every judge: the verdict
+  must be alone on the last line (a `Grade:` label is tolerated), anything
+  else stops the run, and the trace keeps the justification and the full
+  reply. The token cap rose from 8 to 1,024 because GPT-6.1 Sol and Opus 5.5
+  reason before answering and OpenRouter counts that against the cap.
 - Drop the relevancy judge. It is nearly always 1 and was a third of all judge
   calls. Keep accuracy and faithfulness.
 - **Synthetic calibration, run once per judge and prompt version.** Feed the
@@ -407,7 +441,20 @@ Retire "verified pixel-only"; use "model-screened pixel-only".
   headline claim depends on it, and it is listed as future work. The paper
   must say the visual results are for CLIP retrieval only.
 - Add an oracle-gold-image arm to separate image-retrieval failure from
-  figure-reading failure.
+  figure-reading failure. Built 2026-10-20 as the control `oracle-image`: the
+  baseline passages plus the gold crop (pixels) or its caption (captions),
+  so its gap to +multimodal is image retrieval alone. It is on in all three
+  figure configs, together with `+both`.
+- The caption-flagged contrast set (132 items, every flagged item rather than
+  a sample) is `data/questions/questions_spiqa_native_flagged.json`, run by
+  `configs/spiqa_native_flagged.json` under the primary set's protocol.
+  `rag questions --protocol spiqa-native --only-flagged` writes it.
+- Reproducibility gap found 2026-10-20: the committed
+  `spiqa_images/captions.json` (978 crops, from the August ingest) covers only
+  35 of the 579 gold crops, so converting the gold QA on a fresh checkout
+  yields 35 items, not 579. The 579-item set was converted on the desktop
+  against a newer caption file. Commit that file, or record its checksum in
+  the release manifest, before submission.
 - Report Recall@1 as the production ceiling, since only the top-1 crop is
   supplied. Recall@3 and @5 are diagnostic only.
 - Reconcile the 25/34 vs. n=35 denominator and name the unscorable item.
@@ -433,6 +480,15 @@ reviewer at DKE in late 2026 will ask why. The roster for the revision:
   out of the generator roster and keep it as the judge. That is the
   recommended default, because a clean judge is worth more than a fifth
   generator family.
+- **Add a strong tier (decided 2026-10-20).** Gemini 3.8 Flash
+  (`google/gemini-3.8-flash`, 0.825 / 4.125) and Qwen 3.8 Max
+  (`qwen/qwen3.8-max-0902`, a dated snapshot, 2.00 / 6.00), both
+  vision-capable, read from OpenRouter on 2026-10-20 and frozen in
+  `configs/pricing_2026-10-20.json`. Neither family judges, so the judge
+  rules are unchanged. Both think before answering, with thinking left at
+  the provider default as for Gemini Flash-Lite; the 800-token generation
+  cap includes that thinking, so the pilot must confirm no answer comes back
+  empty. Seven generators in total, in every config.
 - Every generator gets the same prompts, the same evidence bundles, and the
   same question checksums. Model version strings go in the run record.
 - The generator dimension is a robustness axis, not a set of replications.
@@ -558,6 +614,18 @@ same-family preference on the gpt4o-mini rows). GPT-6.1 Sol and Opus 5.5 are rea
 listing omits `temperature`, and judges are called with an 8-token cap, so run
 the `--limit 5` pilot first and confirm every judge returns a bare 0 or 1.
 The five-key table below is the pre-2026-10-20 setup.
+
+**Cost re-estimated 2026-10-20 (later the same day).** The configs now run
+seven generators, every retrieval arm on every generator, `+both` and the
+oracle-image arm on the figure sets, and the 132-item caption-flagged set.
+`docs/cost_model_2026-10-20.py` puts the whole revision at about **$174**
+with no hidden reasoning, and about **$407** if each thinking generator call
+spends 400 hidden tokens and each Sol or Opus call 300. GPT-6.1 Sol judging
+the figure sets is most of it, and the two vision modes double that part.
+The pilot measures the real reasoning spend; if it lands near the upper
+figure, the cheapest cuts are judging the caption-mode runs of the flagged
+set with a sample instead of in full, and checking whether OpenRouter serves
+a half-price `:batch` id for Sol. The lean-design tables below predate this.
 
 ### Where the models come from today
 

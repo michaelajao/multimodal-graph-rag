@@ -1,6 +1,13 @@
 import json
+from pathlib import Path
+
+import pytest
 
 from multimodal_graph_rag.cli import build_parser, main
+from multimodal_graph_rag.clients import GENERATORS
+from multimodal_graph_rag.config import load_experiment_config
+from multimodal_graph_rag.pipelines.evaluate import EvaluationSettings
+from multimodal_graph_rag.pipelines.systems import resolve_systems
 from multimodal_graph_rag.retrieval.comparators import write_retrievals
 from multimodal_graph_rag.schemas import load_questions
 
@@ -11,9 +18,29 @@ def test_dry_run_evaluate_reports_every_generator(capsys):
         == 0
     )
     out = capsys.readouterr().out
-    for model in ("gpt4o-mini", "gemini-flash-lite", "llama4-scout", "llama4-maverick"):
+    for model in GENERATORS:
         assert model in out
     assert "control:closed-book" in out
+
+
+EXPERIMENT_CONFIGS = sorted(
+    path
+    for path in Path("configs").glob("*.json")
+    if not path.name.startswith(("pricing_", "release_manifest"))
+)
+
+
+@pytest.mark.parametrize("config", EXPERIMENT_CONFIGS, ids=lambda path: path.stem)
+def test_every_repository_config_resolves(config):
+    loaded = load_experiment_config(config)
+    assert set(loaded.generators) <= set(GENERATORS)
+    for model in loaded.generators:
+        resolve_systems(
+            EvaluationSettings.from_config(
+                loaded, model, pricing_captured_on="dry-run"
+            ).systems
+        )
+    assert Path(loaded.question_set).is_file()
 
 
 def test_invalid_manifest_is_reported_not_raised(tmp_path, capsys):
