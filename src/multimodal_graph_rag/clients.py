@@ -7,19 +7,30 @@ loaded explicitly; a model without a frozen price cannot be charged, and a
 provider failure that survives the retry budget is raised, never converted into
 an empty answer.
 
-Generators under comparison
-    gpt4o-mini          OpenAI      closed  vision
-    gemini-flash-lite   Google      closed  vision (thinking tokens are billed
-                                            as output tokens and are left on)
-    llama4-maverick     DeepInfra   open    vision (FP8 serve)
-    llama4-scout        DeepInfra   open    vision
+Every model is served through OpenRouter with one key.
+
+Generators under comparison, all vision-capable
+    gpt4o-mini          OpenAI      closed  legacy
+    gemini-flash-lite   Google      closed  legacy
+    llama4-maverick     Meta        open    legacy, pinned to Parasail (FP8)
+    llama4-scout        Meta        open    legacy, pinned to DeepInfra
+    qwen3.7-flash       Alibaba     open    current, low cost
+    gemini-3.8-flash    Google      closed  current, strong tier
+    qwen3.8-max         Alibaba     closed  current, strong tier
+The Gemini and Qwen 3.8 models think before answering; thinking tokens are
+billed as output tokens and are left at the provider default.
 
 Diagnostic generator (never part of the reported comparison)
     gpt4o               OpenAI
 
-Judges and question authors (outside every generator family)
-    deepseek            DeepSeek    text judge and text question author
-    claude-haiku        Anthropic   vision judge and figure question author
+Judges
+    gpt-6.1-sol         OpenAI      primary judge on the figure sets; shares a
+                                    family with gpt4o-mini (a stated limitation)
+    deepseek-v4-pro     DeepSeek    text judge
+    grok-4.7            xAI         second vision judge
+    claude-opus-5.5     Anthropic   adjudicator on disagreements
+    deepseek            DeepSeek    legacy text judge and text question author
+    claude-haiku        Anthropic   legacy vision judge and figure question author
 
 Embeddings
     text-embedding-3-small  OpenAI
@@ -31,6 +42,7 @@ import base64
 import io
 import json
 import os
+import re
 import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
@@ -170,6 +182,28 @@ MODELS: dict[str, ModelSpec] = {
         vision=True,
         base_url=OPENROUTER_BASE_URL,
     ),
+    # Strong-tier generators, added 2026-10-20 so the roster is not limited to
+    # 2024-25 models. Neither family judges, so the judge rules are unchanged.
+    "gemini-3.8-flash": ModelSpec(
+        name="gemini-3.8-flash",
+        sdk="openai",
+        model="google/gemini-3.8-flash",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="Google/OpenRouter",
+        access="closed",
+        vision=True,
+        base_url=OPENROUTER_BASE_URL,
+    ),
+    "qwen3.8-max": ModelSpec(
+        name="qwen3.8-max",
+        sdk="openai",
+        model="qwen/qwen3.8-max-0902",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="Alibaba/OpenRouter",
+        access="closed",
+        vision=True,
+        base_url=OPENROUTER_BASE_URL,
+    ),
     "gpt-6.1-sol": ModelSpec(
         name="gpt-6.1-sol",
         sdk="openai",
@@ -218,6 +252,8 @@ GENERATORS: tuple[str, ...] = (
     "llama4-maverick",
     "llama4-scout",
     "qwen3.7-flash",
+    "gemini-3.8-flash",
+    "qwen3.8-max",
 )
 DIAGNOSTICS: tuple[str, ...] = ("gpt4o",)
 JUDGES: tuple[str, ...] = (
@@ -231,6 +267,10 @@ JUDGES: tuple[str, ...] = (
 EMBEDDING_MODEL = "text-embedding-3-small"
 CAPTION_MODEL = "gpt4o"
 EXTRACTION_MODEL = "gpt4o-mini"
+# Room for a one-sentence justification and, on reasoning judges, the hidden
+# reasoning that OpenRouter counts against the same cap.
+JUDGE_MAX_TOKENS = 1024
+VERDICT_LINE = re.compile(r"^\W*(?:(?:grade|verdict)\W*)?([01])\W*$", re.IGNORECASE)
 
 RETRYABLE_ERRORS: tuple[type[BaseException], ...] = (
     openai.RateLimitError,
@@ -557,14 +597,11 @@ class ModelClient:
     def judge(
         self, name: str, prompt: str, images: Sequence[str | Path] = ()
     ) -> tuple[int, GenResult]:
-        """Binary judgement: the model must answer with exactly ``0`` or ``1``."""
-        result = self.call(name, user=prompt, images=images, max_tokens=8)
-        verdict = result.text.strip()
-        if verdict not in {"0", "1"}:
-            raise InvalidModelOutputError(
-                f"judge {name} returned {verdict!r} instead of a bare 0 or 1"
-            )
-        return int(verdict), result
+        """Binary judgement given after a justification, on a line of its own."""
+        result = self.call(
+            name, user=prompt, images=images, max_tokens=JUDGE_MAX_TOKENS
+        )
+        return parse_verdict(name, result.text), result
 
     def embed(
         self,
@@ -610,3 +647,18 @@ class ModelClient:
             input_tokens=total_tokens,
             cost_usd=price.cost(total_tokens, 0),
         )
+
+
+def parse_verdict(judge: str, text: str) -> int:
+    """The 0 or 1 on the last non-empty line of a judge reply.
+
+    The line may carry a ``Grade:`` or ``Verdict:`` label and stray markdown,
+    but nothing else; any other final line is an error, never a guess.
+    """
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    match = VERDICT_LINE.match(lines[-1]) if lines else None
+    if match is None:
+        raise InvalidModelOutputError(
+            f"judge {judge} did not end with a line holding only 0 or 1: {text!r}"
+        )
+    return int(match.group(1))

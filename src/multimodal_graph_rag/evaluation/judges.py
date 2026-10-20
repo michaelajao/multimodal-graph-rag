@@ -1,9 +1,15 @@
-"""Binary LLM judges that sit outside every generator family.
+"""Binary LLM judges that justify each verdict in one sentence.
 
-What is blocked on keys. Triple extraction for the new chunks, model review of the model-authored sets, synthetic judge calibration, and every paid run. The next item that needs no key is the HippoRAG adapter from section 5.1, which I can build with stub-backed tests and a separate comparators environment whenever you want it started.What is blocked on keys. Triple extraction for the new chunks, model review of the model-authored sets, synthetic judge calibration, and every paid run. The next item that needs no key is the HippoRAG adapter from section 5.1, which I can build with stub-backed tests and a separate comparators environment whenever you want it started.The text judge grades accuracy and faithfulness on text evidence; the
+The text judge grades accuracy and faithfulness on text evidence; the
 vision judge grades faithfulness on figure questions with the crop attached,
 because a text-only model cannot check an answer against an image it cannot
-see. Every verdict is returned with the raw call so it can be audited later.
+see. Each judge writes a one-sentence justification and then the verdict on a
+line of its own; parsing stays binary, and the full reply is kept with every
+verdict so it can be audited later.
+
+Judges are a tier above the generators they grade, but not always from a
+different family: GPT-6.1 Sol grades gpt4o-mini, and DeepSeek V4 Pro grades
+the DeepSeek-authored question sets. Both overlaps are stated limitations.
 
 These judges are NOT calibrated against human labels collected for this study.
 Where the reference answer is a short span, prefer the reference-based metrics
@@ -21,23 +27,29 @@ from pathlib import Path
 
 from ..clients import GenResult, ModelClient
 
+VERDICT_INSTRUCTION = (
+    "First write one sentence explaining your decision. Then, on a new final "
+    "line, write only the digit {one} or {zero}."
+)
 ANSWER_PROMPT = (
     "You are grading a question-answering system. Decide whether the GENERATED "
     "answer is factually correct, given the EXPECTED answer. Minor wording "
-    "differences are fine. Reply with ONLY the digit 1 or 0.\n\n"
+    "differences are fine.\n\n"
     "QUESTION: {question}\nEXPECTED: {expected}\nGENERATED: {generated}\n\n"
-    "Grade (1 or 0):"
+    + VERDICT_INSTRUCTION.format(one="1 (correct)", zero="0 (incorrect)")
 )
 TEXT_FAITHFULNESS_PROMPT = (
     "Check whether an answer is FAITHFUL to the context (every claim supported, "
-    "nothing invented). Reply with ONLY the digit 1 or 0.\n\n"
-    "CONTEXT:\n{context}\n\nANSWER:\n{generated}\n\nGrade (1 or 0):"
+    "nothing invented).\n\n"
+    "CONTEXT:\n{context}\n\nANSWER:\n{generated}\n\n"
+    + VERDICT_INSTRUCTION.format(one="1 (faithful)", zero="0 (not faithful)")
 )
 VISION_FAITHFULNESS_PROMPT = (
     "Check whether the ANSWER is faithful to the evidence: every claim "
     "supported by the attached image and/or the text context, nothing "
-    "invented. Reply with ONLY the digit 1 or 0.\n\n"
-    "TEXT CONTEXT:\n{context}\n\nANSWER:\n{generated}\n\nGrade (1 or 0):"
+    "invented.\n\n"
+    "TEXT CONTEXT:\n{context}\n\nANSWER:\n{generated}\n\n"
+    + VERDICT_INSTRUCTION.format(one="1 (faithful)", zero="0 (not faithful)")
 )
 
 
@@ -46,10 +58,18 @@ class Verdict:
     value: int
     call: GenResult
 
+    @property
+    def justification(self) -> str:
+        """Everything the judge wrote before the verdict line."""
+        lines = [line for line in self.call.text.splitlines() if line.strip()]
+        return "\n".join(lines[:-1]).strip()
+
     def to_dict(self) -> dict[str, object]:
         return {
             "value": self.value,
             "judge": self.call.model,
+            "justification": self.justification,
+            "response": self.call.text,
             "input_tokens": self.call.input_tokens,
             "output_tokens": self.call.output_tokens,
             "cost_usd": self.call.cost_usd,

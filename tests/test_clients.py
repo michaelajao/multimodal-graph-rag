@@ -5,6 +5,7 @@ import pytest
 
 from multimodal_graph_rag.clients import (
     GENERATORS,
+    JUDGE_MAX_TOKENS,
     JUDGES,
     MODELS,
     ModelClient,
@@ -133,10 +134,23 @@ def test_transient_errors_are_retried_then_raised():
         exhausted.call("gpt4o-mini", user="q")
 
 
-def test_judge_rejects_anything_but_a_bare_digit():
-    assert _client(["1"]).judge("deepseek", "grade")[0] == 1
+def test_judge_reads_the_verdict_from_the_last_line():
+    client = _client(["The generated answer names the same person.\n1"])
+    value, call = client.judge("deepseek", "grade")
+    assert value == 1
+    assert call.text.startswith("The generated answer")
+    assert client._providers["deepseek"].last_kwargs["max_tokens"] == JUDGE_MAX_TOKENS
+    labelled = _client(["It contradicts the reference.\n\n**Grade: 0**"])
+    assert labelled.judge("deepseek", "grade")[0] == 0
+    assert _client(["0"]).judge("deepseek", "grade")[0] == 0
+
+
+@pytest.mark.parametrize(
+    "reply", ["Sure! 1", "The answer is right, so 1", "Correct.\n1 or 0", ""]
+)
+def test_judge_rejects_a_reply_without_a_verdict_line(reply):
     with pytest.raises(InvalidModelOutputError):
-        _client(["Sure! 1"]).judge("deepseek", "grade")
+        _client([reply]).judge("deepseek", "grade")
 
 
 def test_images_require_a_vision_model_and_existing_files(tmp_path):
@@ -170,6 +184,8 @@ OPENROUTER_ROSTER = {
     "claude-opus-5.5": ("anthropic/claude-opus-5.5", True),
     "deepseek-v4-pro": ("deepseek/deepseek-v4-pro-0813", False),
     "grok-4.7": ("x-ai/grok-4.7", True),
+    "gemini-3.8-flash": ("google/gemini-3.8-flash", True),
+    "qwen3.8-max": ("qwen/qwen3.8-max-0902", True),
 }
 
 
@@ -200,8 +216,9 @@ def test_pinned_models_send_a_no_fallback_provider_order():
     assert "extra_body" not in stub.last_kwargs
 
 
-def test_fifth_generator_and_new_judges_are_registered_by_role():
-    assert "qwen3.7-flash" in GENERATORS
+def test_current_generators_and_new_judges_are_registered_by_role():
+    for generator in ("qwen3.7-flash", "gemini-3.8-flash", "qwen3.8-max"):
+        assert generator in GENERATORS
     assert GENERATORS[:4] == (
         "gpt4o-mini",
         "gemini-flash-lite",
