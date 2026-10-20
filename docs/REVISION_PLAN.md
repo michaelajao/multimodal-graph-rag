@@ -356,7 +356,11 @@ Claude Haiku.
   must be alone on the last line (a `Grade:` label is tolerated), anything
   else stops the run, and the trace keeps the justification and the full
   reply. The token cap rose from 8 to 1,024 because GPT-6.1 Sol and Opus 5.5
-  reason before answering and OpenRouter counts that against the cap.
+  reason before answering and OpenRouter counts that against the cap. The
+  2026-10-20 HotpotQA pilot showed DeepSeek V4 Pro reasons too (median 31,
+  95th percentile 266, maximum 715 output tokens over 412 judge calls) and one
+  call exhausted 1,024 and returned nothing, stopping the run, so the cap is
+  now 4,096.
 - Drop the relevancy judge. It is nearly always 1 and was a third of all judge
   calls. Keep accuracy and faithfulness.
 - **Synthetic calibration, run once per judge and prompt version.** Feed the

@@ -270,8 +270,10 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 CAPTION_MODEL = "gpt4o"
 EXTRACTION_MODEL = "gpt4o-mini"
 # Room for a one-sentence justification and, on reasoning judges, the hidden
-# reasoning that OpenRouter counts against the same cap.
-JUDGE_MAX_TOKENS = 1024
+# reasoning that OpenRouter counts against the same cap. DeepSeek V4 Pro used
+# up to 715 tokens in the 2026-10-20 pilot and once exhausted 1,024, returning
+# an empty reply; only tokens actually used are billed.
+JUDGE_MAX_TOKENS = 4096
 VERDICT_LINE = re.compile(r"^\W*(?:(?:grade|verdict)\W*)?([01])\W*$", re.IGNORECASE)
 
 RETRYABLE_ERRORS: tuple[type[BaseException], ...] = (
