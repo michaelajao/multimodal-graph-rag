@@ -1,5 +1,6 @@
 """Published-comparator adapter: precomputed retrievals served as passages."""
 
+import os
 from types import SimpleNamespace
 
 import pytest
@@ -12,7 +13,7 @@ from multimodal_graph_rag.retrieval.comparators import (
     precompute_hipporag,
     write_retrievals,
 )
-from multimodal_graph_rag.retrieval.hipporag_index import main
+from multimodal_graph_rag.retrieval.hipporag_index import _hipporag_factory, main
 from multimodal_graph_rag.schemas import load_questions
 
 
@@ -172,11 +173,12 @@ def test_index_entry_point_builds_engine_from_arguments_and_writes_file(
     text_of = {c.source: c.text for c in chunks}
     seen = {}
 
-    def factory(*, save_dir, llm_model_name, embedding_model_name):
+    def factory(*, save_dir, llm_model_name, embedding_model_name, base_url):
         seen.update(
             save_dir=save_dir,
             llm_model_name=llm_model_name,
             embedding_model_name=embedding_model_name,
+            base_url=base_url,
         )
         return _StubHippoRAG(
             {q.question: [text_of[q.gold_sources[0]]] for q in questions}
@@ -194,9 +196,9 @@ def test_index_entry_point_builds_engine_from_arguments_and_writes_file(
             "--save-dir",
             str(tmp_path / "index"),
             "--llm",
-            "gpt-4o-mini",
+            "openai/gpt-4o-mini",
             "--embedding",
-            "text-embedding-3-small",
+            "openai/text-embedding-3-small",
             "--num-to-retrieve",
             "1",
         ],
@@ -205,9 +207,35 @@ def test_index_entry_point_builds_engine_from_arguments_and_writes_file(
     assert code == 0
     assert seen == {
         "save_dir": str(tmp_path / "index"),
-        "llm_model_name": "gpt-4o-mini",
-        "embedding_model_name": "text-embedding-3-small",
+        "llm_model_name": "openai/gpt-4o-mini",
+        "embedding_model_name": "openai/text-embedding-3-small",
+        "base_url": "https://openrouter.ai/api/v1",
     }
     loaded = PrecomputedRetrievals.load(out, corpus_dir=corpus_dir)
     assert loaded.num_to_retrieve == 1
-    assert loaded.metadata["llm_model"] == "gpt-4o-mini"
+    assert loaded.metadata["llm_model"] == "openai/gpt-4o-mini"
+
+
+def test_hipporag_factory_requires_the_openrouter_key(monkeypatch):
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    with pytest.raises(SystemExit, match="OPENROUTER_API_KEY"):
+        _hipporag_factory(
+            save_dir="unused",
+            llm_model_name="openai/gpt-4o-mini",
+            embedding_model_name="openai/text-embedding-3-small",
+            base_url="https://openrouter.ai/api/v1",
+        )
+
+
+def test_hipporag_factory_exports_the_openrouter_key_as_openai_key(monkeypatch):
+    monkeypatch.setenv("OPENROUTER_API_KEY", "or-key")
+    monkeypatch.setenv("OPENAI_API_KEY", "stale-openai-key")
+    # The import of hipporag fails in the main environment, after the key is exported.
+    with pytest.raises(SystemExit, match="hipporag is not installed"):
+        _hipporag_factory(
+            save_dir="unused",
+            llm_model_name="openai/gpt-4o-mini",
+            embedding_model_name="openai/text-embedding-3-small",
+            base_url="https://openrouter.ai/api/v1",
+        )
+    assert os.environ["OPENAI_API_KEY"] == "or-key"
