@@ -140,9 +140,13 @@ Rules:
   10,108 chunks; the legacy corpus was a 300-question pool with seed 42) and
   wrote 100 bridge and 100 comparison questions. The pool had to double
   because only about a fifth of HotpotQA is comparison-type, so the new sets
-  are not supersets of the legacy 50s and the corpus is harder. 4,974 chunks
-  have no cached triples and need one extraction call each (about $1) once
-  an OpenAI key exists.
+  are not supersets of the legacy 50s and the corpus is harder. Done
+  2026-10-20: the 4,969 uncached chunks were extracted with gpt4o-mini
+  through OpenRouter (about $0.45), giving 72,946 triples over the corpus.
+  The parser now accepts a complete list followed by a stray closing bracket;
+  one chunk (`Duke_Tumatoe.txt`, a distractor and not gold for any question)
+  never parsed because its source text has an unbalanced quote, and is cached
+  with no triples.
 - Every model-authored item passes the model review in 7.3 before it enters
   a config. Record the reviewer verdict on the `QuestionRecord`, drop
   rejects, and report the rejection rate per set in the appendix.

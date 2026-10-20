@@ -48,6 +48,16 @@ def test_parse_triples_rejects_malformed_output():
         parse_triples('{"a": 1}')
 
 
+def test_parse_triples_tolerates_only_stray_closing_brackets():
+    assert parse_triples('[["a","b","c"]]}') == [("a", "b", "c")]
+    with pytest.raises(InvalidModelOutputError):
+        parse_triples('[["a","b","c"]] and more')
+    with pytest.raises(InvalidModelOutputError):
+        parse_triples('[["a","b","c"]] [["x","y","z"]]')
+    with pytest.raises(InvalidModelOutputError):
+        parse_triples('[["a","b",""" ""]]')
+
+
 def test_corrupt_cache_and_missing_chunks_are_explicit(tmp_path, corpus_dir):
     corrupt = tmp_path / "bad.json"
     corrupt.write_text("{", encoding="utf-8")
