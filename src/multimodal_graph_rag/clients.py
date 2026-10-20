@@ -276,7 +276,14 @@ EXTRACTION_MODEL = "gpt4o-mini"
 JUDGE_MAX_TOKENS = 4096
 VERDICT_LINE = re.compile(r"^\W*(?:(?:grade|verdict)\W*)?([01])\W*$", re.IGNORECASE)
 
+
+class EmptyResponseError(Exception):
+    """A completion with no choices, which OpenRouter returns when the upstream
+    provider fails mid-request; the error it carries is kept in the message."""
+
+
 RETRYABLE_ERRORS: tuple[type[BaseException], ...] = (
+    EmptyResponseError,
     openai.RateLimitError,
     openai.APIConnectionError,
     openai.APITimeoutError,
@@ -579,6 +586,12 @@ class ModelClient:
                 **extra,
             )
             latency = (time.perf_counter() - started) * 1000
+            if not response.choices:
+                extra_fields = getattr(response, "model_extra", None) or {}
+                raise EmptyResponseError(
+                    f"{spec.name} returned no choices; "
+                    f"error={getattr(response, 'error', None) or extra_fields.get('error')}"
+                )
             text = response.choices[0].message.content or ""
             usage = response.usage
             if usage is None:

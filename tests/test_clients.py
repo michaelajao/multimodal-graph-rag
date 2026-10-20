@@ -40,6 +40,10 @@ class _StubProvider:
         reply = self.replies.pop(0)
         if isinstance(reply, BaseException):
             raise reply
+        if reply is None:  # OpenRouter's shape when the upstream provider fails
+            return SimpleNamespace(
+                choices=None, usage=None, error={"code": 502, "message": "upstream"}
+            )
         return SimpleNamespace(
             choices=[SimpleNamespace(message=SimpleNamespace(content=reply))],
             usage=SimpleNamespace(prompt_tokens=10, completion_tokens=5),
@@ -131,6 +135,14 @@ def test_transient_errors_are_retried_then_raised():
     assert client.call("gpt4o-mini", user="q").text == "ok"
     exhausted = _client([OSError("down")] * 5)
     with pytest.raises(ProviderError, match="5 attempts"):
+        exhausted.call("gpt4o-mini", user="q")
+
+
+def test_a_response_with_no_choices_is_retried_then_reported():
+    client = _client([None, "ok"])
+    assert client.call("gpt4o-mini", user="q").text == "ok"
+    exhausted = _client([None] * 5)
+    with pytest.raises(ProviderError, match="no choices.*upstream"):
         exhausted.call("gpt4o-mini", user="q")
 
 
