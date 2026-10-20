@@ -3,6 +3,7 @@
 # stripped by an editor trimming the end of the file, which silently re-tracked
 # the manuscript on the next `git add -A`.
 paper/
+docs/Graph_Rag/
 
 # Secrets
 .env
