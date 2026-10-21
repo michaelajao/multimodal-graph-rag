@@ -5,6 +5,7 @@ import pytest
 
 from multimodal_graph_rag.clients import (
     GENERATORS,
+    JUDGE_ATTEMPTS,
     JUDGE_MAX_TOKENS,
     JUDGES,
     MODELS,
@@ -162,7 +163,16 @@ def test_judge_reads_the_verdict_from_the_last_line():
 )
 def test_judge_rejects_a_reply_without_a_verdict_line(reply):
     with pytest.raises(InvalidModelOutputError):
-        _client([reply]).judge("deepseek", "grade")
+        _client([reply] * JUDGE_ATTEMPTS).judge("deepseek", "grade")
+
+
+def test_judge_asks_again_after_a_cut_off_reply_and_keeps_its_cost():
+    client = _client(["The answer introduces", "It names the same person.\n1"])
+    value, call = client.judge("deepseek", "grade")
+    assert value == 1
+    assert call.text.startswith("It names")
+    # each stub reply costs 10 input and 5 output tokens at $1 / $2 per million
+    assert call.cost_usd == pytest.approx(2 * (10 * 1.0 + 5 * 2.0) / 1e6)
 
 
 def test_images_require_a_vision_model_and_existing_files(tmp_path):

@@ -45,7 +45,7 @@ import os
 import re
 import time
 from collections.abc import Callable, Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import anthropic
@@ -274,6 +274,9 @@ EXTRACTION_MODEL = "gpt4o-mini"
 # up to 715 tokens in the 2026-10-20 pilot and once exhausted 1,024, returning
 # an empty reply; only tokens actually used are billed.
 JUDGE_MAX_TOKENS = 4096
+# DeepSeek V4 Pro once returned a three-word reply with no verdict on the full
+# HotpotQA run (2026-10-21); such replies are asked again before the run stops.
+JUDGE_ATTEMPTS = 3
 VERDICT_LINE = re.compile(r"^\W*(?:(?:grade|verdict)\W*)?([01])\W*$", re.IGNORECASE)
 
 
@@ -614,11 +617,27 @@ class ModelClient:
     def judge(
         self, name: str, prompt: str, images: Sequence[str | Path] = ()
     ) -> tuple[int, GenResult]:
-        """Binary judgement given after a justification, on a line of its own."""
-        result = self.call(
-            name, user=prompt, images=images, max_tokens=JUDGE_MAX_TOKENS
-        )
-        return parse_verdict(name, result.text), result
+        """Binary judgement given after a justification, on a line of its own.
+
+        A reply with no verdict line (in practice a reply cut off after a few
+        words) is asked again, up to ``JUDGE_ATTEMPTS`` times in all; the verdict
+        always comes from one complete reply, and a reply that is malformed every
+        time still stops the run. Discarded attempts stay in the cost.
+        """
+        spent = 0.0
+        for attempt in range(1, JUDGE_ATTEMPTS + 1):
+            result = self.call(
+                name, user=prompt, images=images, max_tokens=JUDGE_MAX_TOKENS
+            )
+            try:
+                value = parse_verdict(name, result.text)
+            except InvalidModelOutputError:
+                spent += result.cost_usd
+                if attempt == JUDGE_ATTEMPTS:
+                    raise
+                continue
+            return value, replace(result, cost_usd=result.cost_usd + spent)
+        raise AssertionError("unreachable")
 
     def embed(
         self,
