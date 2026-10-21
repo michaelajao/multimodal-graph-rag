@@ -441,7 +441,10 @@ class ModelClient:
         self,
         pricing: PricingSnapshot,
         *,
-        max_retries: int = 5,
+        # Eight attempts wait 1+2+...+64 s, about two minutes in all: long enough
+        # to ride out an upstream 429 on a model pinned to a single provider
+        # (Mistral Small 4 hit one when five generators started together).
+        max_retries: int = 8,
         retry_base_seconds: float = 2.0,
         environ: Mapping[str, str] | None = None,
         sleep: Callable[[float], None] = time.sleep,
