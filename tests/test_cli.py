@@ -18,8 +18,10 @@ def test_dry_run_evaluate_reports_every_generator(capsys):
         == 0
     )
     out = capsys.readouterr().out
-    for model in GENERATORS:
+    roster = load_experiment_config("configs/primary_revision.json").generators
+    for model in roster:
         assert model in out
+    assert set(roster) <= set(GENERATORS)
     assert "control:closed-book" in out
 
 

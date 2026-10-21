@@ -9,14 +9,16 @@ an empty answer.
 
 Every model is served through OpenRouter with one key.
 
-Generators under comparison, all vision-capable
-    gpt4o-mini          OpenAI      closed  legacy
+Generators, all vision-capable. The revision configs run the last seven; the
+first two are kept for the submitted paper's runs only.
+    gpt4o-mini          OpenAI      closed  legacy only (shut down 2027-01-14)
+    llama4-maverick     Meta        open    legacy only, pinned to Parasail (FP8)
     gemini-flash-lite   Google      closed  legacy
-    llama4-maverick     Meta        open    legacy, pinned to Parasail (FP8)
     llama4-scout        Meta        open    legacy, pinned to DeepInfra
     qwen3.7-flash       Alibaba     closed  current, low cost
     gpt-6-luna          OpenAI      closed  current, low cost; OpenAI's named
                                             replacement for gpt4o-mini
+    mistral-small-4     Mistral     open    current, low cost, pinned to Mistral
     gemini-3.8-flash    Google      closed  current, strong tier
     qwen3.8-max         Alibaba     closed  current, strong tier
 The Gemini, Qwen 3.8, and Luna models think before answering; thinking tokens
@@ -186,10 +188,24 @@ MODELS: dict[str, ModelSpec] = {
         vision=True,
         base_url=OPENROUTER_BASE_URL,
     ),
+    # Added 2026-10-21 in place of gpt4o-mini and llama4-maverick, which the
+    # revision configs no longer run (both stay registered for the legacy runs).
+    # Open weights (Mistral-Small-4-119B-2603), so pinned like the Llama models;
+    # Mistral is the only provider OpenRouter lists for it.
+    "mistral-small-4": ModelSpec(
+        name="mistral-small-4",
+        sdk="openai",
+        model="mistralai/mistral-small-2603",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="Mistral/OpenRouter",
+        access="open",
+        vision=True,
+        base_url=OPENROUTER_BASE_URL,
+        providers=("Mistral",),
+    ),
     # Added 2026-10-21. OpenAI shuts gpt4o-mini down on 2027-01-14 and names
-    # GPT-6 Luna as its replacement; running both keeps the legacy row and
-    # shows its successor. Same family as the gpt-6.1-sol judge, a limitation
-    # already stated for gpt4o-mini.
+    # GPT-6 Luna as its replacement. Same family as the gpt-6.1-sol judge, a
+    # limitation stated in the paper.
     "gpt-6-luna": ModelSpec(
         name="gpt-6-luna",
         sdk="openai",
@@ -273,6 +289,7 @@ GENERATORS: tuple[str, ...] = (
     "gemini-3.8-flash",
     "qwen3.8-max",
     "gpt-6-luna",
+    "mistral-small-4",
 )
 DIAGNOSTICS: tuple[str, ...] = ("gpt4o",)
 JUDGES: tuple[str, ...] = (

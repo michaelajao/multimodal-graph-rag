@@ -5,7 +5,7 @@
   "corpus_dir": "spiqa_corpus",
   "question_set": "data/questions/questions_spiqa_native_flagged.json",
   "systems": ["baseline", "+multimodal", "+both"],
-  "generators": ["gpt4o-mini", "gemini-flash-lite", "llama4-scout", "llama4-maverick", "qwen3.7-flash", "gemini-3.8-flash", "qwen3.8-max", "gpt-6-luna"],
+  "generators": ["gemini-flash-lite", "llama4-scout", "qwen3.7-flash", "gpt-6-luna", "mistral-small-4", "gemini-3.8-flash", "qwen3.8-max"],
   "pricing_snapshot": "configs/pricing_2026-10-20.json",
   "retrieval_method": "dense-plus-clip",
   "candidate_budget": 5,

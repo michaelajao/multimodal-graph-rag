@@ -5,7 +5,7 @@
   "corpus_dir": "hotpotqa_corpus",
   "question_set": "data/questions/questions_hotpotqa_comparison.json",
   "systems": ["dense-top3", "baseline", "bm25", "hybrid-rrf", "+KG", "+KGret", "+lexical", "+random", "+HippoRAG"],
-  "generators": ["gpt4o-mini", "gemini-flash-lite", "llama4-scout", "llama4-maverick", "qwen3.7-flash", "gemini-3.8-flash", "qwen3.8-max", "gpt-6-luna"],
+  "generators": ["gemini-flash-lite", "llama4-scout", "qwen3.7-flash", "gpt-6-luna", "mistral-small-4", "gemini-3.8-flash", "qwen3.8-max"],
   "pricing_snapshot": "configs/pricing_2026-10-20.json",
   "retrieval_method": "dense-plus-graph-expansion",
   "candidate_budget": 5,

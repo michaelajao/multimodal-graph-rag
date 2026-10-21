@@ -209,6 +209,7 @@ OPENROUTER_ROSTER = {
     "gemini-3.8-flash": ("google/gemini-3.8-flash", True),
     "qwen3.8-max": ("qwen/qwen3.8-max-0902", True),
     "gpt-6-luna": ("openai/gpt-6-luna", True),
+    "mistral-small-4": ("mistralai/mistral-small-2603", True),
 }
 
 
@@ -240,7 +241,13 @@ def test_pinned_models_send_a_no_fallback_provider_order():
 
 
 def test_current_generators_and_new_judges_are_registered_by_role():
-    for generator in ("qwen3.7-flash", "gemini-3.8-flash", "qwen3.8-max", "gpt-6-luna"):
+    for generator in (
+        "qwen3.7-flash",
+        "gemini-3.8-flash",
+        "qwen3.8-max",
+        "gpt-6-luna",
+        "mistral-small-4",
+    ):
         assert generator in GENERATORS
     assert GENERATORS[:4] == (
         "gpt4o-mini",
