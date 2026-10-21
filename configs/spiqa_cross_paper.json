@@ -5,7 +5,7 @@
   "corpus_dir": "spiqa_corpus",
   "question_set": "data/questions/questions_spiqa_multihop_cross.json",
   "systems": ["baseline", "+KG", "+KGret"],
-  "generators": ["llama4-scout", "gpt-6-luna", "mistral-small-4", "gemini-3.8-flash", "qwen3.8-max"],
+  "generators": ["llama4-scout", "gpt-6-luna", "gemma-4-31b", "gemini-3.8-flash", "qwen3.8-max"],
   "pricing_snapshot": "configs/pricing_2026-10-20.json",
   "retrieval_method": "dense-plus-graph-expansion",
   "candidate_budget": 5,

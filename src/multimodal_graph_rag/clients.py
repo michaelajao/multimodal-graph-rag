@@ -18,7 +18,7 @@ first four are kept for the submitted paper's runs and the pilots only.
     llama4-scout        Meta        open    legacy, pinned to DeepInfra
     gpt-6-luna          OpenAI      closed  current, low cost; OpenAI's named
                                             replacement for gpt4o-mini
-    mistral-small-4     Mistral     open    current, low cost, pinned to Mistral
+    gemma-4-31b         Google      open    current, low cost, pinned to Crusoe (bf16)
     gemini-3.8-flash    Google      closed  current, strong tier
     qwen3.8-max         Alibaba     closed  current, strong tier
 The Gemini, Qwen 3.8, and Luna models think before answering; thinking tokens
@@ -188,10 +188,23 @@ MODELS: dict[str, ModelSpec] = {
         vision=True,
         base_url=OPENROUTER_BASE_URL,
     ),
-    # Added 2026-10-21 in place of gpt4o-mini and llama4-maverick, which the
-    # revision configs no longer run (both stay registered for the legacy runs).
-    # Open weights (Mistral-Small-4-119B-2603), so pinned like the Llama models;
-    # Mistral is the only provider OpenRouter lists for it.
+    # The revision's open-weight model from 2026-10-21, in place of
+    # mistral-small-4: Mistral is that model's only provider and OpenRouter's
+    # shared capacity for it stayed rate-limited for over six minutes under
+    # load. Gemma 4 31B has fifteen providers; it is pinned to Crusoe, which
+    # serves the unquantised (bf16) weights.
+    "gemma-4-31b": ModelSpec(
+        name="gemma-4-31b",
+        sdk="openai",
+        model="google/gemma-4-31b-it",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="Google/OpenRouter",
+        access="open",
+        vision=True,
+        base_url=OPENROUTER_BASE_URL,
+        providers=("Crusoe",),
+    ),
+    # Registered 2026-10-21 but never run (see gemma-4-31b).
     "mistral-small-4": ModelSpec(
         name="mistral-small-4",
         sdk="openai",
@@ -289,7 +302,7 @@ GENERATORS: tuple[str, ...] = (
     "gemini-3.8-flash",
     "qwen3.8-max",
     "gpt-6-luna",
-    "mistral-small-4",
+    "gemma-4-31b",
 )
 DIAGNOSTICS: tuple[str, ...] = ("gpt4o",)
 JUDGES: tuple[str, ...] = (

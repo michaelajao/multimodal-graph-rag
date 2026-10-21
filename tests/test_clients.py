@@ -210,6 +210,7 @@ OPENROUTER_ROSTER = {
     "qwen3.8-max": ("qwen/qwen3.8-max-0902", True),
     "gpt-6-luna": ("openai/gpt-6-luna", True),
     "mistral-small-4": ("mistralai/mistral-small-2603", True),
+    "gemma-4-31b": ("google/gemma-4-31b-it", True),
 }
 
 
@@ -246,7 +247,7 @@ def test_current_generators_and_new_judges_are_registered_by_role():
         "gemini-3.8-flash",
         "qwen3.8-max",
         "gpt-6-luna",
-        "mistral-small-4",
+        "gemma-4-31b",
     ):
         assert generator in GENERATORS
     assert GENERATORS[:4] == (
