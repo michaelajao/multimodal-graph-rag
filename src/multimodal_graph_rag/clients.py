@@ -9,13 +9,13 @@ an empty answer.
 
 Every model is served through OpenRouter with one key.
 
-Generators, all vision-capable. The revision configs run the last seven; the
-first two are kept for the submitted paper's runs only.
+Generators, all vision-capable. The revision configs run the last five; the
+first four are kept for the submitted paper's runs and the pilots only.
     gpt4o-mini          OpenAI      closed  legacy only (shut down 2027-01-14)
     llama4-maverick     Meta        open    legacy only, pinned to Parasail (FP8)
-    gemini-flash-lite   Google      closed  legacy
+    gemini-flash-lite   Google      closed  legacy only
+    qwen3.7-flash       Alibaba     closed  pilots only
     llama4-scout        Meta        open    legacy, pinned to DeepInfra
-    qwen3.7-flash       Alibaba     closed  current, low cost
     gpt-6-luna          OpenAI      closed  current, low cost; OpenAI's named
                                             replacement for gpt4o-mini
     mistral-small-4     Mistral     open    current, low cost, pinned to Mistral
