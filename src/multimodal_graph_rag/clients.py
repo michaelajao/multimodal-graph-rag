@@ -15,10 +15,12 @@ Generators under comparison, all vision-capable
     llama4-maverick     Meta        open    legacy, pinned to Parasail (FP8)
     llama4-scout        Meta        open    legacy, pinned to DeepInfra
     qwen3.7-flash       Alibaba     closed  current, low cost
+    gpt-6-luna          OpenAI      closed  current, low cost; OpenAI's named
+                                            replacement for gpt4o-mini
     gemini-3.8-flash    Google      closed  current, strong tier
     qwen3.8-max         Alibaba     closed  current, strong tier
-The Gemini and Qwen 3.8 models think before answering; thinking tokens are
-billed as output tokens and are left at the provider default.
+The Gemini, Qwen 3.8, and Luna models think before answering; thinking tokens
+are billed as output tokens and are left at the provider default.
 
 Diagnostic generator (never part of the reported comparison)
     gpt4o               OpenAI
@@ -184,6 +186,20 @@ MODELS: dict[str, ModelSpec] = {
         vision=True,
         base_url=OPENROUTER_BASE_URL,
     ),
+    # Added 2026-10-21. OpenAI shuts gpt4o-mini down on 2027-01-14 and names
+    # GPT-6 Luna as its replacement; running both keeps the legacy row and
+    # shows its successor. Same family as the gpt-6.1-sol judge, a limitation
+    # already stated for gpt4o-mini.
+    "gpt-6-luna": ModelSpec(
+        name="gpt-6-luna",
+        sdk="openai",
+        model="openai/gpt-6-luna",
+        api_key_env="OPENROUTER_API_KEY",
+        vendor="OpenAI/OpenRouter",
+        access="closed",
+        vision=True,
+        base_url=OPENROUTER_BASE_URL,
+    ),
     # Strong-tier generators, added 2026-10-20 so the roster is not limited to
     # 2024-25 models. Neither family judges, so the judge rules are unchanged.
     "gemini-3.8-flash": ModelSpec(
@@ -256,6 +272,7 @@ GENERATORS: tuple[str, ...] = (
     "qwen3.7-flash",
     "gemini-3.8-flash",
     "qwen3.8-max",
+    "gpt-6-luna",
 )
 DIAGNOSTICS: tuple[str, ...] = ("gpt4o",)
 JUDGES: tuple[str, ...] = (

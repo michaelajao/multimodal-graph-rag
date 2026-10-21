@@ -39,6 +39,7 @@ GENERATOR_STYLES: dict[str, tuple[str, str, str]] = {
     "gemini-flash-lite": ("Gemini 3.1 Flash-Lite", "#d95f02", "s"),
     "gpt4o-mini": ("GPT-4o-mini", "#e7298a", "s"),
     "qwen3.7-flash": ("Qwen 3.7 Flash", "#7570b3", "D"),
+    "gpt-6-luna": ("GPT-6 Luna", "#666666", "D"),
     "gemini-3.8-flash": ("Gemini 3.8 Flash", "#e6ab02", "^"),
     "qwen3.8-max": ("Qwen 3.8 Max", "#a6761d", "^"),
 }
