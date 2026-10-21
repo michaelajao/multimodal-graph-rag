@@ -319,8 +319,10 @@ EXTRACTION_MODEL = "gpt4o-mini"
 # Room for a one-sentence justification and, on reasoning judges, the hidden
 # reasoning that OpenRouter counts against the same cap. DeepSeek V4 Pro used
 # up to 715 tokens in the 2026-10-20 pilot and once exhausted 1,024, returning
-# an empty reply; only tokens actually used are billed.
-JUDGE_MAX_TOKENS = 4096
+# an empty reply; only tokens actually used are billed. On the full bridge run
+# (2026-10-21) it returned three empty replies in a row for one Gemma 4 31B
+# answer under a 4,096 cap, so the cap is 8,192.
+JUDGE_MAX_TOKENS = 8192
 # DeepSeek V4 Pro once returned a three-word reply with no verdict on the full
 # HotpotQA run (2026-10-21); such replies are asked again before the run stops.
 JUDGE_ATTEMPTS = 3
@@ -684,10 +686,13 @@ class ModelClient:
             )
             try:
                 value = parse_verdict(name, result.text)
-            except InvalidModelOutputError:
+            except InvalidModelOutputError as exc:
                 spent += result.cost_usd
                 if attempt == JUDGE_ATTEMPTS:
-                    raise
+                    raise InvalidModelOutputError(
+                        f"{exc} (last reply used {result.output_tokens} of "
+                        f"{JUDGE_MAX_TOKENS} output tokens)"
+                    ) from exc
                 continue
             return value, replace(result, cost_usd=result.cost_usd + spent)
         raise AssertionError("unreachable")
