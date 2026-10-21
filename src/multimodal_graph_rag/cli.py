@@ -41,6 +41,16 @@ from .evaluation.graph_grounding import (
     audit_triple_grounding,
     canonicalisation_collisions,
 )
+from .evaluation.posthoc import (
+    PASSES,
+    JudgementStore,
+    assign_states,
+    judge_context,
+    judgements_path,
+    load_trace,
+    plan_tasks,
+    run_task,
+)
 from .evaluation.statistics import mcnemar_exact, paired_bootstrap_delta
 from .pipelines.evaluate import EvaluationSettings, run_evaluation
 from .pipelines.systems import (
@@ -437,6 +447,96 @@ def cmd_graph_grounding(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_judge_pass(args: argparse.Namespace) -> int:
+    questions = {q.id: q for q in load_questions(args.questions)}
+    pricing = load_pricing(args.pricing)
+    price = pricing.price(args.judge)
+    client = None if args.dry_run else ModelClient(pricing)
+    total_calls, total_estimate = 0, 0.0
+    for trace in args.traces:
+        records = [r for r in load_trace(trace) if not r.get("error")]
+        missing = {r["question_id"] for r in records} - set(questions)
+        if missing:
+            raise ConfigurationError(
+                f"{trace} has questions not in {args.questions}: {sorted(missing)[:3]}"
+            )
+        store = JudgementStore(judgements_path(trace))
+        tasks = plan_tasks(
+            args.pass_name,
+            records,
+            questions,
+            store,
+            fraction=args.fraction,
+            seed=args.seed,
+            repeats=args.repeats,
+            correctness=args.correctness,
+        )
+        # Rough price: about four characters per token, a 1,500-token allowance
+        # per attached image, and 150 output tokens for a reasoned verdict.
+        estimate = sum(
+            price.cost(
+                (len(judge_context(t.record)) + len(t.record["answer"]) + 600) // 4
+                + 1500
+                * (args.vision_mode == "pixels")
+                * (args.pass_name in ("second-faithfulness", "sufficiency")),
+                150,
+            )
+            for t in tasks
+        )
+        total_calls += len(tasks)
+        total_estimate += estimate
+        print(f"{Path(trace).name}: {len(tasks)} calls, about ${estimate:.2f}")
+        if args.dry_run:
+            continue
+        for number, task in enumerate(tasks, 1):
+            store.add(
+                run_task(
+                    task,
+                    questions[task.record["question_id"]],
+                    client,
+                    args.judge,
+                    args.image_dir,
+                    args.vision_mode,
+                )
+            )
+            if number % 50 == 0:
+                print(f"  {number}/{len(tasks)}", flush=True)
+    print(f"total: {total_calls} calls, about ${total_estimate:.2f} with {args.judge}")
+    return 0
+
+
+def cmd_evidence_states(args: argparse.Namespace) -> int:
+    questions = {q.id: q for q in load_questions(args.questions)}
+    available = {p.name for p in Path(args.corpus_dir).iterdir()}
+    if args.image_dir:
+        available |= {p.name for p in Path(args.image_dir).iterdir()}
+    rows = []
+    for trace in args.traces:
+        records = [r for r in load_trace(trace) if not r.get("error")]
+        store = JudgementStore(judgements_path(trace))
+        for row in assign_states(
+            records,
+            questions,
+            store,
+            available_sources=available,
+            correctness=args.correctness,
+        ):
+            rows.append({"trace": Path(trace).name, **row})
+    fields = [
+        "trace",
+        "question_id",
+        "system",
+        "correct",
+        "gold_received",
+        "gold_required",
+        "state",
+    ]
+    _write_csv(Path(args.output), fields, rows)
+    pending = sum(row["state"] == "pending_sufficiency" for row in rows)
+    print(f"wrote {args.output}: {len(rows)} answers, {pending} awaiting sufficiency")
+    return 0
+
+
 def cmd_audit_figures(args: argparse.Namespace) -> int:
     rows = figure_integrity_rows(args.questions, args.captions, args.corpus)
     _write_csv(Path(args.output), FIGURE_AUDIT_FIELDS, rows)
@@ -640,6 +740,37 @@ def build_parser() -> argparse.ArgumentParser:
         help="also count surface forms that merge into one graph node",
     )
     grounding.set_defaults(handler=cmd_graph_grounding)
+
+    judge_pass = commands.add_parser(
+        "judge-pass",
+        help="run a judging pass over saved run records (resumable; --dry-run prices it)",
+    )
+    judge_pass.add_argument("traces", nargs="+", help="trace_*.jsonl files")
+    judge_pass.add_argument("--questions", required=True)
+    judge_pass.add_argument("--pass", dest="pass_name", required=True, choices=PASSES)
+    judge_pass.add_argument("--judge", required=True)
+    judge_pass.add_argument("--fraction", type=float, default=1.0)
+    judge_pass.add_argument("--repeats", type=int, default=3)
+    judge_pass.add_argument("--seed", type=int, default=20260903)
+    judge_pass.add_argument("--correctness", choices=("judge", "em"), default="judge")
+    judge_pass.add_argument("--image-dir", default=None)
+    judge_pass.add_argument(
+        "--vision-mode", choices=("pixels", "captions"), default="captions"
+    )
+    judge_pass.add_argument("--pricing", default="configs/pricing_2026-10-20.json")
+    judge_pass.add_argument("--dry-run", action="store_true")
+    judge_pass.set_defaults(handler=cmd_judge_pass)
+
+    states = commands.add_parser(
+        "evidence-states", help="assign an evidence state to every saved answer"
+    )
+    states.add_argument("traces", nargs="+", help="trace_*.jsonl files")
+    states.add_argument("--questions", required=True)
+    states.add_argument("--corpus-dir", required=True)
+    states.add_argument("--image-dir", default=None)
+    states.add_argument("--correctness", choices=("judge", "em"), default="judge")
+    states.add_argument("--output", required=True)
+    states.set_defaults(handler=cmd_evidence_states)
 
     audit_figures = commands.add_parser(
         "audit-figures", help="screen visual questions for text leakage"
