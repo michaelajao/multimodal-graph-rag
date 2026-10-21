@@ -311,6 +311,7 @@ JUDGE_MAX_TOKENS = 4096
 # DeepSeek V4 Pro once returned a three-word reply with no verdict on the full
 # HotpotQA run (2026-10-21); such replies are asked again before the run stops.
 JUDGE_ATTEMPTS = 3
+RETRY_MAX_SECONDS = 60.0
 VERDICT_LINE = re.compile(r"^\W*(?:(?:grade|verdict)\W*)?([01])\W*$", re.IGNORECASE)
 
 
@@ -441,10 +442,10 @@ class ModelClient:
         self,
         pricing: PricingSnapshot,
         *,
-        # Eight attempts wait 1+2+...+64 s, about two minutes in all: long enough
-        # to ride out an upstream 429 on a model pinned to a single provider
-        # (Mistral Small 4 hit one when five generators started together).
-        max_retries: int = 8,
+        # Twelve attempts, each wait capped at RETRY_MAX_SECONDS, ride out about
+        # six minutes of upstream 429s on a model pinned to a single provider;
+        # Mistral Small 4 returned them for over two minutes on 2026-10-21.
+        max_retries: int = 12,
         retry_base_seconds: float = 2.0,
         environ: Mapping[str, str] | None = None,
         sleep: Callable[[float], None] = time.sleep,
@@ -496,7 +497,9 @@ class ModelClient:
             except RETRYABLE_ERRORS as exc:
                 last_error = exc
                 if attempt < self.max_retries - 1:
-                    self._sleep(self.retry_base_seconds**attempt)
+                    self._sleep(
+                        min(self.retry_base_seconds**attempt, RETRY_MAX_SECONDS)
+                    )
             except PROVIDER_ERRORS as exc:
                 raise ProviderError(
                     f"{name} rejected the request: {type(exc).__name__}: {exc}"

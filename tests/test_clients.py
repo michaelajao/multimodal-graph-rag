@@ -134,15 +134,15 @@ def test_call_records_tokens_and_cost():
 def test_transient_errors_are_retried_then_raised():
     client = _client([OSError("blip"), "ok"])
     assert client.call("gpt4o-mini", user="q").text == "ok"
-    exhausted = _client([OSError("down")] * 8)
-    with pytest.raises(ProviderError, match="8 attempts"):
+    exhausted = _client([OSError("down")] * 12)
+    with pytest.raises(ProviderError, match="12 attempts"):
         exhausted.call("gpt4o-mini", user="q")
 
 
 def test_a_response_with_no_choices_is_retried_then_reported():
     client = _client([None, "ok"])
     assert client.call("gpt4o-mini", user="q").text == "ok"
-    exhausted = _client([None] * 8)
+    exhausted = _client([None] * 12)
     with pytest.raises(ProviderError, match="no choices.*upstream"):
         exhausted.call("gpt4o-mini", user="q")
 
