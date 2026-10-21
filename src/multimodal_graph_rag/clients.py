@@ -191,8 +191,10 @@ MODELS: dict[str, ModelSpec] = {
     # The revision's open-weight model from 2026-10-21, in place of
     # mistral-small-4: Mistral is that model's only provider and OpenRouter's
     # shared capacity for it stayed rate-limited for over six minutes under
-    # load. Gemma 4 31B has fifteen providers; it is pinned to Crusoe, which
-    # serves the unquantised (bf16) weights.
+    # load. Gemma 4 31B has fifteen providers. It is restricted to the two that
+    # serve the unquantised (bf16) weights at the same price, Crusoe then
+    # Novita, with no fallback beyond them: pinned to Crusoe alone, a run
+    # stopped after six minutes of upstream 429s.
     "gemma-4-31b": ModelSpec(
         name="gemma-4-31b",
         sdk="openai",
@@ -202,7 +204,7 @@ MODELS: dict[str, ModelSpec] = {
         access="open",
         vision=True,
         base_url=OPENROUTER_BASE_URL,
-        providers=("Crusoe",),
+        providers=("Crusoe", "Novita"),
     ),
     # Registered 2026-10-21 but never run (see gemma-4-31b).
     "mistral-small-4": ModelSpec(

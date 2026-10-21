@@ -18,6 +18,7 @@ Outputs (never overwritten)
 from __future__ import annotations
 
 import csv
+import json
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
@@ -39,7 +40,13 @@ from ..retrieval.graph import default_cache_path, load_graph
 from ..retrieval.metrics import retrieval_metrics
 from ..retrieval.text import TextIndex
 from ..retrieval.visual import ClipImageIndex
-from ..schemas import QuestionRecord, RunRecord, content_hash, load_questions
+from ..schemas import (
+    QuestionRecord,
+    RunRecord,
+    canonical_json,
+    content_hash,
+    load_questions,
+)
 from . import EvidenceControl
 from .systems import (
     COMPARATOR_SYSTEMS,
@@ -215,6 +222,119 @@ class _Aggregate:
     judge_cost: float = 0.0
 
 
+def _row_fields(
+    name: str, values: dict[str, float], answer: str, sources: Sequence[str]
+) -> dict[str, object]:
+    """One system's columns in the detail CSV, for live and resumed rows alike."""
+    return {
+        f"{name}_acc": int(values["acc"]),
+        f"{name}_em": values["em"],
+        f"{name}_f1": round(values["f1"], 3),
+        f"{name}_contains": values["contains"],
+        f"{name}_faith": int(values["faith"]),
+        f"{name}_rec": round(values["recall"], 3),
+        f"{name}_complete": values["complete"],
+        f"{name}_mrr": round(values["mrr"], 3),
+        f"{name}_in_tok": values["in_tok"],
+        f"{name}_out_tok": values["out_tok"],
+        f"{name}_latency_ms": round(values["latency_ms"], 1),
+        f"{name}_cost_usd": round(values["cost_usd"], 6),
+        f"{name}_answer": answer.replace("\n", " ")[:160],
+        f"{name}_sources": "|".join(sources),
+    }
+
+
+def _question_row(question: QuestionRecord, model: str) -> dict[str, object]:
+    return {
+        "question_id": question.id,
+        "question": question.question,
+        "expected_source": "|".join(question.gold_sources),
+        "question_type": question.question_type,
+        "model": model,
+    }
+
+
+@dataclass
+class _Resumed:
+    run_id: str
+    done: set[str]
+    detail_rows: list[dict[str, object]]
+    aggregates: dict[str, _Aggregate]
+    spent: float
+
+
+def _resume(
+    trace_path: Path,
+    config_hash: str,
+    systems: Sequence[str],
+    questions: Sequence[QuestionRecord],
+    model: str,
+) -> _Resumed:
+    """Carry a stopped run on from its trace.
+
+    Questions with a record for every system are kept and their totals and
+    detail rows rebuilt from the trace; records of a question that stopped
+    partway are dropped from the trace so it is answered again in full.
+    """
+    if not trace_path.is_file():
+        raise ConfigurationError(f"trace to resume does not exist: {trace_path}")
+    with trace_path.open(encoding="utf-8") as stream:
+        records = [json.loads(line) for line in stream if line.strip()]
+    if not records:
+        raise ConfigurationError(f"trace to resume is empty: {trace_path}")
+    hashes = {record["config_hash"] for record in records}
+    if hashes != {config_hash}:
+        raise ConfigurationError(
+            f"{trace_path} was written under a different configuration "
+            f"({sorted(hashes)} against {config_hash}); it cannot be resumed"
+        )
+    run_ids = {record["run_id"] for record in records}
+    if len(run_ids) != 1:
+        raise ConfigurationError(f"{trace_path} mixes runs: {sorted(run_ids)}")
+    by_question: dict[str, dict[str, dict]] = {}
+    for record in records:
+        by_question.setdefault(record["question_id"], {})[record["system"]] = record
+    done = {q.id for q in questions if set(systems) <= set(by_question.get(q.id, {}))}
+    with trace_path.open("w", encoding="utf-8") as stream:
+        for record in records:
+            if record["question_id"] in done:
+                stream.write(canonical_json(record) + "\n")
+    aggregates = {name: _Aggregate() for name in systems}
+    rows: list[dict[str, object]] = []
+    spent = 0.0
+    for question in questions:
+        if question.id not in done:
+            continue
+        row = _question_row(question, model)
+        for name in systems:
+            record = by_question[question.id][name]
+            values = {
+                **{
+                    metric: float(record["metrics"][metric])
+                    for metric in QUALITY_METRICS
+                },
+                "in_tok": record["input_tokens"],
+                "out_tok": record["output_tokens"],
+                "latency_ms": record["latency_ms"],
+                "cost_usd": record["cost_usd"],
+            }
+            judge_spend = sum(
+                float(verdict["cost_usd"]) for verdict in record["raw_judges"].values()
+            )
+            for metric, value in values.items():
+                aggregates[name].totals[metric] += float(value)
+            aggregates[name].judge_cost += judge_spend
+            spent += float(record["cost_usd"]) + judge_spend
+            sources = [
+                item["source"]
+                for item in record["evidence"]["items"]
+                if item["modality"] == "text"
+            ]
+            row.update(_row_fields(name, values, record["answer"], sources))
+        rows.append(row)
+    return _Resumed(run_ids.pop(), done, rows, aggregates, spent)
+
+
 def _score_retrieval(
     output: SystemOutput, question: QuestionRecord
 ) -> tuple[float, int, float]:
@@ -254,7 +374,12 @@ def _write_rows(
         writer.writerows(rows)
 
 
-def run_evaluation(settings: EvaluationSettings, client: ModelClient) -> RunOutputs:
+def run_evaluation(
+    settings: EvaluationSettings,
+    client: ModelClient,
+    *,
+    resume_trace: Path | None = None,
+) -> RunOutputs:
     systems = resolve_systems(settings.systems)
     questions = load_questions(settings.question_file)
     if settings.limit:
@@ -356,23 +481,33 @@ def run_evaluation(settings: EvaluationSettings, client: ModelClient) -> RunOutp
 
     results_dir = settings.results_dir
     base_name = f"{settings.question_set_name}_{settings.model}_{stamp}"
+    aggregates = {name: _Aggregate() for name in systems}
+    detail_rows: list[dict[str, object]] = []
+    spent = 0.0
+    done: set[str] = set()
+    if resume_trace is not None:
+        resumed = _resume(
+            Path(resume_trace), config_hash, systems, questions, settings.model
+        )
+        run_id, done = resumed.run_id, resumed.done
+        detail_rows, aggregates, spent = (
+            resumed.detail_rows,
+            resumed.aggregates,
+            resumed.spent,
+        )
+        results_dir = Path(resume_trace).parent
+        base_name = Path(resume_trace).stem.removeprefix("trace_")
+        print(f"Resuming : {len(done)} of {len(questions)} questions already done")
     summary_path = results_dir / f"summary_{base_name}.csv"
     detail_path = results_dir / f"detail_{base_name}.csv"
     trace_path = results_dir / f"trace_{base_name}.jsonl"
 
-    aggregates = {name: _Aggregate() for name in systems}
-    detail_rows: list[dict[str, object]] = []
-    spent = 0.0
     try:
         for number, question in enumerate(questions, 1):
+            if question.id in done:
+                continue
             use_pixels = settings.vision_mode == "pixels" and question.is_visual
-            row: dict[str, object] = {
-                "question_id": question.id,
-                "question": question.question,
-                "expected_source": "|".join(question.gold_sources),
-                "question_type": question.question_type,
-                "model": settings.model,
-            }
+            row: dict[str, object] = _question_row(question, settings.model)
             for name in systems:
                 output = SYSTEMS[name](question, context, use_pixels)
                 recall, complete, mrr = _score_retrieval(output, question)
@@ -405,22 +540,9 @@ def run_evaluation(settings: EvaluationSettings, client: ModelClient) -> RunOutp
                 aggregate.judge_cost += judge_spend
                 spent += output.result.cost_usd + judge_spend
                 row.update(
-                    {
-                        f"{name}_acc": answer.value,
-                        f"{name}_em": values["em"],
-                        f"{name}_f1": round(values["f1"], 3),
-                        f"{name}_contains": values["contains"],
-                        f"{name}_faith": faith.value,
-                        f"{name}_rec": round(recall, 3),
-                        f"{name}_complete": complete,
-                        f"{name}_mrr": round(mrr, 3),
-                        f"{name}_in_tok": output.result.input_tokens,
-                        f"{name}_out_tok": output.result.output_tokens,
-                        f"{name}_latency_ms": round(output.result.latency_ms, 1),
-                        f"{name}_cost_usd": round(output.result.cost_usd, 6),
-                        f"{name}_answer": output.result.text.replace("\n", " ")[:160],
-                        f"{name}_sources": "|".join(output.ranked_text_sources),
-                    }
+                    _row_fields(
+                        name, values, output.result.text, output.ranked_text_sources
+                    )
                 )
                 RunRecord(
                     run_id=run_id,

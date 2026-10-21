@@ -125,6 +125,65 @@ def test_provider_failure_aborts_and_keeps_partial_rows(
     assert not list((tmp_path / "runs").glob("summary_*.csv"))
 
 
+def test_a_stopped_run_resumes_to_the_same_result(
+    tmp_path, corpus_dir, question_file, triple_cache
+):
+    systems = ("baseline", "+KG")
+    # Six calls per question; the eleventh fails after question 2 has a
+    # baseline record but no +KG record, so that question is partial.
+    stopped = _settings(tmp_path, corpus_dir, question_file, triple_cache, systems)
+    with pytest.raises(ProviderError):
+        run_evaluation(stopped, FakeModelClient(fail_after_calls=10))
+    trace = next((tmp_path / "runs").glob("trace_*.jsonl"))
+    before = [
+        json.loads(line) for line in trace.read_text(encoding="utf-8").splitlines()
+    ]
+    assert len(before) == 3  # question 1 in full, question 2 baseline only
+
+    resumed = run_evaluation(
+        _settings(tmp_path, corpus_dir, question_file, triple_cache, systems),
+        FakeModelClient(),
+        resume_trace=trace,
+    )
+    fresh = run_evaluation(
+        _settings(tmp_path / "fresh", corpus_dir, question_file, triple_cache, systems),
+        FakeModelClient(),
+    )
+    after = [
+        json.loads(line)
+        for line in resumed.trace_path.read_text(encoding="utf-8").splitlines()
+    ]
+    assert resumed.trace_path == trace
+    assert len(after) == 3 * len(systems)
+    assert len({(r["question_id"], r["system"]) for r in after}) == len(after)
+    assert {r["run_id"] for r in after} == {before[0]["run_id"]}
+
+    def summary(path):
+        with path.open(newline="", encoding="utf-8") as stream:
+            return {
+                row["system"]: (row["acc"], row["recall"], row["total_cost_usd"])
+                for row in csv.DictReader(stream)
+            }
+
+    assert summary(resumed.summary_path) == summary(fresh.summary_path)
+    with resumed.detail_path.open(newline="", encoding="utf-8") as stream:
+        assert len(list(csv.DictReader(stream))) == 3
+
+
+def test_resume_refuses_a_trace_from_another_configuration(
+    tmp_path, corpus_dir, question_file, triple_cache, fake_client
+):
+    first = run_evaluation(
+        _settings(tmp_path, corpus_dir, question_file, triple_cache, ("baseline",)),
+        fake_client,
+    )
+    other = _settings(
+        tmp_path, corpus_dir, question_file, triple_cache, ("baseline", "+KG")
+    )
+    with pytest.raises(ConfigurationError, match="different configuration"):
+        run_evaluation(other, fake_client, resume_trace=first.trace_path)
+
+
 def test_mismatched_corpus_is_refused(
     tmp_path, corpus_dir, question_file, triple_cache, fake_client
 ):

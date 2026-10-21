@@ -278,13 +278,17 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
             )
         print(f"config identity: {config.config_hash}")
         return 0
+    if args.resume and not args.model:
+        raise ConfigurationError("--resume continues one generator's run; pass --model")
     pricing = load_pricing(config.pricing_snapshot)
     client = ModelClient(pricing)
     for model in models:
         settings = EvaluationSettings.from_config(
             config, model, pricing_captured_on=pricing.captured_on, limit=args.limit
         )
-        run_evaluation(settings, client)
+        run_evaluation(
+            settings, client, resume_trace=Path(args.resume) if args.resume else None
+        )
     return 0
 
 
@@ -665,6 +669,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--limit", type=int, default=None, help="first N questions (pilot)"
     )
     evaluate.add_argument("--dry-run", action="store_true")
+    evaluate.add_argument(
+        "--resume",
+        default=None,
+        help="trace_*.jsonl of a stopped run to carry on (same config and --model)",
+    )
     evaluate.set_defaults(handler=cmd_evaluate)
 
     retrieval_ab = commands.add_parser(
