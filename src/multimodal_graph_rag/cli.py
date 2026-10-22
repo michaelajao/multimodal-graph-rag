@@ -38,6 +38,7 @@ from .evaluation.audits import (
     paired_accuracy,
     sample_triple_audit,
 )
+from .evaluation.calibration import calibration_items, run_calibration
 from .evaluation.graph_grounding import (
     audit_triple_grounding,
     canonicalisation_collisions,
@@ -601,6 +602,20 @@ def cmd_pooled_analysis(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_judge_calibration(args: argparse.Namespace) -> int:
+    items = calibration_items(load_questions(args.questions))
+    pricing = load_pricing(args.pricing)
+    price = pricing.price(args.judge)
+    # about four characters per token, and 150 output tokens per verdict
+    estimate = sum(price.cost(len(item.prompt) // 4, 150) for item in items)
+    print(f"{len(items)} calibration calls, about ${estimate:.2f} with {args.judge}")
+    if args.dry_run:
+        return 0
+    summary = run_calibration(items, ModelClient(pricing), args.judge, args.output)
+    print(json.dumps(summary, indent=1))
+    return 0
+
+
 def cmd_holm_family(args: argparse.Namespace) -> int:
     paths = [Path(path) for path in args.reports]
     reports = [json.loads(path.read_text(encoding="utf-8")) for path in paths]
@@ -898,6 +913,17 @@ def build_parser() -> argparse.ArgumentParser:
     pooled.add_argument("--seed", type=int, default=20261022)
     pooled.add_argument("--output", required=True)
     pooled.set_defaults(handler=cmd_pooled_analysis)
+
+    calibration = commands.add_parser(
+        "judge-calibration",
+        help="grade each reference and a decoy reference to bound judge error",
+    )
+    calibration.add_argument("--questions", required=True)
+    calibration.add_argument("--judge", required=True)
+    calibration.add_argument("--output", required=True)
+    calibration.add_argument("--pricing", default="configs/pricing_2026-10-20.json")
+    calibration.add_argument("--dry-run", action="store_true")
+    calibration.set_defaults(handler=cmd_judge_calibration)
 
     family = commands.add_parser(
         "holm-family",
