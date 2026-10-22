@@ -915,3 +915,25 @@ is excluded from analysis (49 questions reported).
 
 **PubLayNet leakage.** 3 of the 35 caption-answerable figure questions are
 flagged (`artifacts/runs/figure_integrity_publaynet.csv`).
+
+**SPIQA text recoverability (2026-10-23).** `rag audit-figures` over the 150
+primary questions flags 15 against the papers' own text and none against the
+generated captions: 6 exact answer strings (short method or dataset names)
+and 9 where every number in the answer occurs in the paper. The numbers rule
+over-flags (one item is flagged for a lone "4"), which errs in the
+conservative direction; the funnel therefore has 135 items that are not
+text-recoverable. The exact-string check in `evaluation/integrity.py` is a
+raw substring test, like containment was; it was left unchanged because the
+released question sets were screened with it.
+
+**Graph grounding (2026-10-23).** Both triple endpoints occur in the source
+chunk for 79.3% of HotpotQA triples (72,946), 64.4% of SPIQA (50,123), and
+29.8% of PubLayNet (36,670, OCR text); outputs in
+`artifacts/runs/graph_grounding_*.json`.
+
+**Analysis in the package (2026-10-23).** `rag pooled-analysis` and
+`rag holm-family` produce every HotpotQA number in the manuscript and
+`docs/paper_tables.py` turns the reports into table rows. Judge agreement
+with token-bounded containment over all non-empty HotpotQA answers is 87.5%
+(kappa 0.75) on bridge and 78.8% (kappa 0.55) on comparison questions; of
+the replies that open by declining, the judge accepted 0.8% and 2.5%.
