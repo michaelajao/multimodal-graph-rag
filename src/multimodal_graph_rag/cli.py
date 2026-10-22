@@ -30,6 +30,7 @@ from .clients import GENERATOR_MAX_TOKENS, GENERATORS, ModelClient, load_pricing
 from .config import ExperimentConfig, load_experiment_config
 from .corpora import corpus_spec, docbank, doclaynet, hotpotqa, publaynet, spiqa
 from .errors import ConfigurationError, MultimodalGraphRagError
+from .evaluation.answer_match import normalise_answer
 from .evaluation.audits import (
     FIGURE_AUDIT_FIELDS,
     TRIPLE_AUDIT_FIELDS,
@@ -41,6 +42,7 @@ from .evaluation.graph_grounding import (
     audit_triple_grounding,
     canonicalisation_collisions,
 )
+from .evaluation.pooled import adjust_family, compare, load_outcomes
 from .evaluation.posthoc import (
     PASSES,
     JudgementStore,
@@ -555,6 +557,60 @@ def cmd_judge_pass(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_pooled_analysis(args: argparse.Namespace) -> int:
+    questions = load_questions(args.questions)
+    scorable = [q for q in questions if normalise_answer(q.answer)]
+    if len(scorable) < len(questions):
+        skipped = [q.id for q in questions if not normalise_answer(q.answer)]
+        print(
+            f"excluded {len(skipped)} question(s) with no reference answer: {skipped}"
+        )
+    splits = []
+    for pair in args.split:
+        treatment, _, reference = pair.partition("=")
+        if not reference:
+            raise ConfigurationError(f"--split takes TREATMENT=REFERENCE, not {pair!r}")
+        splits.append((treatment, reference))
+    report = compare(
+        load_outcomes(args.traces, scorable),
+        args.reference,
+        splits=splits,
+        iterations=args.iterations,
+        seed=args.seed,
+    )
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(report, indent=1), encoding="utf-8")
+    print(
+        f"{report['n_questions']} questions x {len(report['generators'])} generators, "
+        f"reference {args.reference}"
+    )
+    for system, entry in report["systems"].items():
+        line = (
+            f"  {system:<22} complete {entry['complete']:.2f}  judge {entry['acc']:.3f}"
+        )
+        difference = entry["differences"].get("acc")
+        if difference:
+            line += (
+                f"  delta {difference['delta']:+.3f} "
+                f"[{difference['lower']:+.3f}, {difference['upper']:+.3f}] "
+                f"p {difference['p']:.4f}"
+            )
+        print(line)
+    print(f"report -> {output}")
+    return 0
+
+
+def cmd_holm_family(args: argparse.Namespace) -> int:
+    paths = [Path(path) for path in args.reports]
+    reports = [json.loads(path.read_text(encoding="utf-8")) for path in paths]
+    adjust_family(reports)
+    for path, report in zip(paths, reports, strict=True):
+        path.write_text(json.dumps(report, indent=1), encoding="utf-8")
+    print(f"Holm-adjusted {len(paths)} reports as one family")
+    return 0
+
+
 def cmd_evidence_states(args: argparse.Namespace) -> int:
     questions = {q.id: q for q in load_questions(args.questions)}
     available = {p.name for p in Path(args.corpus_dir).iterdir()}
@@ -824,6 +880,31 @@ def build_parser() -> argparse.ArgumentParser:
     judge_pass.add_argument("--pricing", default="configs/pricing_2026-10-20.json")
     judge_pass.add_argument("--dry-run", action="store_true")
     judge_pass.set_defaults(handler=cmd_judge_pass)
+
+    pooled = commands.add_parser(
+        "pooled-analysis",
+        help="compare every system with a reference, pooled over generators",
+    )
+    pooled.add_argument("traces", nargs="+", help="one trace_*.jsonl per generator")
+    pooled.add_argument("--questions", required=True)
+    pooled.add_argument("--reference", default="baseline")
+    pooled.add_argument(
+        "--split",
+        action="append",
+        default=[],
+        help="TREATMENT=REFERENCE pair to split into access and use terms",
+    )
+    pooled.add_argument("--iterations", type=int, default=10_000)
+    pooled.add_argument("--seed", type=int, default=20261022)
+    pooled.add_argument("--output", required=True)
+    pooled.set_defaults(handler=cmd_pooled_analysis)
+
+    family = commands.add_parser(
+        "holm-family",
+        help="re-adjust several pooled-analysis reports as one Holm family",
+    )
+    family.add_argument("reports", nargs="+")
+    family.set_defaults(handler=cmd_holm_family)
 
     states = commands.add_parser(
         "evidence-states", help="assign an evidence state to every saved answer"
