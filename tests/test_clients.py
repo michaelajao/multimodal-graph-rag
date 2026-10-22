@@ -38,7 +38,11 @@ class _StubProvider:
 
     def _create(self, **kwargs):
         self.last_kwargs = kwargs
+        self.calls = getattr(self, "calls", []) + [kwargs]
         reply = self.replies.pop(0)
+        output_tokens = 5
+        if isinstance(reply, tuple):  # (text, output tokens) for a long reply
+            reply, output_tokens = reply
         if isinstance(reply, BaseException):
             raise reply
         if reply is None:  # OpenRouter's shape when the upstream provider fails
@@ -47,7 +51,7 @@ class _StubProvider:
             )
         return SimpleNamespace(
             choices=[SimpleNamespace(message=SimpleNamespace(content=reply))],
-            usage=SimpleNamespace(prompt_tokens=10, completion_tokens=5),
+            usage=SimpleNamespace(prompt_tokens=10, completion_tokens=output_tokens),
         )
 
     def _embed(self, **kwargs):
@@ -173,6 +177,14 @@ def test_judge_asks_again_after_a_cut_off_reply_and_keeps_its_cost():
     assert call.text.startswith("It names")
     # each stub reply costs 10 input and 5 output tokens at $1 / $2 per million
     assert call.cost_usd == pytest.approx(2 * (10 * 1.0 + 5 * 2.0) / 1e6)
+
+
+def test_judge_switches_reasoning_off_after_a_reply_fills_the_cap():
+    client = _client(["The answer", ("", JUDGE_MAX_TOKENS), "It matches.\n1"])
+    value, _ = client.judge("deepseek", "grade")
+    assert value == 1
+    bodies = [call.get("extra_body") for call in client._providers["deepseek"].calls]
+    assert bodies == [None, None, {"reasoning": {"enabled": False}}]
 
 
 def test_images_require_a_vision_model_and_existing_files(tmp_path):

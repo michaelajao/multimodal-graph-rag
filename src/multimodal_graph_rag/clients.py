@@ -327,6 +327,10 @@ EXTRACTION_MODEL = "gpt4o-mini"
 JUDGE_MAX_TOKENS = 8192
 # DeepSeek V4 Pro once returned a three-word reply with no verdict on the full
 # HotpotQA run (2026-10-21); such replies are asked again before the run stops.
+# On the SPIQA cross-paper run (2026-10-22) it spent the whole cap reasoning, at
+# temperature 0 and on every attempt, over a question whose reference answer is
+# a placeholder; OpenRouter does not hold DeepSeek to a reasoning budget, so a
+# reply that fills the cap is asked again with reasoning switched off.
 JUDGE_ATTEMPTS = 3
 RETRY_MAX_SECONDS = 60.0
 VERDICT_LINE = re.compile(r"^\W*(?:(?:grade|verdict)\W*)?([01])\W*$", re.IGNORECASE)
@@ -535,8 +539,13 @@ class ModelClient:
         images: Sequence[str | Path] = (),
         max_tokens: int = 800,
         temperature: float = 0.0,
+        reasoning: bool = True,
     ) -> GenResult:
-        """Send one chat request and return the answer with its cost metadata."""
+        """Send one chat request and return the answer with its cost metadata.
+
+        ``reasoning=False`` asks OpenRouter to switch off a model's hidden
+        reasoning; ``True`` leaves the model's default alone.
+        """
         spec = self.spec(name)
         price = self.pricing.price(name)
         image_paths = [Path(path) for path in images]
@@ -553,7 +562,7 @@ class ModelClient:
             )
         else:
             request = self._openai_request(
-                spec, price, system, user, encoded, max_tokens, temperature
+                spec, price, system, user, encoded, max_tokens, temperature, reasoning
             )
         return self._with_retries(name, request)
 
@@ -615,6 +624,7 @@ class ModelClient:
         encoded_images: Sequence[str],
         max_tokens: int,
         temperature: float,
+        reasoning: bool = True,
     ) -> Callable[[], GenResult]:
         if encoded_images:
             content: object = [{"type": "text", "text": user}] + [
@@ -630,11 +640,12 @@ class ModelClient:
         if system:
             messages.append({"role": "system", "content": system})
         messages.append({"role": "user", "content": content})
-        extra: dict[str, object] = {}
+        body: dict[str, object] = {}
         if spec.providers:
-            extra["extra_body"] = {
-                "provider": {"order": list(spec.providers), "allow_fallbacks": False}
-            }
+            body["provider"] = {"order": list(spec.providers), "allow_fallbacks": False}
+        if not reasoning:
+            body["reasoning"] = {"enabled": False}
+        extra: dict[str, object] = {"extra_body": body} if body else {}
 
         def request() -> GenResult:
             started = time.perf_counter()
@@ -677,19 +688,28 @@ class ModelClient:
         """Binary judgement given after a justification, on a line of its own.
 
         A reply with no verdict line (in practice a reply cut off after a few
-        words) is asked again, up to ``JUDGE_ATTEMPTS`` times in all; the verdict
-        always comes from one complete reply, and a reply that is malformed every
-        time still stops the run. Discarded attempts stay in the cost.
+        words) is asked again, up to ``JUDGE_ATTEMPTS`` times in all; once a
+        reply has used the whole token cap, later attempts run with reasoning
+        off. The verdict always comes from one complete reply, and a reply that
+        is malformed every time still stops the run. Discarded attempts stay in
+        the cost.
         """
         spent = 0.0
+        reasoning = True
         for attempt in range(1, JUDGE_ATTEMPTS + 1):
             result = self.call(
-                name, user=prompt, images=images, max_tokens=JUDGE_MAX_TOKENS
+                name,
+                user=prompt,
+                images=images,
+                max_tokens=JUDGE_MAX_TOKENS,
+                reasoning=reasoning,
             )
             try:
                 value = parse_verdict(name, result.text)
             except InvalidModelOutputError as exc:
                 spent += result.cost_usd
+                if result.output_tokens >= JUDGE_MAX_TOKENS:
+                    reasoning = False
                 if attempt == JUDGE_ATTEMPTS:
                     raise InvalidModelOutputError(
                         f"{exc} (last reply used {result.output_tokens} of "
