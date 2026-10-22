@@ -869,3 +869,49 @@ at exactly the tier that rejected it.
 
 Impact figures come from third-party aggregator pages and should be
 re-checked on Journal Citation Reports before the email to Soki.
+
+## 17. Run log (2026-10-21 to 2026-10-23)
+
+**Which config wrote each trace.** The five HotpotQA bridge runs started while
+the roster was changing, so their identities come from three versions of
+`configs/primary_revision.json`: Llama 4 Scout from `a018a8c`, GPT-6 Luna,
+Gemini 3.8 Flash and Qwen 3.8 Max from `83e0783`, and Gemma 4 31B from the
+current file. Resume or amend a bridge trace with
+`git show <commit>:configs/primary_revision.json` saved to a file. The
+comparison and SPIQA cross-paper traces match the current configs.
+
+**Measured cost, five generators.** HotpotQA bridge $6.11 generation and
+$8.34 judging; comparison $5.30 and $7.30; SPIQA cross-paper $2.78 and $4.24.
+The HotpotQA sufficiency pass (GPT-6.1 Sol) cost about $3.40 and the 20%
+stability pass (DeepSeek V4 Pro, three repeats) about $4.90.
+
+**Generator cap raised from 800 to 8,192 (2026-10-23).** OpenRouter counts
+hidden reasoning against `max_tokens`. On the full runs 520 of 14,500 answers
+reached the 800 cap and came back empty or cut off, which the five-question
+pilots did not show: Qwen 3.8 Max 457 (across every arm, and 53 of 100
+closed-book bridge answers), GPT-6 Luna 50 (mostly closed-book), Gemma 4 31B 10
+and Llama 4 Scout 3 (closed-book). The cap is now 8,192 and part of the run
+identity. The capped answers are regenerated from their stored evidence with
+`rag evaluate --resume TRACE --regenerate-capped` (generation $2.65 to $23 by
+dry run); originals go to `artifacts/runs/pre_regeneration/`. A replay of all
+15,300 stored records through a stub client reproduced every evidence bundle.
+
+**Containment fixed (2026-10-23).** Answer containment tested a raw
+substring, so a reference of "no" matched "know" and "not". It now matches
+whole tokens. Containment on comparison questions under dense top-5 falls
+from 0.750 to 0.700; analyses rescore every stored answer.
+
+**Pooled tests made cluster-aware (2026-10-23).** An exact McNemar test on the
+500 question-generator pairs treats the five answers to one question as
+independent and disagreed with the cluster-bootstrap intervals. Paired
+p-values now come from a sign-flip permutation test on per-question mean
+differences. Under it the +KGret comparison gain (judge +0.038) and the
+HippoRAG 2 comparison loss (judge -0.048) are not significant after Holm.
+
+**SPIQA cross-paper question 29** has "..." as its reference answer. DeepSeek
+V4 Pro reasoned to the 8,192-token cap on it at every attempt, so a judge
+reply that fills the cap is now asked again with reasoning off. The question
+is excluded from analysis (49 questions reported).
+
+**PubLayNet leakage.** 3 of the 35 caption-answerable figure questions are
+flagged (`artifacts/runs/figure_integrity_publaynet.csv`).
