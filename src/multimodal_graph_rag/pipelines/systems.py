@@ -26,19 +26,21 @@ so any difference between runs traces to the generator alone.
 
 Every passage-only arm generates through :func:`answer_from_passages`, so the
 arms differ in which passages they retrieve and in nothing else the generator
-sees; passages carry no marker of the arm that chose them.
+sees; passages carry no marker of the arm that chose them. :func:`replay`
+rebuilds an arm's prompt from a stored evidence bundle to generate again.
 """
 
 from __future__ import annotations
 
 import random
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 
-from ..clients import GenResult, ModelClient
+from ..clients import GENERATOR_MAX_TOKENS, GenResult, ModelClient
 from ..errors import ConfigurationError, MissingEvidenceError
 from ..retrieval.baselines import (
     BM25Index,
@@ -106,6 +108,7 @@ class RunContext:
     images_retrieve: int = IMAGES_RETRIEVE
     images_caption: int = IMAGES_CAPTION
     images_pixels: int = IMAGES_PIXELS
+    max_tokens: int = GENERATOR_MAX_TOKENS
 
     @property
     def bridge_slots(self) -> int:
@@ -240,7 +243,13 @@ def judge_context(*parts: str) -> str:
 def _generate(
     ctx: RunContext, system_prompt: str, user: str, images: Sequence[Path] = ()
 ) -> GenResult:
-    return ctx.client.call(ctx.model, system=system_prompt, user=user, images=images)
+    return ctx.client.call(
+        ctx.model,
+        system=system_prompt,
+        user=user,
+        images=images,
+        max_tokens=ctx.max_tokens,
+    )
 
 
 def answer_from_passages(
@@ -492,6 +501,16 @@ def run_kg(question: QuestionRecord, ctx: RunContext, use_pixels: bool) -> Syste
             question.question, allowed_sources=[p.source for p in passages]
         )
     )
+    return answer_with_facts(ctx, question, passages, facts)
+
+
+def answer_with_facts(
+    ctx: RunContext,
+    question: QuestionRecord,
+    passages: tuple[Passage, ...],
+    facts: tuple[str, ...],
+) -> SystemOutput:
+    """Generate from passages and graph facts, with the +KG prompt."""
     user = (
         f"Context passages:\n{format_passages(passages)}\n\n"
         f"Knowledge-graph facts:\n{format_facts(facts)}\n\n"
@@ -752,3 +771,48 @@ def resolve_systems(names: Sequence[str]) -> list[str]:
         )
     wanted = set(names)
     return [name for name in SYSTEMS if name in wanted]
+
+
+def replay(
+    system: str,
+    question: QuestionRecord,
+    ctx: RunContext,
+    evidence: Mapping[str, Any],
+) -> SystemOutput:
+    """Generate again from a stored evidence bundle, without retrieving.
+
+    The prompt is rebuilt from the passages and facts the bundle holds, in
+    their stored order, so the new answer sees exactly the evidence the stored
+    one did. Arms that sent images are not replayed.
+    """
+    if system not in SYSTEMS:
+        raise ConfigurationError(f"unknown system {system!r}")
+    items = evidence["items"]
+    if system in IMAGE_SYSTEMS or any(item["modality"] == "image" for item in items):
+        raise ConfigurationError(f"{system} sent images; rerun it instead of replaying")
+    if system == EvidenceControl.CLOSED_BOOK.system_name:
+        return run_closed_book(question, ctx, use_pixels=False)
+    text = [item for item in items if item["modality"] == "text"]
+    if not text:
+        raise ConfigurationError(f"the stored {system} evidence has no passages")
+    passages = tuple(
+        Passage(item["source"], item["content"], item["score"], item["rank"])
+        for item in text
+    )
+    if system == "+KG":
+        facts = tuple(item["content"] for item in items if item["modality"] == "graph")
+        return answer_with_facts(ctx, question, passages, facts)
+    # Base passages come first; an expansion arm's follow under another reason.
+    reason = text[0]["selection_reason"]
+    split = next(
+        (i for i, item in enumerate(text) if item["selection_reason"] != reason),
+        len(text),
+    )
+    return answer_from_passages(
+        ctx,
+        question,
+        passages[:split],
+        passages[split:],
+        reason=reason,
+        added_reason=text[split]["selection_reason"] if split < len(text) else "",
+    )

@@ -332,6 +332,11 @@ JUDGE_MAX_TOKENS = 8192
 # a placeholder; OpenRouter does not hold DeepSeek to a reasoning budget, so a
 # reply that fills the cap is asked again with reasoning switched off.
 JUDGE_ATTEMPTS = 3
+# Generator replies share the cap with hidden reasoning in the same way. Under
+# the earlier cap of 800, Qwen 3.8 Max (and GPT-6 Luna without context) often
+# spent all of it reasoning and returned an empty answer on the HotpotQA and
+# SPIQA cross-paper runs of 2026-10-21/22; only tokens actually used are billed.
+GENERATOR_MAX_TOKENS = 8192
 RETRY_MAX_SECONDS = 60.0
 VERDICT_LINE = re.compile(r"^\W*(?:(?:grade|verdict)\W*)?([01])\W*$", re.IGNORECASE)
 

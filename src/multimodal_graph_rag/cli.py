@@ -26,7 +26,7 @@ from .artifacts import (
     validate_manifest,
     write_matrix,
 )
-from .clients import GENERATORS, ModelClient, load_pricing
+from .clients import GENERATOR_MAX_TOKENS, GENERATORS, ModelClient, load_pricing
 from .config import ExperimentConfig, load_experiment_config
 from .corpora import corpus_spec, docbank, doclaynet, hotpotqa, publaynet, spiqa
 from .errors import ConfigurationError, MultimodalGraphRagError
@@ -52,7 +52,12 @@ from .evaluation.posthoc import (
     run_task,
 )
 from .evaluation.statistics import mcnemar_exact, paired_bootstrap_delta
-from .pipelines.evaluate import EvaluationSettings, run_evaluation
+from .pipelines.evaluate import (
+    LEGACY_GENERATOR_MAX_TOKENS,
+    EvaluationSettings,
+    capped_records,
+    run_evaluation,
+)
 from .pipelines.systems import (
     COMPARATOR_SYSTEMS,
     PASSAGE_RETRIEVERS,
@@ -268,6 +273,8 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
     unknown = [m for m in models if m not in GENERATORS and m != "gpt4o"]
     if unknown:
         raise ConfigurationError(f"unknown generators in config: {unknown}")
+    if args.regenerate_capped:
+        return _regenerate_capped(args, config)
     if args.dry_run:
         for model in models:
             settings = EvaluationSettings.from_config(
@@ -289,6 +296,45 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
         run_evaluation(
             settings, client, resume_trace=Path(args.resume) if args.resume else None
         )
+    return 0
+
+
+def _regenerate_capped(args: argparse.Namespace, config: ExperimentConfig) -> int:
+    if not (args.resume and args.model):
+        raise ConfigurationError(
+            "--regenerate-capped amends one finished run; pass --resume and --model"
+        )
+    trace = Path(args.resume)
+    pricing = load_pricing(config.pricing_snapshot)
+    capped = capped_records(load_trace(trace))
+    price = pricing.price(args.model)
+    systems: dict[str, int] = {}
+    for record in capped:
+        systems[record["system"]] = systems.get(record["system"], 0) + 1
+    # A capped reply already used the old cap, so a new one costs at least that
+    # much and at most the current cap; the two judge calls add little.
+    floor = sum(
+        price.cost(int(r["input_tokens"]), LEGACY_GENERATOR_MAX_TOKENS) for r in capped
+    )
+    ceiling = sum(
+        price.cost(int(r["input_tokens"]), GENERATOR_MAX_TOKENS) for r in capped
+    )
+    print(
+        f"{trace.name}: {len(capped)} answers reached the "
+        f"{LEGACY_GENERATOR_MAX_TOKENS}-token cap {systems}"
+    )
+    print(
+        f"  generation ${floor:.2f} to ${ceiling:.2f} with {args.model}, "
+        f"plus {2 * len(capped)} judge calls"
+    )
+    if args.dry_run:
+        return 0
+    settings = EvaluationSettings.from_config(
+        config, args.model, pricing_captured_on=pricing.captured_on, limit=args.limit
+    )
+    run_evaluation(
+        settings, ModelClient(pricing), resume_trace=trace, regenerate_capped=True
+    )
     return 0
 
 
@@ -673,6 +719,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--resume",
         default=None,
         help="trace_*.jsonl of a stopped run to carry on (same config and --model)",
+    )
+    evaluate.add_argument(
+        "--regenerate-capped",
+        action="store_true",
+        help=(
+            "answer again, at the current generator cap, every answer in the "
+            f"--resume trace that reached the old {LEGACY_GENERATOR_MAX_TOKENS}-token "
+            "cap (--dry-run prices it)"
+        ),
     )
     evaluate.set_defaults(handler=cmd_evaluate)
 

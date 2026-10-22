@@ -1,9 +1,11 @@
 import csv
 import json
+from dataclasses import replace
 
 import pytest
 from conftest import FakeModelClient
 
+from multimodal_graph_rag.clients import GENERATOR_MAX_TOKENS
 from multimodal_graph_rag.config import ExperimentConfig
 from multimodal_graph_rag.errors import (
     BudgetExceededError,
@@ -11,11 +13,18 @@ from multimodal_graph_rag.errors import (
     MissingEvidenceError,
     ProviderError,
 )
-from multimodal_graph_rag.pipelines.evaluate import EvaluationSettings, run_evaluation
+from multimodal_graph_rag.evaluation.posthoc import judgements_path
+from multimodal_graph_rag.pipelines import evaluate
+from multimodal_graph_rag.pipelines.evaluate import (
+    LEGACY_GENERATOR_MAX_TOKENS,
+    EvaluationSettings,
+    run_evaluation,
+)
 from multimodal_graph_rag.pipelines.systems import (
     PASSAGE_RETRIEVERS,
     RunContext,
     passage_arm_report,
+    replay,
     run_bm25,
     run_lexical,
     run_oracle_image,
@@ -548,3 +557,187 @@ def test_oracle_image_refuses_a_question_without_a_gold_crop(
     )
     with pytest.raises(MissingEvidenceError, match="no gold image"):
         run_oracle_image(load_questions(_question_path(tmp_path))[0], ctx, True)
+
+
+class _CappedClient(FakeModelClient):
+    """Leaves the generator's answer to one question empty at the legacy cap."""
+
+    def __init__(self, question, **kwargs):
+        super().__init__(**kwargs)
+        self.question = question
+        self.generator_caps = []
+
+    def call(
+        self, name, *, user, system="", images=(), max_tokens=800, temperature=0.0
+    ):
+        result = super().call(
+            name,
+            user=user,
+            system=system,
+            images=images,
+            max_tokens=max_tokens,
+            temperature=temperature,
+        )
+        if name != "gpt4o-mini":
+            return result
+        self.generator_caps.append(max_tokens)
+        if max_tokens <= LEGACY_GENERATOR_MAX_TOKENS and self.question in user:
+            return replace(result, text="", output_tokens=max_tokens)
+        return result
+
+    def generator_prompts(self):
+        return [user for name, user, _ in self.calls if name == "gpt4o-mini"]
+
+
+REGENERATED_SYSTEMS = (
+    "baseline",
+    "+KG",
+    "+KGret",
+    "control:closed-book",
+    "control:oracle",
+)
+
+
+def _records(path):
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+
+
+def _legacy_run(tmp_path, corpus_dir, question_file, triple_cache, monkeypatch):
+    """A finished run at the legacy cap whose second question was cut off."""
+    target = load_questions(question_file)[1]
+    monkeypatch.setattr(evaluate, "GENERATOR_MAX_TOKENS", LEGACY_GENERATOR_MAX_TOKENS)
+    client = _CappedClient(target.question)
+    settings = _settings(
+        tmp_path, corpus_dir, question_file, triple_cache, REGENERATED_SYSTEMS
+    )
+    outputs = run_evaluation(settings, client)
+    monkeypatch.setattr(evaluate, "GENERATOR_MAX_TOKENS", GENERATOR_MAX_TOKENS)
+    return target, client, settings, outputs
+
+
+def test_regeneration_answers_capped_records_again_from_their_evidence(
+    tmp_path, corpus_dir, question_file, triple_cache, monkeypatch
+):
+    target, first, settings, legacy = _legacy_run(
+        tmp_path, corpus_dir, question_file, triple_cache, monkeypatch
+    )
+    before = _records(legacy.trace_path)
+    assert {r["question_id"] for r in before if r["answer"] == ""} == {target.id}
+    other = next(r for r in before if r["question_id"] != target.id)
+    judgements = judgements_path(legacy.trace_path)
+    entries = [
+        (target.id, "baseline", "stability"),
+        (target.id, "baseline", "sufficiency"),
+        (other["question_id"], "baseline", "stability"),
+    ]
+    judgements.write_text(
+        "".join(
+            json.dumps(
+                {"key": str(i), "question_id": q, "system": s, "pass": p, "value": 1}
+            )
+            + "\n"
+            for i, (q, s, p) in enumerate(entries)
+        ),
+        encoding="utf-8",
+    )
+
+    second = _CappedClient(target.question)
+    amended = run_evaluation(
+        settings, second, resume_trace=legacy.trace_path, regenerate_capped=True
+    )
+    after = _records(amended.trace_path)
+    assert amended.trace_path == legacy.trace_path
+    assert {r["config_hash"] for r in after} == {amended.config_hash}
+    assert amended.config_hash != legacy.config_hash
+    for old, new in zip(before, after, strict=True):
+        assert (new["question_id"], new["system"]) == (
+            old["question_id"],
+            old["system"],
+        )
+        assert new["evidence"] == old["evidence"]
+        if old["question_id"] == target.id:
+            assert new["answer"] == second.answer
+            assert new["regeneration"]["previous"]["answer"] == ""
+            assert new["regeneration"]["previous"]["output_tokens"] == 800
+            assert new["regeneration"]["max_tokens"] == GENERATOR_MAX_TOKENS
+        else:
+            assert {**new, "config_hash": old["config_hash"]} == old
+    # Only the capped answers were generated again, from the very same prompts.
+    target_prompts = [p for p in first.generator_prompts() if target.question in p]
+    assert second.generator_prompts() == target_prompts
+    assert set(second.generator_caps) == {GENERATOR_MAX_TOKENS}
+
+    with amended.summary_path.open(newline="", encoding="utf-8") as stream:
+        out_tokens = {
+            row["system"]: row["mean_out_tok"] for row in csv.DictReader(stream)
+        }
+    assert set(out_tokens.values()) == {"8.0"}
+    kept = [
+        json.loads(line)["key"]
+        for line in judgements.read_text(encoding="utf-8").splitlines()
+    ]
+    assert kept == ["1", "2"]  # the replaced answer's stability verdict is gone
+    backup = legacy.trace_path.parent / "pre_regeneration"
+    assert _records(backup / legacy.trace_path.name) == before
+    assert (backup / judgements.name).is_file()
+    assert not list(legacy.trace_path.parent.glob("regenerated_*"))
+
+    third = _CappedClient(target.question)
+    again = run_evaluation(
+        settings, third, resume_trace=legacy.trace_path, regenerate_capped=True
+    )
+    assert third.generator_prompts() == []
+    assert _records(again.trace_path) == after
+
+
+def test_an_interrupted_regeneration_resumes_where_it_stopped(
+    tmp_path, corpus_dir, question_file, triple_cache, monkeypatch
+):
+    target, _, settings, legacy = _legacy_run(
+        tmp_path, corpus_dir, question_file, triple_cache, monkeypatch
+    )
+    # One generator and two judge calls per answer: the eighth call fails.
+    with pytest.raises(ProviderError):
+        run_evaluation(
+            settings,
+            _CappedClient(target.question, fail_after_calls=7),
+            resume_trace=legacy.trace_path,
+            regenerate_capped=True,
+        )
+    progress = next(legacy.trace_path.parent.glob("regenerated_*.jsonl"))
+    assert len(_records(progress)) == 2
+    assert {r["config_hash"] for r in _records(legacy.trace_path)} == {
+        legacy.config_hash
+    }
+
+    finish = _CappedClient(target.question)
+    run_evaluation(
+        settings, finish, resume_trace=legacy.trace_path, regenerate_capped=True
+    )
+    assert len(finish.generator_prompts()) == len(REGENERATED_SYSTEMS) - 2
+    regenerated = [r for r in _records(legacy.trace_path) if r.get("regeneration")]
+    assert len(regenerated) == len(REGENERATED_SYSTEMS)
+
+
+def test_a_legacy_cap_trace_is_neither_resumed_nor_regenerated_elsewhere(
+    tmp_path, corpus_dir, question_file, triple_cache, monkeypatch
+):
+    _, _, settings, legacy = _legacy_run(
+        tmp_path, corpus_dir, question_file, triple_cache, monkeypatch
+    )
+    with pytest.raises(ConfigurationError, match="different configuration"):
+        run_evaluation(settings, FakeModelClient(), resume_trace=legacy.trace_path)
+    other = _settings(tmp_path, corpus_dir, question_file, triple_cache, ("baseline",))
+    with pytest.raises(ConfigurationError, match="cannot be regenerated"):
+        run_evaluation(
+            other,
+            FakeModelClient(),
+            resume_trace=legacy.trace_path,
+            regenerate_capped=True,
+        )
+
+
+def test_image_arms_are_not_replayed(question_file):
+    question = load_questions(question_file)[0]
+    with pytest.raises(ConfigurationError, match="rerun it"):
+        replay("+multimodal", question, None, {"items": []})

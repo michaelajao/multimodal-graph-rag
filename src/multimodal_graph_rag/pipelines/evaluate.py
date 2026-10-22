@@ -7,7 +7,8 @@ tokens, latency, and cost are recorded. A provider failure stops the run: the
 rows completed so far are written with a ``partial`` prefix and the error is
 raised, so a rate limit can never be scored as a zero.
 
-Outputs (never overwritten)
+Outputs (never overwritten, except that regenerating a run's capped answers
+rewrites them after copying the originals to <results_dir>/pre_regeneration/)
     <results_dir>/summary_<qset>_<model>_<stamp>.csv   one row per system
     <results_dir>/detail_<qset>_<model>_<stamp>.csv    one row per question
     <results_dir>/trace_<qset>_<model>_<stamp>.jsonl   one RunRecord per
@@ -19,13 +20,22 @@ from __future__ import annotations
 
 import csv
 import json
-from collections.abc import Sequence
+import os
+import shutil
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from ..artifacts.manifest import file_sha256
-from ..clients import DIAGNOSTICS, GENERATORS, ModelClient
+from ..clients import (
+    DIAGNOSTICS,
+    GENERATOR_MAX_TOKENS,
+    GENERATORS,
+    ModelClient,
+    ModelSpec,
+)
 from ..config import ExperimentConfig
 from ..errors import (
     BudgetExceededError,
@@ -33,7 +43,8 @@ from ..errors import (
     MultimodalGraphRagError,
 )
 from ..evaluation.answer_match import contains_reference, exact_match, token_f1
-from ..evaluation.judges import Judges
+from ..evaluation.judges import Judges, Verdict
+from ..evaluation.posthoc import judgements_path, load_trace
 from ..retrieval.baselines import chunk_lexicon
 from ..retrieval.comparators import PrecomputedRetrievals
 from ..retrieval.graph import default_cache_path, load_graph
@@ -56,8 +67,18 @@ from .systems import (
     SYSTEMS,
     RunContext,
     SystemOutput,
+    replay,
     resolve_systems,
 )
+
+# The generator cap of every run made before the cap entered the run identity.
+LEGACY_GENERATOR_MAX_TOKENS = 800
+# Post hoc passes that grade the answer itself, so their verdicts do not carry
+# over to a regenerated answer; sufficiency judges only the evidence.
+ANSWER_PASSES = frozenset(
+    {"second-accuracy", "second-faithfulness", "adjudicate", "stability"}
+)
+REGENERATION_BACKUP = "pre_regeneration"
 
 QUALITY_METRICS = (
     "recall",
@@ -374,32 +395,30 @@ def _write_rows(
         writer.writerows(rows)
 
 
-def run_evaluation(
-    settings: EvaluationSettings,
-    client: ModelClient,
-    *,
-    resume_trace: Path | None = None,
-) -> RunOutputs:
-    systems = resolve_systems(settings.systems)
-    questions = load_questions(settings.question_file)
-    if settings.limit:
-        questions = questions[: settings.limit]
-    spec = client.spec(settings.model)
-    judges = Judges(
-        client, text_judge=settings.text_judge, vision_judge=settings.vision_judge
-    )
+def _write_jsonl(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
+    """Replace a JSON-lines file in one step, so a crash leaves the old one whole."""
+    temporary = path.with_name(path.name + ".tmp")
+    with temporary.open("w", encoding="utf-8") as stream:
+        for row in rows:
+            stream.write(canonical_json(row) + "\n")
+    os.replace(temporary, path)
 
-    now = datetime.now(UTC)
-    run_id = now.isoformat(timespec="seconds")
-    stamp = now.strftime("%Y%m%d_%H%M%S")
-    question_sha = file_sha256(settings.question_file)
-    identity = {
+
+def _identity_hash(
+    settings: EvaluationSettings,
+    systems: Sequence[str],
+    question_sha: str,
+    *,
+    max_tokens: int,
+    regenerated_from: int | None = None,
+) -> str:
+    identity: dict[str, object] = {
         "experiment": settings.experiment,
         "experiment_hash": settings.experiment_hash,
         "question_set": settings.question_set_name,
         "question_file_sha256": question_sha,
         "model": settings.model,
-        "systems": systems,
+        "systems": list(systems),
         "corpus_dir": str(settings.corpus_dir.resolve()),
         "image_dir": str(settings.image_dir.resolve()) if settings.image_dir else "",
         "candidate_budget": settings.candidate_budget,
@@ -416,7 +435,258 @@ def run_evaluation(
         ),
         **settings.extra_identity,
     }
-    config_hash = content_hash(identity)
+    # Left out at the legacy cap, so the runs made before keep their identities.
+    if max_tokens != LEGACY_GENERATOR_MAX_TOKENS:
+        identity["generator_max_tokens"] = max_tokens
+    if regenerated_from is not None:
+        identity["regenerated_from_max_tokens"] = regenerated_from
+    return content_hash(identity)
+
+
+def _scored(
+    output: SystemOutput, question: QuestionRecord, judges: Judges
+) -> tuple[dict[str, float], Verdict, Verdict]:
+    """Retrieval and answer scores of one output, with its two verdicts."""
+    recall, complete, mrr = _score_retrieval(output, question)
+    answer = judges.answer(question.question, question.answer, output.result.text)
+    faith = judges.faithfulness(
+        output.result.text,
+        output.context,
+        image_paths=output.image_paths if question.is_visual else (),
+    )
+    values = {
+        "recall": recall,
+        "complete": complete,
+        "mrr": mrr,
+        "acc": answer.value,
+        "em": exact_match(output.result.text, question.answer),
+        "f1": token_f1(output.result.text, question.answer),
+        "contains": contains_reference(output.result.text, question.answer),
+        "faith": faith.value,
+        "in_tok": output.result.input_tokens,
+        "out_tok": output.result.output_tokens,
+        "latency_ms": output.result.latency_ms,
+        "cost_usd": output.result.cost_usd,
+    }
+    return values, answer, faith
+
+
+def _run_record(
+    output: SystemOutput,
+    question: QuestionRecord,
+    system: str,
+    scored: tuple[dict[str, float], Verdict, Verdict],
+    *,
+    run_id: str,
+    config_hash: str,
+    settings: EvaluationSettings,
+    spec: ModelSpec,
+    regeneration: Mapping[str, Any] | None = None,
+) -> RunRecord:
+    values, answer, faith = scored
+    return RunRecord(
+        run_id=run_id,
+        config_hash=config_hash,
+        question_id=question.id,
+        system=system,
+        answer=output.result.text,
+        evidence=output.evidence_bundle(settings.candidate_budget),
+        metrics={k: v for k, v in values.items() if k in QUALITY_METRICS},
+        raw_judges={"accuracy": answer.to_dict(), "faithfulness": faith.to_dict()},
+        input_tokens=output.result.input_tokens,
+        output_tokens=output.result.output_tokens,
+        latency_ms=output.result.latency_ms,
+        cost_usd=output.result.cost_usd,
+        model_versions={settings.model: spec.model},
+        regeneration=regeneration,
+    )
+
+
+def capped_records(
+    records: Sequence[Mapping[str, Any]], cap: int = LEGACY_GENERATOR_MAX_TOKENS
+) -> list[Mapping[str, Any]]:
+    """Records whose generator reply reached the cap, cut off or left empty."""
+    return [record for record in records if int(record["output_tokens"]) >= cap]
+
+
+def _regenerate(
+    trace_path: Path,
+    *,
+    legacy_hash: str,
+    config_hash: str,
+    systems: Sequence[str],
+    questions: Sequence[QuestionRecord],
+    context: RunContext,
+    judges: Judges,
+    settings: EvaluationSettings,
+    spec: ModelSpec,
+) -> None:
+    """Answer again, at the current cap, every record that reached the legacy cap.
+
+    Each such record is replayed from its stored evidence, without retrieving,
+    so the new answer sees exactly the passages and facts the old one did; it is
+    then judged again by the run's judges. Progress is appended to a
+    ``regenerated_`` file beside the trace, so an interrupted pass resumes. Once
+    every capped record is done, the originals are copied to
+    ``pre_regeneration/``, the trace is rewritten under the amended identity with
+    each replaced answer kept in its record's ``regeneration`` field, and post
+    hoc verdicts that graded a replaced answer are dropped.
+    """
+    if not trace_path.is_file():
+        raise ConfigurationError(f"trace to regenerate does not exist: {trace_path}")
+    records = load_trace(trace_path)
+    hashes = {record["config_hash"] for record in records}
+    if hashes == {config_hash}:
+        print("Regenerate: this trace has already been regenerated")
+        return
+    if hashes != {legacy_hash}:
+        raise ConfigurationError(
+            f"{trace_path} was not written under this configuration at the "
+            f"{LEGACY_GENERATOR_MAX_TOKENS}-token cap ({sorted(hashes)} against "
+            f"{legacy_hash}); it cannot be regenerated"
+        )
+    present: dict[str, set[str]] = {}
+    for record in records:
+        present.setdefault(record["question_id"], set()).add(record["system"])
+    unfinished = [
+        q.id for q in questions if not set(systems) <= present.get(q.id, set())
+    ]
+    if unfinished:
+        raise ConfigurationError(
+            f"{trace_path} lacks {len(unfinished)} finished questions; complete "
+            "the run with --resume before regenerating"
+        )
+    by_id = {question.id: question for question in questions}
+    capped = capped_records(records)
+    base_name = trace_path.stem.removeprefix("trace_")
+    progress = trace_path.with_name(f"regenerated_{base_name}.jsonl")
+    redone = {
+        (record["question_id"], record["system"]): record
+        for record in (load_trace(progress) if progress.is_file() else [])
+    }
+    print(
+        f"Regenerate: {len(capped)} answers reached the "
+        f"{LEGACY_GENERATOR_MAX_TOKENS}-token cap, {len(redone)} already done at "
+        f"{context.max_tokens}"
+    )
+    for number, record in enumerate(capped, 1):
+        key = (record["question_id"], record["system"])
+        if key in redone:
+            continue
+        question = by_id[record["question_id"]]
+        output = replay(record["system"], question, context, record["evidence"])
+        bundle = output.evidence_bundle(settings.candidate_budget).to_dict()
+        if json.loads(canonical_json(bundle)) != record["evidence"]:
+            raise ConfigurationError(
+                f"the replayed evidence of {key} differs from the trace"
+            )
+        new = _run_record(
+            output,
+            question,
+            record["system"],
+            _scored(output, question, judges),
+            run_id=record["run_id"],
+            config_hash=config_hash,
+            settings=settings,
+            spec=spec,
+            regeneration={
+                "from_max_tokens": LEGACY_GENERATOR_MAX_TOKENS,
+                "max_tokens": context.max_tokens,
+                "previous": {
+                    name: record[name]
+                    for name in (
+                        "answer",
+                        "metrics",
+                        "raw_judges",
+                        "input_tokens",
+                        "output_tokens",
+                        "latency_ms",
+                        "cost_usd",
+                    )
+                },
+            },
+        )
+        new.write_jsonl(progress)
+        redone[key] = json.loads(canonical_json(new.to_dict()))
+        print(
+            f"  {number:3d}/{len(capped)}  {record['system']:<22} {question.question[:40]}"
+        )
+
+    backup = trace_path.parent / REGENERATION_BACKUP
+    backup.mkdir(exist_ok=True)
+    judgements = judgements_path(trace_path)
+    for path in (
+        trace_path,
+        trace_path.with_name(f"summary_{base_name}.csv"),
+        trace_path.with_name(f"detail_{base_name}.csv"),
+        judgements,
+    ):
+        if path.is_file():
+            shutil.copy2(path, backup / path.name)
+    _write_jsonl(
+        trace_path,
+        [
+            redone.get((r["question_id"], r["system"]))
+            or {**r, "config_hash": config_hash}
+            for r in records
+        ],
+    )
+    if judgements.is_file():
+        _write_jsonl(
+            judgements,
+            [
+                entry
+                for entry in load_trace(judgements)
+                if entry["pass"] not in ANSWER_PASSES
+                or (entry["question_id"], entry["system"]) not in redone
+            ],
+        )
+    if progress.is_file():
+        shutil.move(progress, backup / progress.name)
+    print(f"Regenerate: {len(redone)} answers replaced; originals in {backup}")
+
+
+def run_evaluation(
+    settings: EvaluationSettings,
+    client: ModelClient,
+    *,
+    resume_trace: Path | None = None,
+    regenerate_capped: bool = False,
+) -> RunOutputs:
+    """Run or resume one generator's evaluation.
+
+    With ``regenerate_capped`` the finished run in ``resume_trace`` is amended
+    instead: every answer that reached the legacy generator cap is generated
+    again from its stored evidence at the current cap (see :func:`_regenerate`)
+    and the outputs are rebuilt from the amended trace.
+    """
+    max_tokens = GENERATOR_MAX_TOKENS
+    if regenerate_capped and resume_trace is None:
+        raise ConfigurationError("regeneration amends a finished run; pass its trace")
+    if regenerate_capped and max_tokens <= LEGACY_GENERATOR_MAX_TOKENS:
+        raise ConfigurationError(
+            f"the generator cap is {max_tokens}; there is nothing to regenerate"
+        )
+    systems = resolve_systems(settings.systems)
+    questions = load_questions(settings.question_file)
+    if settings.limit:
+        questions = questions[: settings.limit]
+    spec = client.spec(settings.model)
+    judges = Judges(
+        client, text_judge=settings.text_judge, vision_judge=settings.vision_judge
+    )
+
+    now = datetime.now(UTC)
+    run_id = now.isoformat(timespec="seconds")
+    stamp = now.strftime("%Y%m%d_%H%M%S")
+    question_sha = file_sha256(settings.question_file)
+    config_hash = _identity_hash(
+        settings,
+        systems,
+        question_sha,
+        max_tokens=max_tokens,
+        regenerated_from=LEGACY_GENERATOR_MAX_TOKENS if regenerate_capped else None,
+    )
 
     print(f"\nEvaluation - {settings.question_set_name} ({len(questions)} questions)")
     print(f"Generator : {settings.model} ({spec.vendor}, {spec.access})")
@@ -477,7 +747,25 @@ def run_evaluation(
         bridge_base_k=settings.bridge_base_k,
         bridge_hops=settings.bridge_hops,
         seed=settings.seed,
+        max_tokens=max_tokens,
     )
+    if regenerate_capped:
+        _regenerate(
+            Path(resume_trace),
+            legacy_hash=_identity_hash(
+                settings,
+                systems,
+                question_sha,
+                max_tokens=LEGACY_GENERATOR_MAX_TOKENS,
+            ),
+            config_hash=config_hash,
+            systems=systems,
+            questions=questions,
+            context=context,
+            judges=judges,
+            settings=settings,
+            spec=spec,
+        )
 
     results_dir = settings.results_dir
     base_name = f"{settings.question_set_name}_{settings.model}_{stamp}"
@@ -510,29 +798,8 @@ def run_evaluation(
             row: dict[str, object] = _question_row(question, settings.model)
             for name in systems:
                 output = SYSTEMS[name](question, context, use_pixels)
-                recall, complete, mrr = _score_retrieval(output, question)
-                answer = judges.answer(
-                    question.question, question.answer, output.result.text
-                )
-                faith = judges.faithfulness(
-                    output.result.text,
-                    output.context,
-                    image_paths=output.image_paths if question.is_visual else (),
-                )
-                values = {
-                    "recall": recall,
-                    "complete": complete,
-                    "mrr": mrr,
-                    "acc": answer.value,
-                    "em": exact_match(output.result.text, question.answer),
-                    "f1": token_f1(output.result.text, question.answer),
-                    "contains": contains_reference(output.result.text, question.answer),
-                    "faith": faith.value,
-                    "in_tok": output.result.input_tokens,
-                    "out_tok": output.result.output_tokens,
-                    "latency_ms": output.result.latency_ms,
-                    "cost_usd": output.result.cost_usd,
-                }
+                scored = _scored(output, question, judges)
+                values, answer, faith = scored
                 aggregate = aggregates[name]
                 for metric, value in values.items():
                     aggregate.totals[metric] += float(value)
@@ -544,23 +811,15 @@ def run_evaluation(
                         name, values, output.result.text, output.ranked_text_sources
                     )
                 )
-                RunRecord(
+                _run_record(
+                    output,
+                    question,
+                    name,
+                    scored,
                     run_id=run_id,
                     config_hash=config_hash,
-                    question_id=question.id,
-                    system=name,
-                    answer=output.result.text,
-                    evidence=output.evidence_bundle(settings.candidate_budget),
-                    metrics={k: v for k, v in values.items() if k in QUALITY_METRICS},
-                    raw_judges={
-                        "accuracy": answer.to_dict(),
-                        "faithfulness": faith.to_dict(),
-                    },
-                    input_tokens=output.result.input_tokens,
-                    output_tokens=output.result.output_tokens,
-                    latency_ms=output.result.latency_ms,
-                    cost_usd=output.result.cost_usd,
-                    model_versions={settings.model: spec.model},
+                    settings=settings,
+                    spec=spec,
                 ).write_jsonl(trace_path)
             detail_rows.append(row)
             print(f"  {number:3d}/{len(questions)}  {question.question[:58]}")
