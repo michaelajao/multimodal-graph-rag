@@ -42,3 +42,14 @@ def test_contains_reference_is_lenient_where_exact_match_is_not():
     assert exact_match(prediction, "35,124") == 0
     assert contains_reference(prediction, "35,124") == 1
     assert contains_reference(prediction, "41,000") == 0
+
+
+def test_contains_reference_matches_whole_tokens_only():
+    assert contains_reference("I don't know.", "no") == 0
+    assert contains_reference("They are not the same.", "no") == 0
+    assert contains_reference("No, they are not.", "no") == 1
+    assert contains_reference("Yes.", "yes") == 1
+    assert contains_reference("It was written by Carlo Rovelli.", "Carlo Rovelli") == 1
+    assert (
+        contains_reference("It was written by Carlo Rovellini.", "Carlo Rovelli") == 0
+    )

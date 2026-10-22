@@ -61,12 +61,15 @@ def token_f1(prediction: str, reference: str) -> float:
 
 
 def contains_reference(prediction: str, reference: str) -> int:
-    """1 when the normalised reference appears inside the normalised prediction.
+    """1 when the normalised reference occurs as whole tokens in the prediction.
 
     A lenient companion to exact match, for generators that answer in a
     sentence rather than with a bare span. It is reported, never substituted
     for exact match, because it cannot distinguish a correct answer from one
-    that also asserts something false.
+    that also asserts something false. Matching respects token boundaries, so a
+    reference of "no" is not found inside "not" or "know".
     """
     expected = normalise_answer(reference)
-    return int(bool(expected) and expected in normalise_answer(prediction))
+    return int(
+        bool(expected) and f" {expected} " in f" {normalise_answer(prediction)} "
+    )
