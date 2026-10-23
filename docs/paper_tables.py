@@ -51,7 +51,7 @@ def num(x, signed=False):
 
 
 def interval(d):
-    return f"{num(d['delta'], True)} [{num(d['lower'], True)}, {num(d['upper'], True)}]"
+    return f"{{\\scriptsize[{num(d['lower'], True)}, {num(d['upper'], True)}]}}"
 
 
 def pval(p):
@@ -69,12 +69,19 @@ def main_table(report):
         complete = "--" if key == "control:closed-book" else f"{s['complete']:.2f}"
         cells = [label, complete] + [num(s[m]) for m in ("em", "f1", "contains", "acc")]
         if key == report["reference"]:
-            cells += ["ref.", "--", "ref.", "--"]
-        else:
-            for m in ("em", "acc"):
-                d = s["differences"][m]
-                cells += [interval(d), pval(d["p_holm"]) if "p_holm" in d else "--"]
+            lines.append(" & ".join(cells + ["ref.", "--", "ref.", "--"]) + " \\\\")
+            continue
+        # the estimate on the row, its 95% interval on a small second line
+        below = [""] * len(cells)
+        for m in ("em", "acc"):
+            d = s["differences"][m]
+            cells += [
+                num(d["delta"], True),
+                pval(d["p_holm"]) if "p_holm" in d else "--",
+            ]
+            below += [interval(d), ""]
         lines.append(" & ".join(cells) + " \\\\")
+        lines.append(" & ".join(below) + " \\\\[1pt]")
     return lines
 
 
