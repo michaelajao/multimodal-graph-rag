@@ -937,3 +937,7 @@ chunk for 79.3% of HotpotQA triples (72,946), 64.4% of SPIQA (50,123), and
 with token-bounded containment over all non-empty HotpotQA answers is 87.5%
 (kappa 0.75) on bridge and 78.8% (kappa 0.55) on comparison questions; of
 the replies that open by declining, the judge accepted 0.8% and 2.5%.
+Re-scoring those 58 replies as wrong moves no reported judge difference by
+more than 0.006. `rag judge-calibration` on the 200 HotpotQA questions
+(DeepSeek V4 Pro, $0.07): 0 of 200 references rejected and 0 of 200 decoys
+accepted (`artifacts/runs/calibration_hotpotqa_*.jsonl`).
