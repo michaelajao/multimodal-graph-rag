@@ -1,0 +1,40 @@
+% SPIQA native question filtering. Counts 579 / 132 / 447 / 150 are from
+% data/questions/questions_spiqa_native*.json (leakage_status field); the
+% sample seed is configs/*.json "seed". Later counts come from the runs.
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  main/.style = {box, fill=cVis!14, draw=cVis!70!black, text width=40mm},
+  side/.style = {box, fill=black!4, text width=33mm, align=left},
+  tag/.style  = {font=\scriptsize, text=black!75, anchor=east, align=right},
+]
+\node[main] (m1) at (0,0) {\textbf{579} question--answer pairs written by SPIQA annotators, one crop each (100 papers)};
+\node[main] (m2) at (0,-1.65) {\textbf{447} screened, unflagged};
+\node[main] (m3) at (0,-2.95) {\textbf{150} primary set};
+\node[main] (m4) at (0,-4.45) {\textbf{135} not text-recoverable};
+\node[main] (m5) at (0,-5.95) {\textbf{85} not closed-book-recoverable};
+
+\draw[arr] (m1) -- (m2) coordinate[midway] (c1);
+\draw[arr] (m2) -- node[lab, right] {seeded sample} (m3);
+\draw[arr] (m3) -- (m4) coordinate[midway] (c3);
+\draw[arr] (m4) -- (m5) coordinate[midway] (c4);
+
+\node[side] (x1) at (4.75,-0.82) {\textbf{132} caption-flagged, with the answer string in the generated or author caption (contrast set, Table~\ref{tab:mm}, col.~1)};
+\node[side] (x3) at (4.75,-3.7)  {\textbf{15} answer string, or every number in it, in the paper's retrievable text};
+\node[side] (x4) at (4.75,-5.2)  {\textbf{50} answered correctly by any generator with no context};
+\draw[arr, densely dashed] (c1) -- (x1.west);
+\draw[arr, densely dashed] (c3) -- (x3.west);
+\draw[arr, densely dashed] (c4) -- (x4.west);
+
+% Which column of the multimodal table each set feeds
+\node[tag] at (-2.25,-2.95) {Table~\ref{tab:mm}, col.~2};
+\node[tag] at (-2.25,-4.45) {col.~3};
+\node[tag] at (-2.25,-5.95) {col.~4};
+\node[font=\scriptsize, text=black!75, anchor=north west, text width=33mm, align=left]
+  at (x1.south west) {40 of the 579 name their own modality and are kept};
+\end{tikzpicture}
+\caption{Filtering of SPIQA's human-written figure questions. Each dashed exit
+removes one textual route to the answer, and the column labels give the
+column of Table~\ref{tab:mm} that each set feeds.}
+\label{fig:funnel}
+\end{figure}

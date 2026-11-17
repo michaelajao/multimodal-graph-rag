@@ -1,0 +1,5 @@
+Eight evidence states attribute each RAG answer to the evidence route behind it
+At equal budget, graph expansion does not beat dense top-5 retrieval
+HippoRAG 2 lifts bridge-question accuracy by 0.16, mostly through evidence access
+Under half of correct answers can be credited to retrieved gold evidence
+[Pending SPIQA runs: multimodal gain after caption-leakage and closed-book correction]

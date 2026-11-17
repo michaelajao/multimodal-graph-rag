@@ -1,0 +1,80 @@
+% Worked +KGret example on an evaluated bridge question
+% (5ababbe9554299232ef4a38a). Every triple shown is in
+% data/graphs/triples_cache_hotpotqa_corpus.json (node names lower-cased by
+% normalise_entity); matching and h = 2 expansion follow bridge_pages() in
+% src/multimodal_graph_rag/retrieval/graph_expansion.py. Pool size, the two
+% chunks kept, and dense top-3 are from
+% artifacts/runs/retrieval_ab_questions_hotpotqa_bridge_h2.json.
+\begin{figure*}[t]
+\centering
+\newcommand{\relname}[1]{{\scriptsize\upshape\textcolor{black!75}{#1}}}
+\begin{tikzpicture}[
+  ent/.style   = {box, fill=cGraph!12, draw=cGraph!70!black, font=\scriptsize\itshape},
+  hit/.style   = {ent, line width=1.1pt, fill=cGraph!28, text width=15mm},
+  clash/.style = {ent, line width=1.1pt, fill=cErr!14, draw=cErr!80!black},
+  nb/.style    = {ent, text width=18mm},
+  pool/.style  = {box, text width=24mm, align=left},
+  head/.style  = {font=\scriptsize, text=black!75},
+]
+% Question
+\node[box, fill=black!3, text width=21mm, align=left] (q) at (0,0)
+  {Which author influenced the animated Easter television special
+  \textbf{``The First Easter Rabbit''}?};
+\node[font=\scriptsize, text=black!75, below=1mm of q, text width=21mm, align=left]
+  {Also matched \emph{television}, \emph{special}, \emph{first}};
+
+% Matched nodes
+\node[hit]   (fer) at (2.45,1.2)  {the first easter rabbit};
+\node[clash] (au)  at (2.45,-1.6) {author};
+\draw[arr, densely dashed] (q.east) -- (fer.west);
+\draw[arr, densely dashed] (q.east) -- (au.west);
+
+% Neighbours; the relation of each triple is printed above the neighbour
+\node[nb] (vr)  at (5.3,2.25) {\relname{is based on}\\ the velveteen rabbit};
+\node[nb] (rb)  at (5.3,1.2)  {\relname{later airing on}\\ cbs};
+\node[nb] (nbc) at (5.3,0.3)  {\relname{aired on}\\ nbc};
+\draw[line width=1.1pt, cGraph!70!black] (fer.east) -- (vr.west);
+\draw[black!55] (fer.east) -- (rb.west);
+\draw[black!55] (fer.east) -- (nbc.west);
+
+\node[nb] (cw)  at (5.3,-0.75) {a country with no name};
+\node[nb] (ajc) at (5.3,-1.6)  {a.\,j.\ cronin};
+\node[nb] (abr) at (5.3,-2.45) {abridged version};
+\draw[black!55] (au.east) -- (cw.west);
+\draw[black!55] (au.east) -- (ajc.west);
+\draw[black!55] (au.east) -- (abr.west);
+\node[font=\scriptsize, text=black!75, align=center] at (5.3,-3.15)
+  {first 3 of the 20 neighbours used\\ (90 in all)};
+
+% Bridge pools and selection
+\node[pool, fill=cGraph!10, draw=cGraph!70!black] (p1) at (8.15,2.05)
+  {36 articles, among them \emph{The Velveteen Rabbit}};
+\node[pool, fill=cErr!8, draw=cErr!80!black] (p2) at (8.15,-2.05)
+  {57 articles with a triple on \emph{author} or one of its neighbours};
+\node[box, fill=cText!12, draw=cText!70!black, text width=24mm] (sel) at (8.15,0.0)
+  {113 candidates from five matched nodes, outside d1--d3; top 2 by query similarity};
+\foreach \n in {vr,rb,nbc} \draw[arr] (\n.east) -- (p1.west);
+\foreach \n in {cw,ajc,abr} \draw[arr] (\n.east) -- (p2.west);
+\draw[arr] (p1) -- (sel);
+\draw[arr] (p2) -- (sel);
+
+% Outcome
+\node[box, fill=cCredit!14, draw=cCredit!80!black, text width=20mm, align=left]
+  (out) at (11.1,0.0)
+  {slot 4 \emph{The Velveteen Rabbit} (gold)\\[2pt] slot 5 \emph{AlphaPets}
+  (via \emph{author})};
+\draw[arr] (sel) -- (out);
+
+% Column headings
+\node[head] at (2.45,3.05) {matched nodes};
+\node[head] at (5.3,3.05)  {neighbours ($h=2$)};
+\node[head] at (8.15,3.05) {bridge pool};
+\node[head] at (11.1,3.05) {passages added};
+\end{tikzpicture}
+\caption{One evaluated HotpotQA bridge question traced through +KGret, using
+triples from the extracted graph. The bold edge is the triple that reaches the
+gold article, and the vermilion node and pool mark a generic match whose
+articles compete for the same two slots. The other three matched nodes add
+candidates of their own, so the two pools shown sum to less than 113.}
+\label{fig:bridge}
+\end{figure*}
