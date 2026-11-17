@@ -83,6 +83,38 @@ def mcnemar_exact(
     }
 
 
+def cohen_kappa(first: Sequence[int], second: Sequence[int]) -> float | None:
+    """Cohen's kappa for two binary raters; ``None`` when chance agreement is
+    complete (both raters used one label throughout), where it is undefined."""
+    if len(first) != len(second) or not first:
+        raise ValueError("ratings must be non-empty and equally sized")
+    n = len(first)
+    observed = sum(a == b for a, b in zip(first, second, strict=True)) / n
+    expected = sum(
+        (sum(a == label for a in first) / n) * (sum(b == label for b in second) / n)
+        for label in (0, 1)
+    )
+    if expected == 1.0:
+        return None
+    return (observed - expected) / (1 - expected)
+
+
+def wilson_interval(
+    successes: int, total: int, confidence: float = 0.95
+) -> tuple[float, float]:
+    """Wilson score interval for a binomial proportion."""
+    if total < 1 or not 0 <= successes <= total:
+        raise ValueError("need 0 <= successes <= total and total >= 1")
+    z = {0.95: 1.959964, 0.99: 2.575829}.get(confidence)
+    if z is None:
+        raise ValueError("confidence must be 0.95 or 0.99")
+    p = successes / total
+    denominator = 1 + z * z / total
+    centre = (p + z * z / (2 * total)) / denominator
+    half = z * math.sqrt(p * (1 - p) / total + z * z / (4 * total * total))
+    return max(0.0, centre - half / denominator), min(1.0, centre + half / denominator)
+
+
 def _question_matrix(rows: Sequence[Sequence[float]]) -> np.ndarray:
     matrix = np.asarray(rows, dtype=float)
     if matrix.ndim != 2 or matrix.shape[0] == 0 or matrix.shape[1] == 0:

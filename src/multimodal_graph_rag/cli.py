@@ -27,10 +27,18 @@ from .artifacts import (
     validate_manifest,
     write_matrix,
 )
-from .clients import GENERATOR_MAX_TOKENS, GENERATORS, ModelClient, load_pricing
+from .clients import (
+    EXTRACTION_MODEL,
+    GENERATOR_MAX_TOKENS,
+    GENERATORS,
+    ModelClient,
+    load_pricing,
+)
 from .config import ExperimentConfig, load_experiment_config
 from .corpora import corpus_spec, docbank, doclaynet, hotpotqa, publaynet, spiqa
+from .corpora.loaders import iter_corpus_chunks
 from .errors import ConfigurationError, MultimodalGraphRagError
+from .evaluation import triple_judging
 from .evaluation.answer_match import normalise_answer
 from .evaluation.audits import (
     FIGURE_AUDIT_FIELDS,
@@ -58,12 +66,25 @@ from .evaluation.posthoc import (
     PASSES,
     JudgementStore,
     assign_states,
+    estimate_call_cost,
     judge_context,
     judgements_path,
     load_trace,
     plan_tasks,
     run_task,
 )
+from .evaluation.review import (
+    CRITERIA,
+    ITEM_FIELDS,
+    build_items,
+    check_reviewer_family,
+    check_vision,
+    item_verdicts,
+    summarise_review,
+    write_summary,
+)
+from .evaluation.review import pending as pending_reviews
+from .evaluation.review import run_item as run_review_item
 from .evaluation.statistics import mcnemar_exact, paired_bootstrap_delta
 from .pipelines.evaluate import (
     LEGACY_GENERATOR_MAX_TOKENS,
@@ -84,7 +105,7 @@ from .questions.cross_paper import author_cross_paper
 from .questions.spiqa_native import convert_spiqa_native
 from .retrieval.baselines import chunk_lexicon
 from .retrieval.comparators import PrecomputedRetrievals, comparator_report
-from .retrieval.graph import TripleStore, default_cache_path, load_graph
+from .retrieval.graph import TripleStore, chunk_key, default_cache_path, load_graph
 from .retrieval.graph_expansion import bridge_report
 from .retrieval.text import TextIndex
 from .schemas import load_questions
@@ -490,7 +511,14 @@ def cmd_freeze(args: argparse.Namespace) -> int:
 
 
 def cmd_audit_graph(args: argparse.Namespace) -> int:
-    rows = sample_triple_audit(args.cache, args.corpus, args.count, args.seed)
+    live_keys = (
+        {chunk_key(c.text) for c in iter_corpus_chunks(args.corpus_dir)}
+        if args.corpus_dir
+        else None
+    )
+    rows = sample_triple_audit(
+        args.cache, args.corpus, args.count, args.seed, live_keys=live_keys
+    )
     _write_csv(Path(args.output), TRIPLE_AUDIT_FIELDS, rows)
     print(f"wrote {args.output} ({len(rows)} triples)")
     return 0
@@ -567,6 +595,130 @@ def cmd_judge_pass(args: argparse.Namespace) -> int:
             if number % 50 == 0:
                 print(f"  {number}/{len(tasks)}", flush=True)
     print(f"total: {total_calls} calls, about ${total_estimate:.2f} with {args.judge}")
+    return 0
+
+
+def cmd_review_questions(args: argparse.Namespace) -> int:
+    questions = load_questions(args.questions)
+    set_name = Path(args.questions).stem
+    check_reviewer_family(args.reviewer, args.author)
+    pricing = load_pricing(args.pricing)
+    price = pricing.price(args.reviewer)
+    captions: dict[str, str] = {}
+    if any(q.is_visual for q in questions):
+        check_vision(args.reviewer)
+        captions_file = Path(
+            args.captions or Path(args.image_dir or ".") / "captions.json"
+        )
+        if not captions_file.is_file():
+            raise ConfigurationError(f"captions file does not exist: {captions_file}")
+        captions = json.loads(captions_file.read_text(encoding="utf-8"))
+    items = build_items(
+        questions,
+        set_name=set_name,
+        corpus_dir=args.corpus_dir,
+        image_dir=args.image_dir,
+        captions=captions,
+    )
+    store = JudgementStore(args.output)
+    todo = pending_reviews(items, store)
+    estimate = sum(estimate_call_cost(price, i.prompt, len(i.images)) for i in todo)
+    by_criterion = {c: sum(i.criterion == c for i in todo) for c in CRITERIA}
+    print(
+        f"{set_name}: {len(todo)} of {len(items)} calls to do with {args.reviewer} "
+        f"(author {args.author}), about ${estimate:.2f}; {by_criterion}"
+    )
+    if args.dry_run:
+        return 0
+    client = ModelClient(pricing)
+    for number, item in enumerate(todo, 1):
+        store.add(run_review_item(item, client, args.reviewer, args.author))
+        if number % 25 == 0:
+            print(f"  {number}/{len(todo)}", flush=True)
+    summary = summarise_review(
+        questions, set_name, store, reviewer=args.reviewer, author=args.author
+    )
+    summary_path = Path(args.summary or Path(args.output).with_suffix(".summary.json"))
+    write_summary(summary, summary_path)
+    _write_csv(
+        Path(args.items_csv or Path(args.output).with_suffix(".items.csv")),
+        ITEM_FIELDS,
+        [
+            {field: row[field] for field in ITEM_FIELDS}
+            for row in item_verdicts(questions, set_name, store)
+        ],
+    )
+    print(json.dumps(summary, indent=1))
+    return 0
+
+
+def cmd_judge_triples(args: argparse.Namespace) -> int:
+    second = args.second_judge if args.second_count > 0 else None
+    triple_judging.check_judge_families(args.judge, second, args.extractor)
+    pricing = load_pricing(args.pricing)
+    graphs_dir = Path(args.graphs_dir)
+    root = Path(args.corpus_root)
+    items: list[triple_judging.TripleItem] = []
+    for corpus in args.corpora:
+        corpus_dir = root / f"{corpus}_corpus"
+        sample = triple_judging.sample_corpus(
+            corpus,
+            corpus_dir,
+            default_cache_path(corpus_dir, graphs_dir),
+            args.count,
+            args.seed,
+        )
+        repeated = sum(i.frequency > 1 for i in sample)
+        print(
+            f"{corpus}: {len(sample)} triples sampled, {repeated} extracted from "
+            "more than one chunk"
+        )
+        items.extend(sample)
+    subset = (
+        triple_judging.second_subset(items, args.corpora, args.second_count, args.seed)
+        if second
+        else []
+    )
+    store = JudgementStore(args.output)
+    plan = [(args.judge, items)] + ([(second, subset)] if second else [])
+    total_calls, total_estimate = 0, 0.0
+    todo_by_judge = {}
+    for judge, sample in plan:
+        tasks = triple_judging.plan_tasks(sample, judge, store)
+        price = pricing.price(judge)
+        estimate = sum(
+            estimate_call_cost(
+                price, t.prompt, output_tokens=triple_judging.EXPECTED_OUTPUT_TOKENS
+            )
+            for t in tasks
+        )
+        todo_by_judge[judge] = tasks
+        total_calls += len(tasks)
+        total_estimate += estimate
+        print(
+            f"{judge}: {len(tasks)} calls (one per triple, {len(sample)} triples, "
+            f"minus done), about ${estimate:.2f}"
+        )
+    print(f"total: {total_calls} calls, about ${total_estimate:.2f}")
+    if args.dry_run:
+        return 0
+    client = ModelClient(pricing)
+    for judge, tasks in todo_by_judge.items():
+        for number, task in enumerate(tasks, 1):
+            store.add(triple_judging.run_task(task, client))
+            if number % 50 == 0:
+                print(f"  {judge} {number}/{len(tasks)}", flush=True)
+    summary = triple_judging.summarise(
+        items,
+        subset,
+        store,
+        corpora=args.corpora,
+        primary=args.judge,
+        second=second,
+        extractor=args.extractor,
+    )
+    write_summary(summary, args.summary)
+    print(json.dumps(summary, indent=1))
     return 0
 
 
@@ -923,6 +1075,12 @@ def build_parser() -> argparse.ArgumentParser:
     audit_graph.add_argument("--count", type=int, default=200)
     audit_graph.add_argument("--seed", type=int, default=20260903)
     audit_graph.add_argument(
+        "--corpus-dir",
+        default=None,
+        help="sample only triples whose chunk is still in this corpus (the "
+        "PubLayNet cache also holds entries of the corpus it was rebuilt from)",
+    )
+    audit_graph.add_argument(
         "--output", default="protocols/graph_triple_audit_sample.csv"
     )
     audit_graph.set_defaults(handler=cmd_audit_graph)
@@ -962,6 +1120,60 @@ def build_parser() -> argparse.ArgumentParser:
     judge_pass.add_argument("--pricing", default="configs/pricing_2026-10-20.json")
     judge_pass.add_argument("--dry-run", action="store_true")
     judge_pass.set_defaults(handler=cmd_judge_pass)
+
+    review = commands.add_parser(
+        "review-questions",
+        help="model review of a model-authored question set (resumable; --dry-run prices it)",
+    )
+    review.add_argument("questions", help="the question set to review")
+    review.add_argument("--author", required=True, help="model alias that wrote it")
+    review.add_argument(
+        "--reviewer", required=True, help="model alias of another family"
+    )
+    review.add_argument("--corpus-dir", required=True)
+    review.add_argument("--image-dir", default=None, help="gold crops (figure sets)")
+    review.add_argument(
+        "--captions", default=None, help="default: <image-dir>/captions.json"
+    )
+    review.add_argument("--output", required=True, help="append-only verdicts (.jsonl)")
+    review.add_argument("--summary", default=None, help="default: beside --output")
+    review.add_argument("--items-csv", default=None, help="default: beside --output")
+    review.add_argument("--pricing", default="configs/pricing_2026-10-20.json")
+    review.add_argument("--dry-run", action="store_true")
+    review.set_defaults(handler=cmd_review_questions)
+
+    triples = commands.add_parser(
+        "judge-triples",
+        help="model-judged triple precision on a stratified sample (resumable; "
+        "--dry-run prices it)",
+    )
+    triples.add_argument(
+        "--corpora", nargs="+", default=["hotpotqa", "spiqa", "publaynet"]
+    )
+    triples.add_argument("--count", type=int, default=100, help="triples per corpus")
+    triples.add_argument("--judge", default="claude-opus-5.5")
+    triples.add_argument("--second-judge", default="deepseek-v4-pro")
+    triples.add_argument(
+        "--second-count",
+        type=int,
+        default=100,
+        help="triples the second judge re-labels, spread over the corpora; 0 skips it",
+    )
+    triples.add_argument(
+        "--extractor",
+        default=EXTRACTION_MODEL,
+        help="model that extracted the triples, for the family rule",
+    )
+    triples.add_argument("--graphs-dir", default=str(GRAPHS_DIR))
+    triples.add_argument(
+        "--corpus-root", default=".", help="folder holding <corpus>_corpus"
+    )
+    triples.add_argument("--seed", type=int, default=20260903)
+    triples.add_argument("--output", default="artifacts/runs/triple_judgements.jsonl")
+    triples.add_argument("--summary", default="artifacts/runs/triple_precision.json")
+    triples.add_argument("--pricing", default="configs/pricing_2026-10-20.json")
+    triples.add_argument("--dry-run", action="store_true")
+    triples.set_defaults(handler=cmd_judge_triples)
 
     pooled = commands.add_parser(
         "pooled-analysis",

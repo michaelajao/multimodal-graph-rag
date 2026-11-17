@@ -914,7 +914,15 @@ reply that fills the cap is now asked again with reasoning off. The question
 is excluded from analysis (49 questions reported).
 
 **PubLayNet leakage.** 3 of the 35 caption-answerable figure questions are
-flagged (`artifacts/runs/figure_integrity_publaynet.csv`).
+flagged (`artifacts/runs/figure_integrity_publaynet.csv`). Corrected
+2026-11-17: the corpus-text half of `rag audit-figures` looked for the source
+text by splitting on `-Figure`/`-Table`, which never matches PubLayNet crop names
+(`PMC..._00004_figure1.png`), so every PubLayNet item was screened against an
+empty page. With the fix 7 of 35 are flagged, the same 3 by captions and 4 by
+page text, all 4 numeric matches (one is the single-digit answer 8). The old file
+is in `artifacts/runs/pre_screen_fix/`. The SPIQA screen reproduces exactly (15
+of 150). No RQ3 number moves, because only the SPIQA screen feeds
+`multimodal-analysis`.
 
 **SPIQA text recoverability (2026-10-23).** `rag audit-figures` over the 150
 primary questions flags 15 against the papers' own text and none against the
@@ -992,5 +1000,64 @@ screened set, 78 of 112 pixel answers on the flagged set, and 103 of 132 caption
 answers. The caption traces have no closed-book arm, so state 4 is not assigned on
 them.
 
-**Not run (balance $18.68 on 2026-11-17):** triple precision, model review of model-authored questions, Qwen on the figure sets,
+**Model review of the model-authored question sets (2026-11-17, on the desktop).**
+`rag review-questions` (section 7.3; code uncommitted at the time) with a reviewer
+from a different family than the author, one call per item and criterion
+(answerable, unique, well formed, plus leakage on the figure set). An item is
+accepted only if it passes answerable, unique and well formed; leakage is reported
+and does not change the decision. SPIQA cross-paper (DeepSeek-authored, 50 items,
+text) reviewed by Claude Opus 5.5: 150 calls, 4 accepted and 46 rejected (92.0%);
+excluding question 29 (reference "...", item 81f48f16b77acf24, rejected) it is 4
+accepted and 45 rejected of 49 (91.8%). Criterion failures: answerable 6 (5
+without question 29), unique 11, well formed 45 (44); 33 of the 46 rejections fail
+well formed alone, in most (36 of 45 by keyword) because the question refers to an unnamed
+source such as "the model" or "the generator", and in others because it fuses two
+unrelated topics. PubLayNet figures (Claude Haiku
+authored, 35 items, pixel-only) reviewed by GPT-6.1 Sol: 140 calls, 8 accepted and
+27 rejected (77.1%); failures answerable 23, unique 17, well formed 9; leakage
+flagged on 3 items (064214ffd3cfc916 and c16d5e3e5fc16038, both accepted, and
+880ee17d512b201a, rejected). No call failed and every verdict has a justification.
+Recorded cost $1.084 (cross) and $0.256 (figures), $1.341 in all; the balance went
+from $18.680 to $17.333 ($1.347, read a few minutes after the last call). The
+dry-run prices were $0.68 and $0.61. Outputs are
+`artifacts/runs/review_questions_{spiqa_multihop_cross,publaynet_figures}.jsonl`
+with `_summary.json` and `_items.csv` beside each; logs are
+`logs/review_spiqa_multihop_cross.log` and `logs/review_publaynet_figures.log`.
+Both sets completed; nothing in this entry was left unrun. The review has not been
+used to filter either question set, and no results were rerun on accepted items.
+
+**Model-judged triple precision (2026-11-17, on the desktop).** `rag judge-triples`
+(section 7.6; code uncommitted at the time), seed 20260903, 100 triples per corpus
+sampled over live chunks from the gpt4o-mini extraction caches. One call per triple
+returns four verdicts (entailment, canonical, relation_specific, provenance) with a
+reason for each. Primary judge claude-opus-5.5 on all 300 triples; second judge
+deepseek-v4-pro on a 100-triple subset (34 hotpotqa, 33 spiqa, 33 publaynet). The
+command has no count limit, so no pilot was run; the sample was run one corpus at a
+time (`--corpora X --second-count 34/33/33`) so the balance could be checked between
+runs. This draws the same triples and the same second-judge subset as one run over all
+three (confirmed: a final all-corpora run planned 0 calls), and that final run only
+wrote the summary. All 400 calls completed, 0 failed, no reply was unparseable, and
+every entry has four 0/1 verdicts and four reasons. Model-judged entailment (not human
+precision): hotpotqa 95/100 (Wilson 88.8 to 97.8%), spiqa 89/100 (81.4 to 93.7%),
+publaynet 65/100 (55.3 to 73.6%), pooled 249/300 = 83.0% (78.3 to 86.8%). Pooled
+other rates: canonical 165/300 (55.0%), relation_specific 252/300 (84.0%), provenance
+296/300 (98.7%), all four 145/300 (48.3%). Canonical by corpus 74, 46, 45 of 100;
+relation_specific 95, 82, 75; provenance 99, 99, 98. Two-judge agreement on the 100
+triples (raw, Cohen kappa): entailment 0.93, 0.768; canonical 0.86, 0.708;
+relation_specific 0.86, 0.584; provenance 0.87, 0.117 (low kappa from a skewed base
+rate: Opus 99 yes, DeepSeek 86). Recorded cost $3.554 (Opus, $0.0118 a call) and
+$0.380 (DeepSeek, $0.0038 a call), $3.934 in all; the balance went from $17.332 to
+$13.138 ($4.194, read after the last call; it lags and includes nothing else run in
+the session that this entry knows of). The dry-run price was $4.93. Outputs are
+`artifacts/runs/triple_judgements.jsonl` and `artifacts/runs/triple_precision.json`;
+logs are `logs/judge_triples_{1,2,3,4}.log` (one per corpus, then the summary run) and
+`logs/triple_precision_*_partial.json` are the per-corpus partial summaries, superseded
+by the full one. Spot-checks: Mankato | is in | Nicollet County (hotpotqa, entailed,
+chunk says Mankato is a city in Blue Earth, Nicollet and Le Sueur counties); mRNA level
+NDUFS1 | was | 0.003 (publaynet, not entailed, 0.003 is a P-value, from an OCR-noisy
+chunk); adjacency matrix | is | asymmetric (spiqa, Opus not entailed because the chunk
+says so only for directed graphs, DeepSeek entailed). Nothing in this entry was left
+unrun.
+
+**Not run (balance $13.14 on 2026-11-17):** Qwen on the figure sets,
 +both and shuffled, flagged caption arms, faithfulness on the figure sets, repeats.

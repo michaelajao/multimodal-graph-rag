@@ -51,6 +51,7 @@ import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, replace
 from pathlib import Path
+from typing import TypeVar
 
 import anthropic
 import numpy as np
@@ -339,6 +340,7 @@ JUDGE_ATTEMPTS = 3
 GENERATOR_MAX_TOKENS = 8192
 RETRY_MAX_SECONDS = 60.0
 VERDICT_LINE = re.compile(r"^\W*(?:(?:grade|verdict)\W*)?([01])\W*$", re.IGNORECASE)
+Parsed = TypeVar("Parsed")
 
 
 class EmptyResponseError(Exception):
@@ -699,6 +701,32 @@ class ModelClient:
         is malformed every time still stops the run. Discarded attempts stay in
         the cost.
         """
+        return self._judged(name, prompt, images, parse_verdict)
+
+    def judge_labelled(
+        self, name: str, prompt: str, labels: Sequence[str]
+    ) -> tuple[dict[str, int], GenResult]:
+        """Several binary judgements in one reply, each on a labelled line.
+
+        The reply ends with one ``label: 0|1`` line per label, in the order
+        given (see :func:`parse_labelled`). Retries, the reasoning switch, and
+        the cost accounting are those of :meth:`judge`; a reply that lacks any
+        label never yields a partial verdict.
+        """
+        return self._judged(
+            name,
+            prompt,
+            (),
+            lambda judge, text: parse_labelled(judge, text, labels),
+        )
+
+    def _judged(
+        self,
+        name: str,
+        prompt: str,
+        images: Sequence[str | Path],
+        parse: Callable[[str, str], Parsed],
+    ) -> tuple[Parsed, GenResult]:
         spent = 0.0
         reasoning = True
         for attempt in range(1, JUDGE_ATTEMPTS + 1):
@@ -710,7 +738,7 @@ class ModelClient:
                 reasoning=reasoning,
             )
             try:
-                value = parse_verdict(name, result.text)
+                value = parse(name, result.text)
             except InvalidModelOutputError as exc:
                 spent += result.cost_usd
                 if result.output_tokens >= JUDGE_MAX_TOKENS:
@@ -783,3 +811,39 @@ def parse_verdict(judge: str, text: str) -> int:
             f"judge {judge} did not end with a line holding only 0 or 1: {text!r}"
         )
     return int(match.group(1))
+
+
+def parse_labelled(judge: str, text: str, labels: Sequence[str]) -> dict[str, int]:
+    """The 0 or 1 of each label, from the last ``len(labels)`` non-empty lines.
+
+    Those lines must be ``label: 0`` or ``label: 1`` for each label exactly
+    once and in the order given. A line may carry markdown emphasis, bullets, or
+    trailing spaces and a full stop, but nothing else, so ``1/0``, ``-1``, and
+    ``10`` fail. No earlier line may itself be a label line, so a repeated label
+    is an error. Anything else is an error, never a guess, and no label gets a
+    value unless all of them do.
+    """
+    patterns = {label: _label_line(label) for label in labels}
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    head, tail = lines[: -len(labels)], lines[-len(labels) :]
+    matches = [
+        patterns[label].match(line) for label, line in zip(labels, tail, strict=False)
+    ]
+    repeated = any(p.match(line) for line in head for p in patterns.values())
+    if len(tail) != len(labels) or repeated or not all(matches):
+        raise InvalidModelOutputError(
+            f"judge {judge} did not end with the lines {list(labels)} in order, "
+            f"each once with only 0 or 1: {text!r}"
+        )
+    return {
+        label: int(match.group(1))
+        for label, match in zip(labels, matches, strict=True)
+        if match is not None
+    }
+
+
+def _label_line(label: str) -> re.Pattern[str]:
+    return re.compile(
+        rf"^[\s>#*_`-]*{re.escape(label)}[\s*_`]*:[\s*_`]*([01])[\s*_`.]*$",
+        re.IGNORECASE,
+    )

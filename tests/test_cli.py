@@ -93,6 +93,8 @@ def test_parser_lists_all_commands():
         "validate-release",
         "freeze-manifest",
         "audit-graph",
+        "review-questions",
+        "judge-triples",
         "audit-figures",
         "paired-analysis",
         "clean-questions",

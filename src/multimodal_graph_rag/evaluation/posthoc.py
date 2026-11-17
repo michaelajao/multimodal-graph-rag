@@ -37,7 +37,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from ..clients import JUDGE_MAX_TOKENS, ModelClient
+from ..clients import JUDGE_MAX_TOKENS, GenResult, ModelClient, ModelPrice
 from ..errors import ConfigurationError
 from ..schemas import IMAGE_SUFFIXES, QuestionRecord, canonical_json
 from .answer_match import exact_match
@@ -274,6 +274,30 @@ def plan_tasks(
     return [task for task in tasks if task.key not in store]
 
 
+def judgement_entry(value: int, call: GenResult, judge: str) -> dict[str, Any]:
+    """The fields every stored verdict carries: the verdict, the justification
+    before it, the full reply, and the tokens and cost of the call."""
+    lines = [line for line in call.text.splitlines() if line.strip()]
+    return {
+        "judge": judge,
+        "value": value,
+        "justification": "\n".join(lines[:-1]).strip(),
+        "response": call.text,
+        "input_tokens": call.input_tokens,
+        "output_tokens": call.output_tokens,
+        "cost_usd": call.cost_usd,
+        "max_tokens": JUDGE_MAX_TOKENS,
+    }
+
+
+def estimate_call_cost(
+    price: ModelPrice, prompt: str, images: int = 0, output_tokens: int = 150
+) -> float:
+    """Rough price of one judge call for a dry run: about four characters per
+    token, a 1,500-token allowance per attached image, and a reasoned verdict."""
+    return price.cost(len(prompt) // 4 + 1500 * images, output_tokens)
+
+
 def run_task(
     task: Task,
     question: QuestionRecord,
@@ -305,7 +329,6 @@ def run_task(
             or "(none)",
         )
     value, call = client.judge(judge, prompt, images=images)
-    lines = [line for line in call.text.splitlines() if line.strip()]
     return {
         "key": task.key,
         "run_id": record["run_id"],
@@ -313,14 +336,7 @@ def run_task(
         "system": record["system"],
         "pass": task.pass_name,
         "repeat": task.repeat,
-        "judge": judge,
-        "value": value,
-        "justification": "\n".join(lines[:-1]).strip(),
-        "response": call.text,
-        "input_tokens": call.input_tokens,
-        "output_tokens": call.output_tokens,
-        "cost_usd": call.cost_usd,
-        "max_tokens": JUDGE_MAX_TOKENS,
+        **judgement_entry(value, call, judge),
     }
 
 
@@ -385,9 +401,11 @@ __all__ = [
     "PASSES",
     "Task",
     "assign_states",
+    "estimate_call_cost",
     "generator_context",
     "gold_received",
     "judge_context",
+    "judgement_entry",
     "judgements_path",
     "load_trace",
     "plan_tasks",

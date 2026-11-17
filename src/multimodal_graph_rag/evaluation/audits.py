@@ -9,7 +9,8 @@ from __future__ import annotations
 
 import json
 import random
-from collections.abc import Sequence
+import re
+from collections.abc import Collection, Sequence
 from pathlib import Path
 
 from ..errors import ConfigurationError
@@ -46,14 +47,26 @@ FIGURE_AUDIT_FIELDS = (
 
 
 def sample_triple_audit(
-    cache_path: str | Path, corpus: str, count: int, seed: int
+    cache_path: str | Path,
+    corpus: str,
+    count: int,
+    seed: int,
+    live_keys: Collection[str] | None = None,
 ) -> list[dict[str, object]]:
-    """Deterministic sample of unique triples, half frequency-stratified."""
+    """Deterministic sample of unique triples, half frequency-stratified.
+
+    ``live_keys`` restricts the population to cache entries whose chunk is still
+    in the corpus. The PubLayNet cache also holds the entries of the corpus it
+    was rebuilt from, whose chunks no longer exist, so an unrestricted sample
+    could draw triples that have no source text to check them against.
+    """
     if count < 4:
         raise ConfigurationError("count must be at least 4")
     raw = json.loads(Path(cache_path).read_text(encoding="utf-8"))
     occurrences: dict[tuple[str, str, str], list[str]] = {}
     for key, triples in raw.items():
+        if live_keys is not None and key not in live_keys:
+            continue
         for triple in triples:
             if len(triple) >= 3:
                 value = tuple(str(part) for part in triple[:3])
@@ -89,11 +102,22 @@ def sample_triple_audit(
     return rows
 
 
-def _corpus_text(corpus_dir: Path, image_name: str) -> str:
-    paper = image_name.split("-Figure", 1)[0].split("-Table", 1)[0]
+FIGURE_SOURCE = re.compile(r"^(?P<stem>.+?)(?:-(?:Figure|Table)|_(?:figure|table)\d)")
+
+
+def corpus_text_for_image(corpus_dir: str | Path, image_name: str) -> str:
+    """Corpus text of the paper (SPIQA) or page (PubLayNet) an image comes from.
+
+    SPIQA images are named ``<paper>-Figure<n>-<m>.png`` and PubLayNet crops
+    ``<page>_figure<n>.png`` (or ``_table<n>``); the text file is the stem. The
+    earlier split on ``-Figure`` and ``-Table`` found no text for any PubLayNet
+    crop, so its corpus screen checked an empty string.
+    """
+    match = FIGURE_SOURCE.match(image_name)
+    stem = match.group("stem") if match else Path(image_name).stem
     return "\n".join(
         path.read_text(encoding="utf-8", errors="replace")
-        for path in sorted(corpus_dir.glob(f"{paper}*.txt"))
+        for path in sorted(Path(corpus_dir).glob(f"{stem}*.txt"))
     )
 
 
@@ -110,7 +134,7 @@ def figure_integrity_rows(
             question.answer, str(captions.get(source, ""))
         )
         corpus_audit = audit_answer_recoverability(
-            question.answer, _corpus_text(corpus, source)
+            question.answer, corpus_text_for_image(corpus, source)
         )
         flagged = caption_audit.needs_human_review or corpus_audit.needs_human_review
         rows.append(

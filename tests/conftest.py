@@ -178,6 +178,42 @@ class FakeModelClient(ModelClient):
         )
 
 
+class ScriptedJudgeClient(FakeModelClient):
+    """Fake client whose ``judge`` is the real one, so its verdict parser and
+    retries run over replies a test scripts as ``reply(model, prompt) -> text``."""
+
+    def __init__(self, reply) -> None:
+        super().__init__()
+        self.reply = reply
+
+    def call(
+        self,
+        name,
+        *,
+        user,
+        system="",
+        images=(),
+        max_tokens=800,
+        temperature=0.0,
+        reasoning=True,
+    ) -> GenResult:
+        self.answer = self.reply(name, user)
+        return super().call(
+            name,
+            user=user,
+            system=system,
+            images=images,
+            max_tokens=max_tokens,
+            temperature=temperature,
+        )
+
+    def judge(self, name, prompt, images=()) -> tuple[int, GenResult]:
+        return ModelClient.judge(self, name, prompt, images=images)
+
+    def judge_labelled(self, name, prompt, labels) -> tuple[dict[str, int], GenResult]:
+        return ModelClient.judge_labelled(self, name, prompt, labels)
+
+
 @pytest.fixture
 def fake_client() -> FakeModelClient:
     return FakeModelClient()
