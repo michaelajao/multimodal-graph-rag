@@ -1,5 +1,0 @@
-Eight evidence states attribute each RAG answer to the evidence route behind it
-At equal budget, graph expansion does not beat dense top-5 retrieval
-HippoRAG 2 lifts bridge-question accuracy by 0.16, mostly through evidence access
-Under half of correct HotpotQA answers can be credited to retrieved gold evidence
-A figure crop adds 0.07 accuracy over text alone, and 0.06 after leakage controls

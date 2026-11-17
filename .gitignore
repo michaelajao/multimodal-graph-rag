@@ -1,21 +1,9 @@
-# The manuscript sources in docs/Graph_Rag/ are tracked so the paper can be
-# written on either machine. Its LaTeX build products are not, and neither is
-# the rejected first version.
+# Write-up sources and their build products are kept outside this repository.
+# Deliberately near the top: when this entry sat on the last line it was twice
+# stripped by an editor trimming the end of the file, which silently re-tracked
+# the manuscript on the next `git add -A`.
 paper/
-docs/Graph_Rag/*.aux
-docs/Graph_Rag/*.bbl
-docs/Graph_Rag/*.blg
-docs/Graph_Rag/*.fdb_latexmk
-docs/Graph_Rag/*.fls
-docs/Graph_Rag/*.log
-docs/Graph_Rag/*.out
-docs/Graph_Rag/*.pdf
-docs/Graph_Rag/*.spl
-docs/Graph_Rag/*.synctex.gz
-docs/Graph_Rag/*.toc
-docs/Graph_Rag/build/
-docs/Graph_Rag/*_v1*
-docs/Graph_Rag/results/
+docs/Graph_Rag/
 
 # Secrets
 .env

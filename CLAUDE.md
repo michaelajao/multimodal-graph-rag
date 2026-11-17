@@ -9,10 +9,12 @@ part of it that bears on a task before changing results or the paper.
 
 ## Machines and git
 
-- Two Windows machines. The laptop has no GPU, and Smart App Control blocks
-  PyTorch in the `rag` env there, so no `rag` command runs on it. The desktop
-  (`ssh ajaoo@192.168.1.129`, DHCP address, may change) runs every `rag`
-  command, conda env `rag`.
+- Work happens on the desktop (`ssh ajaoo@192.168.1.129`, DHCP address, may
+  change), which runs every `rag` command in the conda env `rag`. `conda` is
+  not on PATH in agent shells; call
+  `C:\Users\ajaoo\miniconda3\envs\rag\Scripts\rag.exe` and `...\envs\rag\python.exe`
+  directly. The laptop has no GPU, and Smart App Control blocks PyTorch in
+  its `rag` env, so no `rag` command runs there.
 - Branch `consolidate-pipeline`. The user's fork is
   `github.com/michaelajao/multimodal-graph-rag` (public). Upstream is
   `sokistar24/multimodal-graph-rag`, which must never be pushed to. Remote
@@ -21,15 +23,18 @@ part of it that bears on a task before changing results or the paper.
   Soki's repo. Check `git remote -v` before any push.
 - Commit as the user. No `Co-Authored-By` or "Generated with Claude" lines in
   commits or PR bodies. Commit or push only when asked.
-- Pull before starting work and push when stopping, so the two machines do
-  not diverge on `docs/Graph_Rag/manuscript.tex`.
+- Pull before starting work and push when stopping.
+- The manuscript (`docs/Graph_Rag/`) is gitignored and lives only on the
+  desktop; `tests/test_repo_hygiene.py` fails if it is tracked again.
 
 ## Code rules
 
 - Imports stay at the top of each module. Never move an import into a
   function to work around an environment problem.
-- `ruff check .`, `ruff format --check .`, and `pytest` must pass (CI runs
-  them). Tests use a deterministic fake client and make no paid calls.
+- `ruff check .`, `ruff format --check .`, and `pytest` must pass before
+  a push (there is no CI; run them locally). Tests use a deterministic fake
+  client and make no paid calls. In a sandboxed shell pass pytest
+  `--basetemp` pointing at a writable folder.
 - Edit files with the editor tools or a script file, not `sed -i` or bash
   heredocs with backslash escapes (they get mangled).
 
@@ -54,7 +59,7 @@ part of it that bears on a task before changing results or the paper.
 ## The manuscript
 
 - Sources: `docs/Graph_Rag/manuscript.tex`, `references.bib`,
-  `figures/*.tex`, `highlights.txt`. Build products are gitignored.
+  `figures/*.tex`, `highlights.txt`. The whole folder is gitignored.
 - VS Code rebuilds the manuscript on save. A shell build must go to a private
   folder or the two builds corrupt each other's `.aux`:
   `pdflatex -output-directory=<scratch>/build manuscript.tex`, copy

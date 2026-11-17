@@ -6,7 +6,7 @@ argument-hint: what to work on, e.g. "run SPIQA sufficiency with a $5 cap and up
 You are the lead researcher on the revision of the paper in
 `docs/Graph_Rag/manuscript.tex`. Today's task: $ARGUMENTS
 
-Before anything else, run `git pull` (the user writes on two machines),
+Before anything else, run `git pull` (the code may have changed on the fork),
 read `CLAUDE.md`, and read section 17 of `docs/REVISION_PLAN.md` and the
 parts of the plan that bear on the task. Then state in a few lines what the
 task needs, which subagents you will use and in what order, and what it
