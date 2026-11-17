@@ -143,6 +143,25 @@ def test_images_go_to_the_judge_only_in_pixel_mode(fake_client, tmp_path):
     assert fake_client.calls[-1][2] == ()
 
 
+def test_sufficiency_sees_only_what_the_generator_received(fake_client, tmp_path):
+    store = JudgementStore(tmp_path / "judgements.jsonl")
+    record = _record(
+        "q2",
+        "+multimodal",
+        [_text("p.txt", "passage"), _image("fig2.png", sent=True, caption="crop says")],
+        acc=1,
+        answer="eta",
+    )
+    task = plan_tasks("sufficiency", [record], QUESTIONS, store)[0]
+    # pixels: the generator saw the crop, not its caption
+    run_task(task, QUESTIONS["q2"], fake_client, "gpt-6.1-sol", tmp_path, "pixels")
+    assert "passage" in fake_client.calls[-1][1]
+    assert "crop says" not in fake_client.calls[-1][1]
+    # captions: the caption was the image evidence
+    run_task(task, QUESTIONS["q2"], fake_client, "gpt-6.1-sol", tmp_path, "captions")
+    assert "crop says" in fake_client.calls[-1][1]
+
+
 def test_states_wait_for_sufficiency_and_use_the_closed_book_arm(tmp_path):
     store = JudgementStore(tmp_path / "judgements.jsonl")
     records = [

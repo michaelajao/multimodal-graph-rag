@@ -3,7 +3,56 @@ repository folder, and replace the TASK line with what you want done.
 In Claude Code you can instead type:  /research-team <the task>
 ----------------------------------------------------------------------------
 
-TASK: <write the task here, e.g. "run SPIQA sufficiency with a $5 cap and update the RQ4 text">
+TASK: run SPIQA sufficiency with a $4 cap and update the RQ4 text.
+
+What the laptop session of 2026-11-17 already settled (check it, do not redo it):
+
+- "SPIQA sufficiency" means the SPIQA figure sets of the lean RQ3 runs (traces
+  stamped 20261103_1958, 20261103_2228 to 2245, 20261104_0102 to 0103; four
+  generators: GPT-6 Luna, Gemini 3.8 Flash, Gemma 4 31B, Llama 4 Scout). It is
+  the tab:deviations row "Sufficiency judged on the figure sets" and the RQ4
+  paragraph that begins "The figure sets credit more of their correct answers"
+  in docs/Graph_Rag/manuscript.tex. PubLayNet is out of scope (it has almost no
+  correct answers without the gold crop).
+- Judge: GPT-6.1 Sol, as for HotpotQA sufficiency and the primary figure-set
+  judge. Correctness is the judge verdict with adjudication applied (the
+  default of `rag judge-pass --pass sufficiency`).
+- Tasks counted on the laptop with adjudication applied: 694 calls.
+  Screened set (questions_spiqa_native_primary.json, pixel traces): 175
+  text-only (baseline) and 146 CLIP pixels (+multimodal). Flagged set
+  (questions_spiqa_native_flagged.json): 128 and 112. Screened caption traces
+  (trace_questions_spiqa_native_primary_captions_*_202611*): 133.
+  The manuscript says 171 correct text-only answers on the screened set; the
+  laptop count of 175 used adjudicated verdicts. Reconcile this before writing.
+- Price: about $2.2 at recorded Sol prices (HotpotQA sufficiency averaged
+  $0.0013 a call over 1,370 calls, $1.78 recorded), but the plan logs that pass
+  at about $3.40 charged, so the account charge may be up to about 1.9 times
+  the records. The user approved a $4 cap. Check the balance before starting
+  and after each trace, and stop when $4 has been spent by the balance.
+  Priority order: screened pixel traces, then flagged traces, then caption
+  traces.
+- Bug fixed before the run (commit "Give the sufficiency judge only what the
+  generator received"): under pixels the generator saw the crop but never its
+  caption, while the sufficiency prompt used judge_context, which includes the
+  caption. posthoc.generator_context now drops sent captions when
+  --vision-mode is pixels. Run pytest on the desktop before any paid call.
+- Run the pixel and flagged traces with `--vision-mode pixels --image-dir`
+  set to the SPIQA crop folder the lean configs use (spiqa_images); run the
+  caption traces with `--vision-mode captions`. Dry-run first only to confirm
+  the call counts (its price runs high).
+- The existing figure-set state shares in the RQ4 paragraph (386 correct
+  under the oracle image, 215 under pixels, 147 on the flagged set, and so on)
+  have no evidence_states file on the laptop. Find their source on the
+  desktop or regenerate them with `rag evidence-states` (corpus dir and image
+  dir as in the lean configs), and write
+  artifacts/runs/evidence_states_spiqa_{screened,flagged,captions}.csv.
+- After the run: the analyst splits the correct answers without the gold
+  crop into states 3, 4 and 5 for each arm; the editor rewrites that RQ4
+  paragraph (it now says sufficiency was not judged and counts states 3 to 5
+  together), removes or edits the tab:deviations row, adds the figure sets to
+  the Sufficiency row of tab:judges, and the verifier checks every number.
+  Log the run in section 17 of docs/REVISION_PLAN.md, and take "SPIQA
+  sufficiency" off the "Not run" list there.
 
 You are the lead researcher on the revision of the paper in
 docs/Graph_Rag/manuscript.tex.

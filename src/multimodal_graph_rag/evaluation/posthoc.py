@@ -90,6 +90,21 @@ def judge_context(record: Mapping[str, Any]) -> str:
     return "\n".join(part for part in parts if part)
 
 
+def generator_context(record: Mapping[str, Any], pixels: bool) -> str:
+    """The text the generator itself received.
+
+    Under the pixel condition the generator sees the sent crops as images and
+    never their captions, so the captions are left out; under the caption
+    condition they are the image evidence and stay in.
+    """
+    if not pixels:
+        return judge_context(record)
+    items = record["evidence"]["items"]
+    parts = [i["content"] for i in items if i["modality"] == "text"]
+    parts += [i["content"] for i in items if i["modality"] == "graph"]
+    return "\n".join(part for part in parts if part)
+
+
 def sent_images(record: Mapping[str, Any]) -> list[str]:
     return [i["source"] for i in record["evidence"]["items"] if _sent(i)]
 
@@ -278,7 +293,8 @@ def run_task(
         prompt = SUFFICIENCY_PROMPT.format(
             question=question.question,
             expected=question.answer,
-            context=judge_context(record) or "(none)",
+            context=generator_context(record, pixels=vision_mode == "pixels")
+            or "(none)",
         )
     value, call = client.judge(judge, prompt, images=images)
     lines = [line for line in call.text.splitlines() if line.strip()]
@@ -361,6 +377,7 @@ __all__ = [
     "PASSES",
     "Task",
     "assign_states",
+    "generator_context",
     "gold_received",
     "judge_context",
     "judgements_path",
