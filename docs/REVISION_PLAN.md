@@ -1059,5 +1059,112 @@ chunk); adjacency matrix | is | asymmetric (spiqa, Opus not entailed because the
 says so only for directed graphs, DeepSeek entailed). Nothing in this entry was left
 unrun.
 
-**Not run (balance $13.14 on 2026-11-17):** Qwen on the figure sets,
-+both and shuffled, flagged caption arms, faithfulness on the figure sets, repeats.
+**Grok 4.7 vision faithfulness on the figure sets (2026-11-17, on the desktop; stopped after the pilot).**
+Planned: `rag judge-pass --pass second-faithfulness --judge grok-4.7 --fraction 0.2` on
+stratified 20% of image-arm outputs, in four groups (SPIQA screened pixels 240 calls,
+flagged pixels 208, screened captions 240, PubLayNet pixels 56; 744 in all), within a
+$5.00 cap (start balance $13.1384, stop line $8.1384). The dry runs gave 240, 208, 240
+and 56 calls and $1.38, $1.18, $0.69 and $0.31 ($3.56). `rag judge-pass` has no
+`--budget-usd`, so the cap was to be enforced by hand between traces. Only the pilot
+ran: group A at `--fraction 0.01` on the four screened pixel traces, 16 calls (4 per
+trace, 2 per arm: `+multimodal` and `control:oracle-image`), 0 failed, every value 0 or
+1 and every entry has a justification. Recorded cost $0.3296, which is $0.0206 a call:
+$0.0203 for `+multimodal` (2,203 input and 2,650 output tokens on average) and $0.0209
+for `control:oracle-image` (2,334 and 2,704). The dry run priced the same 16 calls at
+$0.09 ($0.0058 a call), so for this judge the dry-run price runs about 3.5x LOW, not
+high: Grok 4.7 reasons before answering, the reply carries about 2,600 hidden reasoning
+tokens plus a one-sentence justification, and output at $6 per million is 80% of the
+cost. Projection for 744 calls at $0.0209 is $15.55 ($23.3 with the 1.5 margin), about
+three times the cap, so groups A (rest), B, C and D were not run and no further call was
+made. The balance read $12.8365 a few minutes after the pilot ($0.302 down; it lags the recorded
+$0.330). Pilot verdicts (faithful 1 / not 0): `+multimodal` 3 of 8, `control:oracle-image`
+6 of 8; these are 16 outputs and are not a result. Spot-check: the first
+`+multimodal` entry (question b794c9b2e1a0698a, llama4-scout trace) is judged
+unfaithful because the answer asserts a uniform 100 samples per class that the text
+contradicts; a `control:oracle-image` entry (b04fa929256f0e12) is judged faithful
+because the speedups and the CMS out-of-memory claim match the text. Verdicts sit in
+`artifacts/runs/judgements_questions_spiqa_native_primary_{llama4-scout_20261103_195807,
+gpt-6-luna_20261103_195822,gemma-4-31b_20261103_195837,gemini-3.8-flash_20261103_195852}.jsonl`
+(entries with judge grok-4.7, pass second-faithfulness); log `logs/faith_A_pilot.log`.
+A 0.2 run would extend these, not repeat them. Options for the lead, not taken: raise the
+cap to about $17 for the full design; run 0.2 on group A and D only (296 calls, about
+$6.2 at the measured rate); or reduce the sample (at the measured rate $5 buys about
+240 calls, 6.5% of image-arm outputs, which departs from the pre-specified 20%); or
+switch Grok's reasoning off for this pass (the judge client can, through
+`reasoning=False`, but that changes the judge's behaviour from what was piloted and
+needs a fresh pilot).
+
+**GPT-6.1 Sol vision faithfulness on the figure sets (2026-11-17, on the desktop; all four groups completed).**
+After the Grok 4.7 pilot proved too costly, the same pass was run with `gpt-6.1-sol` as the
+vision faithfulness judge, `rag judge-pass <trace> --questions <file> --pass
+second-faithfulness --judge gpt-6.1-sol --fraction 0.2` with `--vision-mode pixels --image-dir
+<dir>` (pixels) or `--vision-mode captions`, one trace at a time, within a $4.00 cap (start
+balance $12.8365, stop line $8.8365; `judge-pass` has no `--budget-usd`, so a driver checked
+the balance and recorded spend x 1.2 before each trace; it never triggered). Before the run
+the Grok pilot verdicts (16 entries) had been moved out of the judgements files into
+`artifacts/runs/pilot_grok_faithfulness.jsonl` (originals in
+`artifacts/runs/pre_grok_pilot_move/`), so the sentence above that the pilot verdicts sit in
+the judgements files no longer holds; Sol judged all 744 sampled records. Also, the pass now
+passes `generator_context` to the faithfulness judge (uncommitted fix in
+`evaluation/posthoc.py`): under pixels the crop's caption is dropped, under captions it stays.
+Calls and verdicts (faithful 1 / not 0), 744 calls, 0 failed, every value 0 or 1, every entry
+with a justification:
+
+| group | traces | calls | `+multimodal` 1 / 0 | `control:oracle-image` 1 / 0 | recorded cost |
+|---|---|---|---|---|---|
+| A SPIQA screened pixels | 4 x 60 | 240 | 98 / 22 | 94 / 26 | $0.6293 |
+| B SPIQA flagged pixels | 4 x 52 | 208 | 89 / 15 | 82 / 22 | $0.5203 |
+| C SPIQA screened captions | 4 x 60 | 240 | 91 / 29 | 93 / 27 | $0.6070 |
+| D PubLayNet pixels | 4 x 14 | 56 | 24 / 4 | 20 / 8 | $0.1383 |
+| total | 16 | 744 | 302 / 70 | 289 / 83 | $1.8949 |
+
+Cost: $0.00255 a call, 919 input and 71 output tokens a call on average (A $0.00262, B
+$0.00250, C $0.00253, D $0.00247). The dry run priced the four groups at $1.55, $1.31,
+$0.84 and $0.36, about 2.5x high against the $1.89 recorded. The balance read $12.3167 after
+A, $11.6614 after B, $11.0439 after C, $10.8840 after D and $10.8618 a few minutes after
+the last call ($1.97 down against $1.89 recorded). The `llama4-scout` trace is the least
+faithful in every group (A 30 of 60, B 34 of 52, C 29 of 60, D 9 of 28); the other three
+generators sit at 78 to 92% per trace (C `gemini-3.8-flash` 47 of 60 lowest, B `gemma-4-31b` 48 of 52 highest). Spot-checks, all consistent with the trace: a faithful
+`+multimodal` entry (gemini-3.8-flash, spiqa screened pixels, question 99bd2557110274ed)
+restates a sentence that is in the context (CC, EB and IPW have small biases; EB and CC the
+best MSE); a not-faithful `+multimodal` entry (same trace, 0415e111f92a9971) is an
+abstention that cites a filename `[1809.03449v3.txt]` that is not in the context; a
+caption-arm entry (gpt-6-luna, 0415e111f92a9971) is not faithful because the answer says KAR
+"performs best on the development set" while the context gives F1 80.8 and says only that
+this beats several strong baselines. Note that the judge sometimes passes a pure abstention
+as faithful (one justification reads "no specific question is provided to show that its
+uncertainty contradicts the evidence"), so the faithful rate mixes abstentions with correct
+grounding; this is not a result until read against the answer-level labels. Logs
+`logs/faith_sol_A_1.log` to `logs/faith_sol_D_4.log` (group_trace) and
+`logs/faith_sol_driver.log`; verdicts sit in the 16 judgements files for the traces listed in
+the task (judge gpt-6.1-sol, pass second-faithfulness). The limit=5 smoke traces were not
+touched.
+
+**Figure-set faithfulness summarised and written into the paper (2026-11-17, no calls).**
+`artifacts/runs/faithfulness_figure_sets.json` (script `faith_summary.py`, kept in the session
+scratchpad) joins the 744 verdicts to their trace records, all of them matched. Pooled over the two arms, the rate of
+answers judged faithful is 0.800 for screened pixels (n 240), 0.822 for flagged (208), 0.767
+for captions (240) and 0.786 for PubLayNet (56). Llama 4 Scout is the lowest generator on every set
+(0.48 to 0.65). GPT-6 Luna scores 161/186 against 430/558 for the other three. Luna's rate is never above
+Gemma's, so there is no sign of family leniency. Two splits were chosen after the spot-check and
+before computation, and are exploratory:
+- By primary accuracy, correct answers are higher in 3 of 7 cells and lower in 4.
+- By gold received, faithfulness is not higher where gold was received. The oracle arm always
+  receives gold, so this split largely repeats the arm comparison.
+
+The JSON's regex abstention count is crude and is not reported. Manuscript edits:
+- Metrics sentence.
+- `tab:judges` row.
+- What the judges receive: on the caption arms, +multimodal sends three captions and the oracle
+  image one.
+- The family-overlap paragraph.
+- A paragraph at the end of the RQ3 results.
+- The `tab:deviations` row, reworded to say that faithfulness on every output plus a second vision
+  judge was planned.
+- The appendix prompt note.
+
+All numbers were checked against the raw judgements by a verifier, and its wording fixes were
+applied.
+
+**Not run (balance $10.86 on 2026-11-17):** Qwen on the figure sets,
++both and shuffled, flagged caption arms, repeats.

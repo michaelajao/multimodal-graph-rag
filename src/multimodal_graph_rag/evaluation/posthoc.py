@@ -319,7 +319,8 @@ def run_task(
         images = []
     elif task.pass_name == "second-faithfulness":
         prompt = VISION_FAITHFULNESS_PROMPT.format(
-            context=judge_context(record), generated=record["answer"]
+            context=generator_context(record, pixels=vision_mode == "pixels"),
+            generated=record["answer"],
         )
     else:
         prompt = SUFFICIENCY_PROMPT.format(
