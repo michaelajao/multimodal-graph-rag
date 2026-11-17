@@ -952,7 +952,9 @@ def build_parser() -> argparse.ArgumentParser:
     judge_pass.add_argument("--fraction", type=float, default=1.0)
     judge_pass.add_argument("--repeats", type=int, default=3)
     judge_pass.add_argument("--seed", type=int, default=20260903)
-    judge_pass.add_argument("--correctness", choices=("judge", "em"), default="judge")
+    judge_pass.add_argument(
+        "--correctness", choices=("judge", "primary", "em"), default="judge"
+    )
     judge_pass.add_argument("--image-dir", default=None)
     judge_pass.add_argument(
         "--vision-mode", choices=("pixels", "captions"), default="captions"
@@ -1026,7 +1028,9 @@ def build_parser() -> argparse.ArgumentParser:
     states.add_argument("--questions", required=True)
     states.add_argument("--corpus-dir", required=True)
     states.add_argument("--image-dir", default=None)
-    states.add_argument("--correctness", choices=("judge", "em"), default="judge")
+    states.add_argument(
+        "--correctness", choices=("judge", "primary", "em"), default="judge"
+    )
     states.add_argument("--output", required=True)
     states.set_defaults(handler=cmd_evidence_states)
 

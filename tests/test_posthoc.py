@@ -1,9 +1,13 @@
 """Judging passes and evidence states over saved run records."""
 
+import pytest
+
+from multimodal_graph_rag.errors import ConfigurationError
 from multimodal_graph_rag.evaluation.posthoc import (
     JudgementStore,
     assign_states,
     gold_received,
+    is_correct,
     judge_context,
     plan_tasks,
     run_task,
@@ -194,3 +198,28 @@ def test_states_wait_for_sufficiency_and_use_the_closed_book_arm(tmp_path):
         for r in assign_states(records, QUESTIONS, store, available_sources=available)
     }
     assert states["baseline"] == "non_gold_supported_answer"
+
+
+def test_primary_correctness_ignores_adjudication(tmp_path):
+    store = JudgementStore(tmp_path / "judgements.jsonl")
+    wrong = _record("q1", "baseline", [], acc=0)
+    right = _record("q1", "+KG", [], acc=1)
+    for record, value in ((wrong, 1), (right, 0)):
+        store.add(
+            {
+                "key": f"run1|q1|{record['system']}|adjudicate|0",
+                "question_id": "q1",
+                "system": record["system"],
+                "pass": "adjudicate",
+                "value": value,
+            }
+        )
+    question = QUESTIONS["q1"]
+    # the adjudicator overrides the primary verdict under "judge" only
+    assert is_correct(wrong, question, store, "judge") is True
+    assert is_correct(right, question, store, "judge") is False
+    assert is_correct(wrong, question, store, "primary") is False
+    assert is_correct(right, question, store, "primary") is True
+    assert is_correct(wrong, question, store, "em") is True  # answer text matches
+    with pytest.raises(ConfigurationError):
+        is_correct(wrong, question, store, "unknown")

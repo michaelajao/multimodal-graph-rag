@@ -200,11 +200,19 @@ def is_correct(
     store: JudgementStore,
     correctness: str,
 ) -> bool:
-    """Exact match, or the judge verdict with any adjudication applied."""
+    """Whether the answer is correct under the chosen rule.
+
+    ``"judge"`` is the primary judge verdict with any adjudication applied (the
+    adjudicator's verdict is final for that record). ``"primary"`` is the
+    primary judge verdict alone and ignores adjudication, the rule behind the
+    headline accuracy. ``"em"`` is exact match against the reference answer.
+    """
     if correctness == "em":
         return bool(exact_match(record["answer"], question.answer))
+    if correctness == "primary":
+        return bool(primary_accuracy(record))
     if correctness != "judge":
-        raise ConfigurationError("correctness must be 'judge' or 'em'")
+        raise ConfigurationError("correctness must be 'judge', 'primary' or 'em'")
     adjudicated = store.values("adjudicate").get(
         (record["question_id"], record["system"])
     )

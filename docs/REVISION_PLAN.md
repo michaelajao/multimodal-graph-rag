@@ -966,6 +966,31 @@ does not send, so it ran about three times too high on HotpotQA. DeepSeek's reco
 understate the account's charge ($0.75 recorded against $1.35 charged), which is
 not yet explained.
 
-**Not run, waiting for money (balance $0.86):** SPIQA sufficiency, triple
-precision, model review of model-authored questions, Qwen on the figure sets,
+**SPIQA sufficiency (2026-11-17, on the desktop).** `rag judge-pass --pass
+sufficiency --judge gpt-6.1-sol` on the 12 lean SPIQA figure-set traces, one trace
+per call, with the corrected judge input (sent captions dropped under pixels, commit
+4a98e06). Correctness verdicts were already in the judgements files and were not
+rerun. All 694 calls completed with no errors, every entry is 0 or 1 with a
+justification, and no key is duplicated. Calls and verdicts (sufficient / not
+sufficient) for screened pixels: Scout 80 (59/21), Luna 92 (66/26), Gemma 71
+(56/15), Gemini 78 (63/15); flagged pixels: Scout 60 (38/22), Luna 80 (51/29),
+Gemini 49 (35/14), Gemma 51 (38/13); screened captions: Scout 33 (27/6), Luna 36
+(26/10), Gemma 30 (23/7), Gemini 34 (28/6); 510 sufficient and 184 not in all. The
+records total $1.485, about $0.0021 a call in every trace. The account balance went from $20.113 to $18.680 ($1.433), measured about a
+minute after the last call and so possibly still lagging, which gives no sign of
+the 1.9 times excess seen on the HotpotQA sufficiency pass. The dry-run price of
+$3.99 was about 2.7 times the recorded cost. Logs are `logs/spiqa_sufficiency_1.log`
+to `_12.log`. Nothing in this entry was left unrun.
+States use the primary verdict, as every reported result does (the paper's 171
+correct text-only answers; adjudication gives 175 because of four 0-to-1 flips),
+and `--correctness primary` was added to `rag evidence-states` and `rag judge-pass`
+for this. `artifacts/runs/evidence_states_spiqa_{screened,flagged,captions}.csv`
+hold them, with `_adjudicated` copies that move no reported share by more than a
+point. Of the correct answers without the gold crop the judge found the evidence
+sufficient for 132 of 171 text-only and 110 of 146 CLIP-pixel answers on the
+screened set, 78 of 112 pixel answers on the flagged set, and 103 of 132 caption
+answers. The caption traces have no closed-book arm, so state 4 is not assigned on
+them.
+
+**Not run (balance $18.68 on 2026-11-17):** triple precision, model review of model-authored questions, Qwen on the figure sets,
 +both and shuffled, flagged caption arms, faithfulness on the figure sets, repeats.
