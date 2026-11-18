@@ -1,0 +1,377 @@
+[
+ {
+  "sheet": "judge_hotpotqa_bridge",
+  "field": "judge_verdict_1_correct",
+  "n": 50,
+  "disagree": 1,
+  "disagree_share": 0.02,
+  "wilson95": [
+   0.0035,
+   0.105
+  ],
+  "stored_positive": 27,
+  "fable_positive": 28,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "judge_hotpotqa_comparison",
+  "field": "judge_verdict_1_correct",
+  "n": 50,
+  "disagree": 1,
+  "disagree_share": 0.02,
+  "wilson95": [
+   0.0035,
+   0.105
+  ],
+  "stored_positive": 35,
+  "fable_positive": 34,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "judge_publaynet_pixels",
+  "field": "judge_verdict_1_correct",
+  "n": 50,
+  "disagree": 1,
+  "disagree_share": 0.02,
+  "wilson95": [
+   0.0035,
+   0.105
+  ],
+  "stored_positive": 5,
+  "fable_positive": 6,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "judge_spiqa_flagged_pixels",
+  "field": "judge_verdict_1_correct",
+  "n": 50,
+  "disagree": 1,
+  "disagree_share": 0.02,
+  "wilson95": [
+   0.0035,
+   0.105
+  ],
+  "stored_positive": 17,
+  "fable_positive": 18,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "judge_spiqa_screened_captions",
+  "field": "judge_verdict_1_correct",
+  "n": 50,
+  "disagree": 3,
+  "disagree_share": 0.06,
+  "wilson95": [
+   0.0206,
+   0.1622
+  ],
+  "stored_positive": 21,
+  "fable_positive": 24,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "judge_spiqa_screened_pixels",
+  "field": "judge_verdict_1_correct",
+  "n": 50,
+  "disagree": 4,
+  "disagree_share": 0.08,
+  "wilson95": [
+   0.0315,
+   0.1884
+  ],
+  "stored_positive": 20,
+  "fable_positive": 24,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_hotpotqa",
+  "field": "opus_entailment",
+  "n": 50,
+  "disagree": 1,
+  "disagree_share": 0.02,
+  "wilson95": [
+   0.0035,
+   0.105
+  ],
+  "stored_positive": 47,
+  "fable_positive": 48,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_hotpotqa",
+  "field": "opus_canonical",
+  "n": 50,
+  "disagree": 25,
+  "disagree_share": 0.5,
+  "wilson95": [
+   0.3664,
+   0.6336
+  ],
+  "stored_positive": 36,
+  "fable_positive": 11,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_hotpotqa",
+  "field": "opus_relation_specific",
+  "n": 50,
+  "disagree": 17,
+  "disagree_share": 0.34,
+  "wilson95": [
+   0.2244,
+   0.4785
+  ],
+  "stored_positive": 47,
+  "fable_positive": 30,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_hotpotqa",
+  "field": "opus_provenance",
+  "n": 50,
+  "disagree": 1,
+  "disagree_share": 0.02,
+  "wilson95": [
+   0.0035,
+   0.105
+  ],
+  "stored_positive": 49,
+  "fable_positive": 50,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_spiqa",
+  "field": "opus_entailment",
+  "n": 50,
+  "disagree": 2,
+  "disagree_share": 0.04,
+  "wilson95": [
+   0.011,
+   0.1346
+  ],
+  "stored_positive": 46,
+  "fable_positive": 48,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_spiqa",
+  "field": "opus_canonical",
+  "n": 50,
+  "disagree": 24,
+  "disagree_share": 0.48,
+  "wilson95": [
+   0.348,
+   0.6149
+  ],
+  "stored_positive": 26,
+  "fable_positive": 2,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_spiqa",
+  "field": "opus_relation_specific",
+  "n": 50,
+  "disagree": 5,
+  "disagree_share": 0.1,
+  "wilson95": [
+   0.0435,
+   0.2136
+  ],
+  "stored_positive": 41,
+  "fable_positive": 36,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_spiqa",
+  "field": "opus_provenance",
+  "n": 50,
+  "disagree": 0,
+  "disagree_share": 0.0,
+  "wilson95": [
+   0.0,
+   0.0714
+  ],
+  "stored_positive": 50,
+  "fable_positive": 50,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_publaynet",
+  "field": "opus_entailment",
+  "n": 50,
+  "disagree": 5,
+  "disagree_share": 0.1,
+  "wilson95": [
+   0.0435,
+   0.2136
+  ],
+  "stored_positive": 31,
+  "fable_positive": 34,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_publaynet",
+  "field": "opus_canonical",
+  "n": 50,
+  "disagree": 20,
+  "disagree_share": 0.4,
+  "wilson95": [
+   0.2761,
+   0.5382
+  ],
+  "stored_positive": 22,
+  "fable_positive": 2,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_publaynet",
+  "field": "opus_relation_specific",
+  "n": 50,
+  "disagree": 9,
+  "disagree_share": 0.18,
+  "wilson95": [
+   0.0977,
+   0.308
+  ],
+  "stored_positive": 36,
+  "fable_positive": 31,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "triples_publaynet",
+  "field": "opus_provenance",
+  "n": 50,
+  "disagree": 1,
+  "disagree_share": 0.02,
+  "wilson95": [
+   0.0035,
+   0.105
+  ],
+  "stored_positive": 49,
+  "fable_positive": 50,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "leakage_flagged",
+  "field": "flagged",
+  "n": 22,
+  "disagree": 9,
+  "disagree_share": 0.4091,
+  "wilson95": [
+   0.2326,
+   0.6127
+  ],
+  "stored_positive": 22,
+  "fable_positive": 13,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "review_spiqa_multihop_cross",
+  "field": "answerable",
+  "n": 50,
+  "disagree": 6,
+  "disagree_share": 0.12,
+  "wilson95": [
+   0.0562,
+   0.2381
+  ],
+  "stored_positive": 44,
+  "fable_positive": 38,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "review_spiqa_multihop_cross",
+  "field": "unique",
+  "n": 50,
+  "disagree": 9,
+  "disagree_share": 0.18,
+  "wilson95": [
+   0.0977,
+   0.308
+  ],
+  "stored_positive": 39,
+  "fable_positive": 34,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "review_spiqa_multihop_cross",
+  "field": "well_formed",
+  "n": 50,
+  "disagree": 29,
+  "disagree_share": 0.58,
+  "wilson95": [
+   0.4423,
+   0.7063
+  ],
+  "stored_positive": 5,
+  "fable_positive": 32,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "review_spiqa_multihop_cross",
+  "field": "leakage",
+  "n": 0,
+  "disagree": 0,
+  "disagree_share": null,
+  "wilson95": null,
+  "stored_positive": 0,
+  "fable_positive": 0,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "review_publaynet_figures",
+  "field": "answerable",
+  "n": 35,
+  "disagree": 3,
+  "disagree_share": 0.0857,
+  "wilson95": [
+   0.0296,
+   0.2238
+  ],
+  "stored_positive": 12,
+  "fable_positive": 11,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "review_publaynet_figures",
+  "field": "unique",
+  "n": 35,
+  "disagree": 7,
+  "disagree_share": 0.2,
+  "wilson95": [
+   0.1004,
+   0.3589
+  ],
+  "stored_positive": 18,
+  "fable_positive": 21,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "review_publaynet_figures",
+  "field": "well_formed",
+  "n": 35,
+  "disagree": 11,
+  "disagree_share": 0.3143,
+  "wilson95": [
+   0.1855,
+   0.4798
+  ],
+  "stored_positive": 26,
+  "fable_positive": 25,
+  "missing_labels": 0
+ },
+ {
+  "sheet": "review_publaynet_figures",
+  "field": "leakage",
+  "n": 35,
+  "disagree": 3,
+  "disagree_share": 0.0857,
+  "wilson95": [
+   0.0296,
+   0.2238
+  ],
+  "stored_positive": 3,
+  "fable_positive": 0,
+  "missing_labels": 0
+ }
+]

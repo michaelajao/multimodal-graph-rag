@@ -1,0 +1,101 @@
+set,row,question_id,fable_verdict,fable_reason
+hotpotqa_bridge,1,5ae75a4c5542997b22f6a6f1,0,"Names the host Krusty the Clown, not the show The Itchy & Scratchy Show."
+hotpotqa_bridge,2,5ac119335542992a796dede4,1,"States Hanna, Alberta, matching the reference."
+hotpotqa_bridge,3,5a7bbb64554299042af8f7cc,0,"Declines to answer, saying it does not know who is older."
+hotpotqa_bridge,4,5a80840f554299485f59863b,0,Declines to answer.
+hotpotqa_bridge,5,5a78bd9b554299078472774a,1,States both were British.
+hotpotqa_bridge,6,5a85a3005542991dd0999e72,1,States World War II.
+hotpotqa_bridge,7,5ac23ff0554299636651994d,0,Declines to answer.
+hotpotqa_bridge,8,5a8b4a5f55429949d91db531,1,"Names Start, the same club as IK Start."
+hotpotqa_bridge,9,5ae4563e5542996836b02c7f,1,States over 600 stores.
+hotpotqa_bridge,10,5a88f9555542995153361214,0,Says the production years are not given and offers no range.
+hotpotqa_bridge,11,5ae3205c55429928c423961e,1,States Leslie Knope.
+hotpotqa_bridge,12,5a74c85055429916b0164218,1,"Gives Sir Matthew Alistair Grant, the full name of Alistair Grant."
+hotpotqa_bridge,13,5a8ef2a75542995a26add583,0,Declines to answer.
+hotpotqa_bridge,14,5ae4563e5542996836b02c7f,1,States over 600 stores.
+hotpotqa_bridge,15,5ab8854555429934fafe6e0c,0,Says works of art rather than drawings.
+hotpotqa_bridge,16,5a8d7b1755429941ae14dfc6,0,Declines to answer.
+hotpotqa_bridge,17,5a77724455429972597f153e,1,States Indianapolis Motor Speedway.
+hotpotqa_bridge,18,5ae4c2b95542995dadf243ef,0,Declines to answer.
+hotpotqa_bridge,19,5a7ad9865542995eb53be8aa,0,Declines to answer.
+hotpotqa_bridge,20,5ac1b5de5542994d76dccec6,1,States My Beautiful Dark Twisted Fantasy.
+hotpotqa_bridge,21,5ae75a4c5542997b22f6a6f1,0,"Names the host Krusty the Clown, not the show The Itchy & Scratchy Show."
+hotpotqa_bridge,22,5ae75a4c5542997b22f6a6f1,1,"Leads with The Itchy & Scratchy Show, matching the reference."
+hotpotqa_bridge,23,5ae4c5595542990ba0bbb123,0,Declines to answer.
+hotpotqa_bridge,24,5a7f5c9f55429969796c1a0f,1,"States Spring city, with a correct historical name as extra detail."
+hotpotqa_bridge,25,5a734bb65542994cef4bc50f,1,Vince Guaraldi is the same person as Vincent Anthony Guaraldi.
+hotpotqa_bridge,26,5a8038b55542996402f6a485,0,Declines to answer.
+hotpotqa_bridge,27,5a85ea095542994775f606a8,1,States Animorphs.
+hotpotqa_bridge,28,5adf043b5542993a75d263d4,0,"Names Newt Gingrich, not Charles Joseph (Joe) Scarborough."
+hotpotqa_bridge,29,5a7d3470554299452d57bb56,1,States Compliance.
+hotpotqa_bridge,30,5ac119335542992a796dede4,0,Declines to answer.
+hotpotqa_bridge,31,5a8ef2a75542995a26add583,1,States 2000.
+hotpotqa_bridge,32,5a80ad7c5542992097ad3018,1,States 2009.
+hotpotqa_bridge,33,5a7caae75542996dd594b971,1,States anabolic steroids.
+hotpotqa_bridge,34,5a7cbf93554299452d57b9f5,1,States Magdalen College.
+hotpotqa_bridge,35,5ae6860e5542991bbc976112,1,States she translated and commented on Newton's Principia.
+hotpotqa_bridge,36,5ac119335542992a796dede4,0,"Says Edmonton, not Hanna."
+hotpotqa_bridge,37,5a895d305542993b751ca931,1,"States Manchester United, the club in the reference."
+hotpotqa_bridge,38,5a8cfee555429941ae14df5c,0,Declines to answer.
+hotpotqa_bridge,39,5a85cead5542991dd0999ea9,0,Declines to answer.
+hotpotqa_bridge,40,5abf10b75542997719eab659,0,Names the player but gives no height and says it does not know.
+hotpotqa_bridge,41,5ac3165c5542995ef918c10a,0,"Names Samuel L. Jackson, not John Waters."
+hotpotqa_bridge,42,5a87ab9b5542996e4f3088c2,1,States the nineteenth century.
+hotpotqa_bridge,43,5ae4c2b95542995dadf243ef,0,Declines to answer.
+hotpotqa_bridge,44,5a80ecea55429938b6142254,0,Declines to answer.
+hotpotqa_bridge,45,5a78bd9b554299078472774a,1,States both were British.
+hotpotqa_bridge,46,5abcc96c5542996583600492,1,States Planet Terror.
+hotpotqa_bridge,47,5a89fb525542993b751ca9d6,1,States Anna Clyne.
+hotpotqa_bridge,48,5a85a3005542991dd0999e72,1,States World War II.
+hotpotqa_bridge,49,5ab45a0b5542991779162c7e,1,States Viaport Rotterdam.
+hotpotqa_bridge,50,5ae73c065542991e8301cc18,1,States The Marshall Mathers LP 2.
+hotpotqa_comparison,1,5aba749055429901930fa7d8,1,Says both are film directors.
+hotpotqa_comparison,2,5a7ec61a55429934daa2fc5f,1,Commits to yes.
+hotpotqa_comparison,3,5ab3306a55429969a97a80fd,0,Declines to answer.
+hotpotqa_comparison,4,5adc53f75542996e6852530a,1,"Commits to no, saying cypress is not a genus."
+hotpotqa_comparison,5,5a76387d554299109176e6ba,0,Declines to answer.
+hotpotqa_comparison,6,5a867089554299211dda2b30,1,"Concludes Rolling Stone, a biweekly, is published more often."
+hotpotqa_comparison,7,5a7a27ce5542996c55b2dd28,0,Declines to answer.
+hotpotqa_comparison,8,5a7a455c5542994f819ef1a7,1,States George Archainbaud died first.
+hotpotqa_comparison,9,5ae058e855429945ae959331,1,Commits to yes.
+hotpotqa_comparison,10,5ab72a025542992aa3b8c7b8,1,States documentary.
+hotpotqa_comparison,11,5a90bd7b55429916514e7547,0,Declines to answer.
+hotpotqa_comparison,12,5ab6f0c25542995eadef00ea,0,Declines to answer rather than committing to no.
+hotpotqa_comparison,13,5a88d745554299206df2b378,0,Declines to answer.
+hotpotqa_comparison,14,5a79c1335542994bb9457066,1,"Says novelists or authors, equivalent to author."
+hotpotqa_comparison,15,5aba749055429901930fa7d8,1,Says both are film directors.
+hotpotqa_comparison,16,5ab1e984554299340b525428,0,Declines to answer.
+hotpotqa_comparison,17,5a90bd7b55429916514e7547,1,States Polypodium.
+hotpotqa_comparison,18,5adeb95d5542992fa25da827,1,Commits to yes.
+hotpotqa_comparison,19,5a7633ad5542992db9473741,0,Says it cannot answer definitively and names neither battle.
+hotpotqa_comparison,20,5a7a6ee75542996c55b2ddac,0,Declines to answer.
+hotpotqa_comparison,21,5a7759fc5542993569682d60,1,"Places both parks in the Canary Islands, Spain."
+hotpotqa_comparison,22,5ab1d7ac554299449642c7e6,1,States Ehretia.
+hotpotqa_comparison,23,5ab611cc5542992aa134a411,1,Says both were directors and producers.
+hotpotqa_comparison,24,5a74701655429979e2882952,0,Declines to answer.
+hotpotqa_comparison,25,5ac1b8ee5542994d76dccedc,1,"States Lev Yilmaz, the same person as Levni Yilmaz."
+hotpotqa_comparison,26,5ab85a1155429934fafe6d7c,0,Declines to answer.
+hotpotqa_comparison,27,5a8a7d2b55429930ff3c0dfc,1,"Commits to no, with different families."
+hotpotqa_comparison,28,5ac289ff5542996366519a02,1,States Marsilea.
+hotpotqa_comparison,29,5ab642845542995eadeeff8e,0,Declines to answer.
+hotpotqa_comparison,30,5adc65e85542996e68525350,1,"Commits to no, with different provinces."
+hotpotqa_comparison,31,5abc0a5d5542993f40c73c64,1,"Commits to no, one being Australian."
+hotpotqa_comparison,32,5ab25004554299722f9b4cd7,1,"Commits to no, one battle being in 1950."
+hotpotqa_comparison,33,5a71166d5542994082a3e576,0,Declines to answer.
+hotpotqa_comparison,34,5abb1e1b5542992ccd8e7f19,1,States the Nobel Prize in Literature.
+hotpotqa_comparison,35,5a8b57f25542995d1e6f1371,1,"Commits to yes, both American."
+hotpotqa_comparison,36,5a7633ad5542992db9473741,1,States the Seven Days Battles were earlier.
+hotpotqa_comparison,37,5a8b57f25542995d1e6f1371,0,Declines to answer.
+hotpotqa_comparison,38,5a738225554299623ed4abc3,1,States Bedknobs and Broomsticks is older.
+hotpotqa_comparison,39,5a76387d554299109176e6ba,0,Declines to answer.
+hotpotqa_comparison,40,5ab6bf6d55429953192ad372,1,"Commits to no, Pieris being shrubs."
+hotpotqa_comparison,41,5abb1e1b5542992ccd8e7f19,1,States the Nobel Prize in Literature.
+hotpotqa_comparison,42,5a7574e25542996c70cfaf01,1,States Ibn Arabi was born first.
+hotpotqa_comparison,43,5ae54eea5542993aec5ec19d,1,States Social Code was formed first.
+hotpotqa_comparison,44,5a84c4135542994c784dda31,0,Declines to answer.
+hotpotqa_comparison,45,5a77309d55429972597f1487,1,States Jose Echegaray y Eizaguirre was born first.
+hotpotqa_comparison,46,5ac1b8ee5542994d76dccedc,1,"States Lev Yilmaz, the same person as Levni Yilmaz."
+hotpotqa_comparison,47,5a738225554299623ed4abc3,1,States Bedknobs and Broomsticks is older.
+hotpotqa_comparison,48,5abb1e1b5542992ccd8e7f19,1,States the Nobel Prize in Literature.
+hotpotqa_comparison,49,5ac1f4495542991316484bd2,1,"Commits to Delmer Daves, though the text is cut off."
+hotpotqa_comparison,50,5abc0a5d5542993f40c73c64,1,"Commits to no, one being Australian."

@@ -1,0 +1,201 @@
+{
+ "auditor": "Claude Fable 5.2, blind to the stored labels, no role in the pipeline",
+ "judge_accuracy": {
+  "per_sheet": {
+   "judge_hotpotqa_bridge": [
+    1,
+    50
+   ],
+   "judge_hotpotqa_comparison": [
+    1,
+    50
+   ],
+   "judge_publaynet_pixels": [
+    1,
+    50
+   ],
+   "judge_spiqa_flagged_pixels": [
+    1,
+    50
+   ],
+   "judge_spiqa_screened_captions": [
+    3,
+    50
+   ],
+   "judge_spiqa_screened_pixels": [
+    4,
+    50
+   ]
+  },
+  "disagree": 11,
+  "n": 300
+ },
+ "triple_entailment": {
+  "per_sheet": {
+   "triples_hotpotqa": [
+    1,
+    50
+   ],
+   "triples_spiqa": [
+    2,
+    50
+   ],
+   "triples_publaynet": [
+    5,
+    50
+   ]
+  },
+  "disagree": 8,
+  "n": 150
+ },
+ "triple_provenance": {
+  "per_sheet": {
+   "triples_hotpotqa": [
+    1,
+    50
+   ],
+   "triples_spiqa": [
+    0,
+    50
+   ],
+   "triples_publaynet": [
+    1,
+    50
+   ]
+  },
+  "disagree": 2,
+  "n": 150
+ },
+ "triple_canonical_not_comparable": {
+  "per_sheet": {
+   "triples_hotpotqa": [
+    25,
+    50
+   ],
+   "triples_spiqa": [
+    24,
+    50
+   ],
+   "triples_publaynet": [
+    20,
+    50
+   ]
+  },
+  "disagree": 69,
+  "n": 150
+ },
+ "triple_relation_specific": {
+  "per_sheet": {
+   "triples_hotpotqa": [
+    17,
+    50
+   ],
+   "triples_spiqa": [
+    5,
+    50
+   ],
+   "triples_publaynet": [
+    9,
+    50
+   ]
+  },
+  "disagree": 31,
+  "n": 150
+ },
+ "leakage_flags": {
+  "spiqa_screened": {
+   "flags": 15,
+   "real_whole_text": 9,
+   "real_snippet_only": 3
+  },
+  "publaynet": {
+   "flags": 7,
+   "real_whole_text": 4,
+   "real_snippet_only": 4
+  }
+ },
+ "review_answerable": {
+  "per_sheet": {
+   "review_spiqa_multihop_cross": [
+    6,
+    50
+   ],
+   "review_publaynet_figures": [
+    3,
+    35
+   ]
+  },
+  "disagree": 9,
+  "n": 85
+ },
+ "review_unique": {
+  "per_sheet": {
+   "review_spiqa_multihop_cross": [
+    9,
+    50
+   ],
+   "review_publaynet_figures": [
+    7,
+    35
+   ]
+  },
+  "disagree": 16,
+  "n": 85
+ },
+ "review_well_formed": {
+  "per_sheet": {
+   "review_spiqa_multihop_cross": [
+    29,
+    50
+   ],
+   "review_publaynet_figures": [
+    11,
+    35
+   ]
+  },
+  "disagree": 40,
+  "n": 85
+ },
+ "review_positive_counts": {
+  "review_spiqa_multihop_cross|answerable": {
+   "stored": 44,
+   "fable": 38,
+   "n": 50
+  },
+  "review_spiqa_multihop_cross|unique": {
+   "stored": 39,
+   "fable": 34,
+   "n": 50
+  },
+  "review_spiqa_multihop_cross|well_formed": {
+   "stored": 5,
+   "fable": 32,
+   "n": 50
+  },
+  "review_spiqa_multihop_cross|leakage": {
+   "stored": 0,
+   "fable": 0,
+   "n": 0
+  },
+  "review_publaynet_figures|answerable": {
+   "stored": 12,
+   "fable": 11,
+   "n": 35
+  },
+  "review_publaynet_figures|unique": {
+   "stored": 18,
+   "fable": 21,
+   "n": 35
+  },
+  "review_publaynet_figures|well_formed": {
+   "stored": 26,
+   "fable": 25,
+   "n": 35
+  },
+  "review_publaynet_figures|leakage": {
+   "stored": 3,
+   "fable": 0,
+   "n": 35
+  }
+ }
+}

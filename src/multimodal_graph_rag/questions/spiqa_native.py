@@ -1,15 +1,18 @@
-"""Convert SPIQA's native human-curated QA into an evaluable question set.
+"""Convert SPIQA's native test-A QA into an evaluable question set.
 
-`rag ingest --config <spiqa>` already saves the QA that SPIQA's curators wrote
-for every sampled paper. Those items are human-authored, human-answered, and
-carry human figure-level provenance: the `reference` field names the exact crop
-the answer was read from. That makes them the one visual set in this project
-whose questions were not written by a model, which removes the circularity of
-the LLM-authored figure sets (the same model authored a question from a crop
-and then verified its own question against that crop).
+`rag ingest --config <spiqa>` already saves the test-A QA for every sampled
+paper. SPIQA generated these items with Gemini 1.5 Pro, one per figure or
+table, and its authors then filtered and edited the test-A split by hand
+(SPIQA paper, Section 3.2 and Appendix G; only test-B and test-C are
+human-written). The `reference` field names the crop each question was
+generated from. No model this project runs wrote them, which removes the
+circularity of the project's own LLM-authored figure sets (the same model
+authored a question from a crop and then verified its own question against
+that crop). The construction-method label `spiqa_native_human` predates this
+correction and is kept because it is part of the stored question files.
 
 This converter changes no content. It attaches a stable id, records the
-construction method as human-authored, and runs the leakage screen against both
+construction method, and runs the leakage screen against both
 caption channels so that construction intent and screened leakage status stay
 separate variables. Nothing is dropped for being flagged; flagged items are
 labelled so the tables can tier them.

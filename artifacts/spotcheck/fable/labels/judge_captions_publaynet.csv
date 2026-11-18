@@ -1,0 +1,101 @@
+set,row,question_id,fable_verdict,fable_reason
+spiqa_screened_captions,1,ca9253c5ceda2ca6,0,Declines to give the learning rate; the value 5e-05 is absent.
+spiqa_screened_captions,2,817ef89db6dc12f7,1,"Names the AR component as the important one, matching the reference."
+spiqa_screened_captions,3,17799828b3cf2593,1,"States time increases with edges per node and gives a cost linear in k, though it never says linearly outright."
+spiqa_screened_captions,4,45487eedf17a2cd1,0,Declines to answer.
+spiqa_screened_captions,5,c613b180110b10ce,1,States sample quality decreases as the update threshold increases.
+spiqa_screened_captions,6,e822b8cc2bd25430,0,Says the context does not identify which method reconstructs the shape.
+spiqa_screened_captions,7,6a487e7cf8abae09,1,Gives the reward-feedback role to the generator but omits the real-versus-generated discrimination.
+spiqa_screened_captions,8,98064553807b59ce,0,Reports only no significant MNLI change and omits the SNLI gain and all scores.
+spiqa_screened_captions,9,099bc0d4dff5a7d4,0,Declines to describe the difference in the sphere's appearance.
+spiqa_screened_captions,10,98064553807b59ce,1,"Conveys the large SNLI gain and essentially unchanged MNLI results, without the exact scores."
+spiqa_screened_captions,11,8efefc59d4b36a16,1,"Covers multi-scale box embedding, attention maps fused with encoder features, and passing to the decoder."
+spiqa_screened_captions,12,a1215413fbf31590,1,Describes z as the conditioning signal that steers the generator toward the desired attributes.
+spiqa_screened_captions,13,708fe0ab9ef09cfd,1,Says the proposed method generates the right hair colour better than icGAN.
+spiqa_screened_captions,14,ebd7185080bfc192,0,Declines to name the best model or its score.
+spiqa_screened_captions,15,c091be9b578ed8e4,0,Does not state that the baseline is blurry and unrealistic while the others are more realistic.
+spiqa_screened_captions,16,3753454c48d001b5,1,Says shared weights make both branches use the same model so outputs can be compared by the confusion loss.
+spiqa_screened_captions,17,c8263b2f5c09ed7c,1,Names UMBC News and the 60.5 million difference.
+spiqa_screened_captions,18,e941a9fb513db85e,0,Declines to answer.
+spiqa_screened_captions,19,26388638abb10f6c,0,"Says only that skip connections are for reconstruction, missing the encoder-decoder feature combination."
+spiqa_screened_captions,20,f2f70b081c6ef65b,1,Gives low-resolution face plus high-resolution side-face input and high-resolution frontal output.
+spiqa_screened_captions,21,ddf400eae6945f6e,1,States NegPair reduction increases with the number of perfect results.
+spiqa_screened_captions,22,6894d3d1ba3c6f3b,0,"Names EB as best but says CC drops dramatically, against the reference's slightly worse CC."
+spiqa_screened_captions,23,fdc9b09991f18d34,0,Declines to answer.
+spiqa_screened_captions,24,44a2b224fac89df9,1,Names BoSSNet as the highest combined score on CamRest.
+spiqa_screened_captions,25,6a487e7cf8abae09,1,"Gives the reward-feedback role and a real-versus-generated discrimination, though the latter is phrased for images."
+spiqa_screened_captions,26,7c05746854766890,0,Declines to answer.
+spiqa_screened_captions,27,8ad40c80c0fa87a9,0,Declines to name the topic.
+spiqa_screened_captions,28,27bae8332eb30548,1,Conveys that adaptation predicts from target input alone while fusion uses both source and target inputs.
+spiqa_screened_captions,29,dfc2f157a2240e22,1,States the approximate bounds are very effective at predicting sparsity.
+spiqa_screened_captions,30,2ec3387caf03877b,1,"Lists nearly all the steps, omitting only comment sampling and miscounting them as eight."
+spiqa_screened_captions,31,af3341578da4a97f,1,Describes error falling with sparsity and then rising again.
+spiqa_screened_captions,32,55ee7df23d4e6000,1,Says both films are connected through Tom Hanks.
+spiqa_screened_captions,33,f2aa29d6febfc058,0,Lists body expressions instead of the reconstruction stages.
+spiqa_screened_captions,34,0415e111f92a9971,0,Does not name intra-warrant attention with context.
+spiqa_screened_captions,35,648defb09bf27683,1,States the proposed method preserves identity while conventional super-resolution does not guarantee it.
+spiqa_screened_captions,36,a33d3c9b11639102,1,Describes the recursive subdivision with the curve drawn through the cells at each level.
+spiqa_screened_captions,37,9d9a018d2da54763,0,Declines to answer.
+spiqa_screened_captions,38,6cfc4dea803113c8,0,Does not say the parameter network weights the initial surface to deform it.
+spiqa_screened_captions,39,6c18d55609980fe1,0,Declines to answer.
+spiqa_screened_captions,40,518a0da816185b07,1,Names clear weather.
+spiqa_screened_captions,41,bae2cf01063083a8,0,"Stresses a plateau and that fewer cameras suffice, never stating accuracy rises with more cameras."
+spiqa_screened_captions,42,f2aa29d6febfc058,0,Does not give the reconstruction stages.
+spiqa_screened_captions,43,5fe76fb43433589e,0,Declines to answer.
+spiqa_screened_captions,44,ff2feae4688370d3,0,Names Multi30k instead of Headlines.
+spiqa_screened_captions,45,7e732e164d3e8abc,1,Explains that adversarial examples have low non-ME values and are filtered by a threshold.
+spiqa_screened_captions,46,f9cfd29bcaabda11,0,Gives Devon's 6.35 but does not name PWC-Net as the best method.
+spiqa_screened_captions,47,d24a99a8053f6dfa,0,Declines to answer.
+spiqa_screened_captions,48,9d9a018d2da54763,0,Declines to answer.
+spiqa_screened_captions,49,08ce8c07d740648a,0,Declines to give the difference.
+spiqa_screened_captions,50,80c4db7a61b4fee2,1,Names the OUR method for Representation on novel views.
+publaynet_pixels,1,3bb25bf0c2bae65d,0,Answers monocytes instead of macrophage.
+publaynet_pixels,2,1c3d32c8d3de2135,0,Declines to answer.
+publaynet_pixels,3,4fc0506354b61239,0,Declines to answer.
+publaynet_pixels,4,2f59fab5dce7176d,0,Gives about 0% instead of 20-25%.
+publaynet_pixels,5,a6e8c4d64a84af2a,0,Declines to answer.
+publaynet_pixels,6,9a27ce903502fb25,0,Declines to answer.
+publaynet_pixels,7,9a27ce903502fb25,0,Declines to answer.
+publaynet_pixels,8,3bb25bf0c2bae65d,0,Answers neutrophils instead of macrophage.
+publaynet_pixels,9,7579be6679caad0f,0,Declines to answer.
+publaynet_pixels,10,1206e3804acfd1ab,0,Declines to answer.
+publaynet_pixels,11,3bb382f41ba2b8c1,1,"Includes all six reference genes, though inside a much longer generic list from background knowledge."
+publaynet_pixels,12,b882e545e217d4c1,0,Gives 14.5 g/dL instead of 13.1.
+publaynet_pixels,13,fd02718deece45cc,0,Declines to answer.
+publaynet_pixels,14,a900bfca1a2fdaa9,0,Declines to answer.
+publaynet_pixels,15,76c975f156807b78,0,Declines to answer.
+publaynet_pixels,16,34d808167ee36a4c,0,Declines to answer.
+publaynet_pixels,17,2e1ef90c2c0f7958,0,Gives 60 instead of 95%.
+publaynet_pixels,18,5c48dc26acfad8e8,0,Declines to answer.
+publaynet_pixels,19,e37d49f571bee51e,0,Declines to answer.
+publaynet_pixels,20,3bb25bf0c2bae65d,0,Declines to answer.
+publaynet_pixels,21,3bb25bf0c2bae65d,0,Answers NK cell instead of macrophage.
+publaynet_pixels,22,3bb382f41ba2b8c1,0,Declines to answer.
+publaynet_pixels,23,b882e545e217d4c1,0,Declines to answer.
+publaynet_pixels,24,3ffc64ba77bdece6,0,Declines to answer.
+publaynet_pixels,25,064214ffd3cfc916,0,Declines to answer.
+publaynet_pixels,26,34d808167ee36a4c,1,Gives the odds ratio 2.2.
+publaynet_pixels,27,2e1ef90c2c0f7958,0,Declines to answer.
+publaynet_pixels,28,eebd58596331df9c,1,"Covers the northwest, Inner Mongolia and northeast, though it omits Tibet and Qinghai."
+publaynet_pixels,29,e37d49f571bee51e,0,Declines to answer.
+publaynet_pixels,30,4fc0506354b61239,0,Declines to answer.
+publaynet_pixels,31,3bb25bf0c2bae65d,0,Declines to answer.
+publaynet_pixels,32,3ffc64ba77bdece6,0,Declines to answer.
+publaynet_pixels,33,4fc0506354b61239,0,Gives 2.1 instead of 3.93.
+publaynet_pixels,34,83539ee129abbc81,0,Declines to answer.
+publaynet_pixels,35,3bb382f41ba2b8c1,0,Declines to answer.
+publaynet_pixels,36,1c3d32c8d3de2135,0,Gives 0.16 instead of 41.08.
+publaynet_pixels,37,1206e3804acfd1ab,0,Answers USP2_MEL instead of LISTZ_MIL.
+publaynet_pixels,38,3ffc64ba77bdece6,0,Declines to answer.
+publaynet_pixels,39,9bfc2eb349a579b2,0,Primer sequence differs from the reference at its 3' end.
+publaynet_pixels,40,106a9834b5836542,0,Declines to answer.
+publaynet_pixels,41,2f59fab5dce7176d,0,Declines to answer.
+publaynet_pixels,42,8af5c2d6a6af250d,0,Declines to answer.
+publaynet_pixels,43,68d153456e194df7,0,Declines to answer.
+publaynet_pixels,44,106a9834b5836542,1,Gives the odds ratio 0.97.
+publaynet_pixels,45,91de69db5f913304,0,Declines to answer.
+publaynet_pixels,46,2f59fab5dce7176d,0,Declines to answer.
+publaynet_pixels,47,91de69db5f913304,1,"Reads about 0.9 falling to 0.5, which is roughly the reference's two-fold decrease."
+publaynet_pixels,48,b882e545e217d4c1,0,Declines to answer.
+publaynet_pixels,49,a6e8c4d64a84af2a,0,Gives 0 with no interval instead of 1.25 (-1.28 to 2.22).
+publaynet_pixels,50,3ffc64ba77bdece6,1,"Gives slightly below 10 pg/mL, matching approximately 10."

@@ -1,0 +1,86 @@
+set,question_id,fable_answerable,fable_unique,fable_well_formed,fable_leakage,fable_reason
+spiqa_multihop_cross,5f75ba0646c753a0,0,0,0,,"Answer only juxtaposes two unrelated facts and adds 'on words', which the truncated evidence does not support. Both papers use a BiGRU encoder, so the first half has two readings. 'The generator' has no referent and the asked-for relation does not exist."
+spiqa_multihop_cross,f0b38374bf3b438b,1,1,1,,Both halves supported: word2vec initialisation (not updated) gave best internal coherence on IMDB and Yahoo answers. Extra UNK detail is supported but off-topic.
+spiqa_multihop_cross,e4426bf4babad110,1,1,1,,Both halves stated in the evidence (MLE of the Multi-DPP measure; MLE pre-training of the generator on the parallel set).
+spiqa_multihop_cross,334725385cbd84ec,1,1,1,,"Supported, with a slightly loose paraphrase of the knowledge-transfer sentence."
+spiqa_multihop_cross,763ce303d5110d1c,1,1,0,,Answer supported. 'The independent views' has no referent without the source paper.
+spiqa_multihop_cross,51d6ed4f6a139bcd,1,1,0,,Answer supported. Second half is circular: it asks for the key requirement for efficient search and the answer is efficient search.
+spiqa_multihop_cross,8321a41a9ff6a674,1,1,1,,Irregularity of the time mode; TFBA. Both stated.
+spiqa_multihop_cross,fcb6ce5289f9a6e2,1,1,1,,Both halves stated in the evidence.
+spiqa_multihop_cross,ff28511e3ef66d45,1,1,1,,Supported; wording of the second half is awkward but clear.
+spiqa_multihop_cross,17dfbd39b485500b,1,0,1,,"Answer supported, but 'a semi-supervised method' is generic; the bounding-box answer is one of many defensible ones."
+spiqa_multihop_cross,4f2d25f6035643a2,1,1,0,,"Facts supported, but the question treats two unrelated networks (robot control, sentence coherence) as one via 'it'."
+spiqa_multihop_cross,013d0204e8aa8312,0,0,1,,"First half rests on a misreading: 'Combinatorial optimization with RNNs' is the next paragraph heading, not part of the hierarchical-structure sentence. Evidence does not say seq2seq models use a hierarchy for combinatorial optimization."
+spiqa_multihop_cross,8880c66dacd06238,1,1,1,,Supported as a paraphrase of both passages.
+spiqa_multihop_cross,ae90215277b528d4,1,1,1,,Binary SST; TREC multi-class. Both stated.
+spiqa_multihop_cross,4aa2d3813aca641f,1,1,1,,Near-verbatim from both passages.
+spiqa_multihop_cross,b8ec5d2418979c51,0,0,1,,"Evidence only says AMAN applies negative sampling; it does not say how that enhances performance. Answer's 'searched in {10}' is a truncation artifact, not a fact."
+spiqa_multihop_cross,ea11c9cb42a7cbea,1,1,0,,Answer supported. Second half gives itself away (role in boosting performance -> applied to boost performance) and 'during model evaluation' is not what the passage says.
+spiqa_multihop_cross,30a213294d769a28,0,0,1,,"Second half wrong: the evidence says merge-and-run mappings improve forward and backward information flow, not gradient back-propagation."
+spiqa_multihop_cross,5d5c752c720b0be2,1,0,0,,"Answer supported. First half gives itself away; 'the LSTM cell' names no model, and the 0.5 is specific to one paper."
+spiqa_multihop_cross,f6664f54c3323b92,1,0,0,,"Facts supported, but the question has no anchor to any study or dataset and the first half is muddled (train/test split versus adding noise)."
+spiqa_multihop_cross,b4586c8fd947816c,1,0,0,,Answer supported. 'The neural network model' has no referent; whether vectors are fixed varies by paper.
+spiqa_multihop_cross,922ec691e3b8154e,0,1,0,,"Evidence holds real answers (Yao's garbled circuits; MLP 360x200x80x2 with ReLU) but the reference only restates the question, so it is not a usable answer. The question contains the whole reference."
+spiqa_multihop_cross,a9b03ba620d037b7,1,1,1,,C+1 categories; softmax. Both stated.
+spiqa_multihop_cross,f594cbc0c348d2eb,1,1,0,,Facts supported. 'Utilize LSTM layers for error signaling' is not a coherent description of the passage.
+spiqa_multihop_cross,655b74aa32349f25,1,1,1,,Supported. Second half leans on the question wording but adds detail.
+spiqa_multihop_cross,0622885c3fd4097f,1,0,1,,"Supported, but 'the unsupervised evaluation' names no paper and the task list is paper-specific."
+spiqa_multihop_cross,659fd0f60e3d1a91,1,1,1,,Both halves stated.
+spiqa_multihop_cross,a8d8f8fc779f8fe0,1,1,0,,Answer supported. The question states the answer itself (high computational cost) in both halves.
+spiqa_multihop_cross,81f48f16b77acf24,0,0,0,,Reference answer is literally '...'. First half ('relate to the construction') is too vague to have one answer.
+spiqa_multihop_cross,a46a7df945050b88,1,1,0,,"Answer supported. First half asks how efficiency improves, the evidence only says it does, and the question already says so."
+spiqa_multihop_cross,3902de48539141e1,1,1,1,,Supported. Phrasing is stiff but clear.
+spiqa_multihop_cross,70fb4b983bd76c28,1,1,1,,Both halves stated.
+spiqa_multihop_cross,4b2c3b72e27a9277,0,1,1,,First half misreads the bullet list: simultaneous constraints is a separate benefit. The evidence says large data can be handled because solving the constraints uses element-wise operations.
+spiqa_multihop_cross,5f8d0ae4cd1244ac,1,1,1,,Both halves stated.
+spiqa_multihop_cross,648e9cb82366b60c,1,1,1,,"Supported, though the answer blurs cause and effect (the curse makes the nearest feasible embedding far away; it does not cause infeasibility)."
+spiqa_multihop_cross,9808f324b87ad1d6,1,1,0,,Answer supported. The symbol theta_p is undefined without the source paper.
+spiqa_multihop_cross,db028c30f769670d,1,1,1,,"Facts supported; first half answers what limits accuracy rather than its effect, but stays within the passage."
+spiqa_multihop_cross,5191342501339fc8,1,1,1,,Both halves stated.
+spiqa_multihop_cross,a7dd7cb7b97ed845,0,0,1,,"First half has no support: the phrase is only the title of a bibliography entry, and nothing says it improves performance."
+spiqa_multihop_cross,bc1f2c02c7da1c87,1,0,0,,"Lenient on notation (evidence has DE_{D_h}, and also DE_{M_h} for prediction, so two readings). 'The classifier h' needs the source paper."
+spiqa_multihop_cross,2de14c64991e0b71,1,0,0,,"Facts supported, but the question names no paper, model or dataset; it could be about any study."
+spiqa_multihop_cross,c5229730c9bf08a5,1,1,1,,Both halves stated.
+spiqa_multihop_cross,beb9290dcf4720b6,1,1,0,,Facts supported. First half asks about correlation of mean vectors while the answer is about attenuating uninformative data; second half gives itself away.
+spiqa_multihop_cross,9a92d72b6e4c9e81,1,1,0,,Facts supported. 'Improve performance difference' is not grammatical or clear.
+spiqa_multihop_cross,044935b843920d6d,0,0,1,,'Detecting fake news' comes from the tail of the previous sentence; the list of applications is cut off. First half is open-ended.
+spiqa_multihop_cross,512cb44af875d10f,1,1,1,,Supported; second half can only be answered as vaguely as the passage does.
+spiqa_multihop_cross,3cb200e5ad410b28,0,0,1,,Evidence does not state a function for fully-connected layers and the reference gives none (only that they are part of the architecture). First half is a textbook question with many answers.
+spiqa_multihop_cross,6c6841b135acbedf,1,1,1,,Both halves stated.
+spiqa_multihop_cross,7f9b451a92954eb0,0,1,1,,"Pearson's correlation sentence sits in the unsupervised-evaluation subsection, before the 'Supervised Evaluation' heading, so it does not answer a question about supervised evaluation."
+spiqa_multihop_cross,c040dc034de75281,0,0,1,,Second half of the reference is a dangling 'the following is an upper bound'; the evidence is cut off before the bound.
+publaynet_figures,2f59fab5dce7176d,0,0,0,0,At 40 months the 'benefit not achieved' curve is already at 0 (ends near 18) and 'benefit achieved' is about 0.15. Reference 20-25% matches neither. The group description in the question is incoherent.
+publaynet_figures,9a27ce903502fb25,1,1,1,0,"2013 row: df 2, residual deviance 44.45."
+publaynet_figures,064214ffd3cfc916,1,1,0,0,"The only marked tube at 3 h is 20% FBS + 70% EtOH, which the reference picks. Labels are misread in both question and answer (PBS/EICH for FBS/EtOH)."
+publaynet_figures,d8df903f971b3e14,0,0,0,0,"In the apical panel the postlingual trace peaks slightly higher, not prelingual; 0.4 is just the scale bar. Axis is ms, not minutes; 'preinguinal' is a misreading; no y-axis to read a difference from."
+publaynet_figures,a6e8c4d64a84af2a,0,0,1,0,No 'Working' row. Workup is 0.536 (-0.92 to -0.15); Treatment is -1.25 (-2.29 to -2.22). Reference 1.25 (-1.28-2.22) matches neither.
+publaynet_figures,2e1ef90c2c0f7958,0,1,0,0,"Tallest black bar (<1.5 group) reaches 100, not 95. Question wording is garbled ('avian ELISA', 'non-crossreacted', 'responders')."
+publaynet_figures,1c3d32c8d3de2135,0,1,0,0,"Septal s' outer edge, Expert 1 vs other experts: Bias = +0.18. Reference 41.08 is a misreading. Question text is garbled."
+publaynet_figures,5c48dc26acfad8e8,0,0,1,0,"Figure shows miR-26a expression in heart, liver, brain, gill and muscle. No BDNF and no kidney."
+publaynet_figures,3bb25bf0c2bae65d,0,0,1,0,LILRB3 is not among the genes in the heatmap.
+publaynet_figures,106a9834b5836542,1,1,1,0,Church Attendance odds ratio 0.97.
+publaynet_figures,7579be6679caad0f,0,1,1,0,"R. parahippocampal gyrus T-max is 2.20, not 3.20. ('SU > MJ' is a slip for NU > MJ; referent still clear.)"
+publaynet_figures,b882e545e217d4c1,0,1,1,0,"High-risk, short interval hemoglobin is 145.9 (20.9) g/L. Reference 13.1 (1.6) is not in the table; unit in the question is also off."
+publaynet_figures,4fc0506354b61239,0,0,0,0,"Three advertising conditions (3.43, 3.93, 4.71) and the question does not say which. Reference is the Heineken value only. Row is binge drinking intentions, not a count of occasions."
+publaynet_figures,fd02718deece45cc,1,1,0,0,Y-axis runs from 0 to just above 10 kHz (ticks 2-10). 'This spectrogram' is not identified.
+publaynet_figures,1206e3804acfd1ab,0,0,1,0,"Every red band spans the full width, so none is longest, and no label reads LISTZ_MIL."
+publaynet_figures,05be2d4eca994098,1,1,0,0,"Drinkaware, size of responsible drinking statements as % of display size: 12.98. Question garbles the row name and the column ('Drinktomane')."
+publaynet_figures,76c975f156807b78,0,0,1,0,"Bars are BDNF (~2.55), HRAS (~1.8) and BCL2 (~2.35) under IL-17 vs PBS. There is no BCM1 group and IL-17 is the stimulus, not the measured gene; BCM1 could be BDNF or BCL2."
+publaynet_figures,34d808167ee36a4c,1,1,1,0,Teeth with caries odds ratio 2.2. The 'periodontic treatments group' qualifier is not in the crop.
+publaynet_figures,8af5c2d6a6af250d,0,0,1,0,"No HOMO category (FLAGS, HGMD, OMIM, Background). HGMD and OMIM medians in panel a are about 3, not 10-12."
+publaynet_figures,86be6fbb1a2baf78,1,1,1,0,"320 nm curve peaks near 410 nm, so 'approximately 400 nm' holds."
+publaynet_figures,3bb382f41ba2b8c1,0,1,1,0,"Negative regulation row lists ATM, BRCA1, CDKN2B, RBL1, TP53. Reference list is different."
+publaynet_figures,83539ee129abbc81,0,1,1,0,Fz theta is 0.51 (0.23); reference has SD 0.21. ('F2' is a slip for Fz.)
+publaynet_figures,9bfc2eb349a579b2,0,1,1,0,RT primer for hsa-miR-423-5p ends ...GTTGAGAAAGTC-3'; reference ends ...GTTGAGAAGCAC.
+publaynet_figures,c16d5e3e5fc16038,1,1,1,0,Serum HCV-RNA at the 0 column: 278. ('0 degree' is a slip for the footnote mark.)
+publaynet_figures,e37d49f571bee51e,0,0,1,0,No Vmax row and no 'lung within 5 mm' group; Lung and 'Within 5 mm of the body surface' are separate. 93.1 +/- 0.6 is not in the table (CTV V100% is 93.3 +/- 0.6). Pixel column unspecified.
+publaynet_figures,c7e250bf834ec539,1,1,1,0,"Maternal family, Indonesia: 15.3. ('curer' is a slip for carer.)"
+publaynet_figures,eebd58596331df9c,0,0,0,0,Map is of East Kazakhstan with maral habitat in green. Nothing about wolves or Chinese regions. 'The map' is not identified.
+publaynet_figures,3ffc64ba77bdece6,1,1,1,0,EU (grey) bar at 'Before' is about 9-10 pg/mL.
+publaynet_figures,d2516ac844b61671,0,1,1,0,"Zhao et al. row: total n = 81, male n = ND. Reference gives the total."
+publaynet_figures,2299e6c00d574ae1,0,1,1,0,"Pattern 20: 164 samples, 60.7%, not 65.7%."
+publaynet_figures,91de69db5f913304,0,0,1,0,"Panel B shows doses only as a wedge with no values, so the 10 uM bar cannot be identified. Control is about 0.92 and the top dose about 0.50."
+publaynet_figures,68d153456e194df7,0,0,1,0,"No Cd-Pb row; 49.23 is ANS-PNS female Group 1, and Cd-Gn female is 120.0. Groups are n = 64."
+publaynet_figures,544c7a5bd03ef43c,1,1,1,0,Consequence cell reads reduction or loss of enzymatic activity of the SDH catalytic subunit and defective complex II function. ('SDH4' is a slip for SDHA.)
+publaynet_figures,880ee17d512b201a,0,0,0,0,"No 'p7-labeled' and no concentration; 0.020 is itself a correlation value. -0.089 is the beta_FV LO entry, but the question does not identify it."
+publaynet_figures,a900bfca1a2fdaa9,0,1,1,0,"West Asia (Middle East) row reads 0, not 8."

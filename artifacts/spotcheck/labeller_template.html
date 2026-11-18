@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spot-check labeller</title>
+<style>
+:root {
+  --bg: #f7f7f5; --panel: #ffffff; --ink: #1d1d1b; --muted: #66665f; --line: #deded8;
+  --accent: #0b5cad; --yes: #1f7a3d; --no: #b3261e; --warn: #8a5a00; --chip: #eef2f7;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #17181a; --panel: #212226; --ink: #ececea; --muted: #a3a39c; --line: #35363b;
+    --accent: #6aa8ec; --yes: #5cc27f; --no: #ef7a72; --warn: #e0b45c; --chip: #2b2f36; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { position: sticky; top: 0; z-index: 2; background: var(--panel); border-bottom: 1px solid var(--line);
+  padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+header h1 { font-size: 16px; margin: 0 12px 0 0; }
+select, input[type=text], button, textarea { font: inherit; color: inherit; }
+select, input[type=text], textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; }
+button { background: var(--chip); border: 1px solid var(--line); border-radius: 6px; padding: 5px 12px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.meta { color: var(--muted); font-size: 13px; }
+.field-label { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-top: 12px; }
+.field-value { white-space: pre-wrap; overflow-wrap: anywhere; }
+details { margin-top: 10px; } summary { cursor: pointer; color: var(--accent); }
+.imgs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.imgs a img { max-width: 100%; max-height: 520px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+.q { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+.q:first-of-type { border-top: 0; }
+.choice button { min-width: 64px; }
+.choice button.on1 { background: var(--yes); color: #fff; border-color: var(--yes); }
+.choice button.on0 { background: var(--no); color: #fff; border-color: var(--no); }
+.choice button.onu { background: var(--warn); color: #fff; border-color: var(--warn); }
+.reveal { border-left: 3px solid var(--accent); padding-left: 12px; }
+.agree { color: var(--yes); font-weight: 600; } .disagree { color: var(--no); font-weight: 600; }
+.nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.progress { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; flex: 1 1 160px; }
+.progress > div { height: 100%; background: var(--accent); }
+textarea { width: 100%; min-height: 54px; }
+.hidden { display: none; }
+kbd { font-size: 12px; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+@media (max-width: 640px) { .q { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Spot-check labeller</h1>
+  <label>Labeller <input id="who" type="text" size="10" placeholder="author1"></label>
+  <select id="sheet" aria-label="Sheet"></select>
+  <div class="progress" title="labelled in this sheet"><div id="bar"></div></div>
+  <span id="count" class="meta"></span>
+  <button id="export">Export labels (CSV)</button>
+  <label class="meta"><input id="importfile" type="file" accept=".csv" class="hidden"><button id="importbtn" type="button">Import</button></label>
+</header>
+<main>
+  <div id="start" class="card">
+    <p>Enter your labeller name above (<b>author1</b> or <b>author2</b>), then pick a sheet. For each item, give your own label first.
+    The model's verdict appears only after you have labelled every question for the item.</p>
+    <p class="meta">Labels are saved in this browser as you go. Export often, and send the exported CSV to whoever runs
+    <code>score_labels.py</code>. Keys: <kbd>1</kbd> yes, <kbd>0</kbd> no, <kbd>?</kbd> unsure (first open question),
+    <kbd>&rarr;</kbd>/<kbd>Enter</kbd> next, <kbd>&larr;</kbd> previous, <kbd>u</kbd> next unlabelled.</p>
+  </div>
+  <div id="item" class="hidden">
+    <div class="card">
+      <div class="nav">
+        <button id="prev">&larr; Previous</button>
+        <button id="next" class="primary">Next &rarr;</button>
+        <button id="nextu">Next unlabelled</button>
+        <span id="pos" class="meta"></span>
+      </div>
+      <h2 id="title" style="font-size:15px;margin:12px 0 0"></h2>
+      <div id="show"></div>
+      <div id="imgs" class="imgs"></div>
+      <details id="extrawrap"><summary>More context</summary><div id="extra"></div></details>
+    </div>
+    <div class="card">
+      <div id="questions"></div>
+      <div class="field-label">Note (say why for any "no" or "unsure")</div>
+      <textarea id="note"></textarea>
+    </div>
+    <div id="revealcard" class="card hidden"><div class="reveal" id="reveal"></div></div>
+  </div>
+</main>
+<script>
+const DATA = /*DATA*/[];
+const $ = (id) => document.getElementById(id);
+let sheetIdx = 0, itemIdx = 0;
+function storeKey() { return "spotcheck:" + ($("who").value.trim() || "anon"); }
+function load() { try { return JSON.parse(localStorage.getItem(storeKey()) || "{}"); } catch (e) { return {}; } }
+function save(db) { try { localStorage.setItem(storeKey(), JSON.stringify(db)); } catch (e) { alertOnce(); } }
+let warned = false;
+function alertOnce() { if (!warned) { warned = true; $("count").textContent = "browser storage unavailable: export before closing"; } }
+function rec(db, sheet, item) { const k = sheet.id + "::" + item.key; return db[k] || (db[k] = { labels: {}, note: "" }); }
+function done(r, item) { return item.fields.every(([f]) => r.labels[f] !== undefined && r.labels[f] !== ""); }
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function block(pairs) {
+  return pairs.filter(([, v]) => v !== undefined && v !== "").map(([k, v]) =>
+    `<div class="field-label">${esc(k)}</div><div class="field-value">${esc(v)}</div>`).join("");
+}
+function render() {
+  const sheet = DATA[sheetIdx]; const item = sheet.items[itemIdx]; const db = load(); const r = rec(db, sheet, item);
+  $("start").classList.add("hidden"); $("item").classList.remove("hidden");
+  $("title").textContent = item.title;
+  $("show").innerHTML = block(item.show);
+  $("extra").innerHTML = block(item.extra); $("extrawrap").classList.toggle("hidden", !item.extra.length);
+  $("imgs").innerHTML = item.images.map((p) => `<a href="${esc(p)}" target="_blank"><img src="${esc(p)}" alt="crop ${esc(p)}"></a>`).join("");
+  $("questions").innerHTML = item.fields.map(([f, label]) => {
+    const v = r.labels[f];
+    const cls = (x) => (v === x ? (x === "?" ? "onu" : "on" + x) : "");
+    return `<div class="q"><div>${esc(label)}</div><div class="choice" data-f="${f}">
+      <button data-v="1" class="${cls("1")}">Yes</button><button data-v="0" class="${cls("0")}">No</button><button data-v="?" class="${cls("?")}">Unsure</button></div></div>`;
+  }).join("");
+  $("note").value = r.note || "";
+  const complete = done(r, item);
+  $("revealcard").classList.toggle("hidden", !complete);
+  if (complete) {
+    const cmp = item.fields.map(([f]) => {
+      const mine = r.labels[f], theirs = item.stored[f];
+      if (theirs === undefined || theirs === "") return `<div>${esc(f)}: you ${esc(mine)}, stored label missing</div>`;
+      if (mine === "?") return `<div>${esc(f)}: you unsure, stored ${esc(theirs)}</div>`;
+      const ok = mine === String(theirs);
+      return `<div>${esc(f)}: you ${esc(mine)}, stored ${esc(theirs)} <span class="${ok ? "agree" : "disagree"}">${ok ? "agree" : "overturn"}</span></div>`;
+    }).join("");
+    $("reveal").innerHTML = `<div class="field-label">Stored verdict</div>${cmp}${block(item.reveal)}`;
+  }
+  const n = sheet.items.length; const nd = sheet.items.filter((it) => done(rec(db, sheet, it), it)).length;
+  $("bar").style.width = (100 * nd / n) + "%"; $("count").textContent = `${nd} of ${n} labelled`;
+  $("pos").textContent = `item ${itemIdx + 1} of ${n}`;
+  fillSheetSelect(db);
+}
+function fillSheetSelect(db) {
+  const sel = $("sheet");
+  const opts = DATA.map((s, i) => {
+    const nd = s.items.filter((it) => done(rec(db, s, it), it)).length;
+    return `<option value="${i}"${i === sheetIdx ? " selected" : ""}>${esc(s.name)} (${nd}/${s.items.length})</option>`;
+  }).join("");
+  if (sel.innerHTML !== opts) sel.innerHTML = opts;
+}
+function setLabel(f, v) {
+  const sheet = DATA[sheetIdx], item = sheet.items[itemIdx]; const db = load(); const r = rec(db, sheet, item);
+  r.labels[f] = v; r.ts = new Date().toISOString(); save(db); render();
+}
+$("questions").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return; setLabel(b.parentElement.dataset.f, b.dataset.v);
+});
+$("note").addEventListener("input", () => {
+  const sheet = DATA[sheetIdx], item = sheet.items[itemIdx]; const db = load(); rec(db, sheet, item).note = $("note").value; save(db);
+});
+function go(d) { const n = DATA[sheetIdx].items.length; itemIdx = Math.min(n - 1, Math.max(0, itemIdx + d)); render(); window.scrollTo(0, 0); }
+function nextUnlabelled() {
+  const sheet = DATA[sheetIdx]; const db = load();
+  for (let k = 1; k <= sheet.items.length; k++) {
+    const j = (itemIdx + k) % sheet.items.length; if (!done(rec(db, sheet, sheet.items[j]), sheet.items[j])) { itemIdx = j; render(); window.scrollTo(0, 0); return; }
+  }
+}
+$("prev").onclick = () => go(-1); $("next").onclick = () => go(1); $("nextu").onclick = nextUnlabelled;
+$("sheet").onchange = (e) => { sheetIdx = +e.target.value; itemIdx = 0; render(); };
+$("who").onchange = () => { try { localStorage.setItem("spotcheck:who", $("who").value.trim()); } catch (e) {} render(); };
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "TEXTAREA" || e.target.tagName === "INPUT" || $("item").classList.contains("hidden")) return;
+  const item = DATA[sheetIdx].items[itemIdx]; const r = rec(load(), DATA[sheetIdx], item);
+  const open = item.fields.find(([f]) => r.labels[f] === undefined) || item.fields[item.fields.length - 1];
+  if (e.key === "1" || e.key === "0" || e.key === "?") setLabel(open[0], e.key);
+  else if (e.key === "ArrowRight" || e.key === "Enter") go(1);
+  else if (e.key === "ArrowLeft") go(-1);
+  else if (e.key === "u") nextUnlabelled();
+});
+function csvCell(s) { s = String(s ?? ""); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+$("export").onclick = () => {
+  const who = $("who").value.trim(); if (!who) { $("who").focus(); return; }
+  const db = load(); const lines = [["labeller", "sheet", "item_key", "field", "own_label", "stored_label", "note", "labelled_at"].join(",")];
+  for (const s of DATA) for (const it of s.items) {
+    const r = db[s.id + "::" + it.key]; if (!r) continue;
+    for (const [f] of it.fields) if (r.labels[f] !== undefined)
+      lines.push([who, s.id, it.key, f, r.labels[f], it.stored[f] ?? "", r.note || "", r.ts || ""].map(csvCell).join(","));
+  }
+  const blob = new Blob(["﻿" + lines.join("\r\n") + "\r\n"], { type: "text/csv" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = `spotcheck_labels_${who}_${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+};
+function parseCsv(text) {
+  const rows = []; let row = [], cell = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+    else if (c === '"') q = true; else if (c === ",") { row.push(cell); cell = ""; }
+    else if (c === "\n") { row.push(cell.replace(/\r$/, "")); rows.push(row); row = []; cell = ""; } else cell += c;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+$("importbtn").onclick = () => $("importfile").click();
+$("importfile").onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return; const rows = parseCsv((await f.text()).replace(/^﻿/, ""));
+  const head = rows.shift(); const ix = (n) => head.indexOf(n);
+  if (!$("who").value.trim() && rows.length) $("who").value = rows[0][ix("labeller")];
+  const db = load();
+  for (const r of rows) {
+    if (r.length < head.length) continue;
+    const k = r[ix("sheet")] + "::" + r[ix("item_key")]; const e2 = db[k] || (db[k] = { labels: {}, note: "" });
+    e2.labels[r[ix("field")]] = r[ix("own_label")]; e2.note = r[ix("note")]; e2.ts = r[ix("labelled_at")];
+  }
+  save(db); render();
+};
+try { $("who").value = localStorage.getItem("spotcheck:who") || ""; } catch (e) {}
+fillSheetSelect(load());
+$("sheet").addEventListener("focus", () => fillSheetSelect(load()));
+$("start").insertAdjacentHTML("beforeend", '<button class="primary" id="begin">Start</button>');
+$("begin").onclick = () => { if (!$("who").value.trim()) { $("who").focus(); return; } render(); };
+</script>
+</body>
+</html>

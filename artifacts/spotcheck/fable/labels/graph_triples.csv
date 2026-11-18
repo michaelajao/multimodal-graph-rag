@@ -1,0 +1,151 @@
+corpus,row,triple_id,fable_entailment,fable_canonical,fable_relation_specific,fable_provenance,fable_reason
+hotpotqa,1,0627832cc1dd,1,0,1,1,"Tail is a vague time expression, not an entity."
+hotpotqa,2,65dc8780ad58,1,0,0,1,Supported by inference only (sentence is cut off at 'she became a'); tail is a descriptive phrase and 'became' is a bare copula.
+hotpotqa,3,b669425407d9,1,0,1,1,"Tail is a descriptive phrase, not an entity."
+hotpotqa,4,211d3a5576aa,1,0,1,1,Tail is a descriptive phrase and head is a bare surname.
+hotpotqa,5,1f3755952bd1,1,1,1,1,Stated directly.
+hotpotqa,6,41fcca556417,1,0,1,1,"Tail is a possessive abstract phrase, not an entity."
+hotpotqa,7,1065830f0415,1,0,0,1,Tail is a generic phrase and 'was' is a bare copula.
+hotpotqa,8,2ade9179687d,1,1,1,1,Stated directly.
+hotpotqa,9,d4074d292593,1,0,0,1,Tail is a 'type of' phrase and 'is' is a bare copula.
+hotpotqa,10,2bbb8c29a452,1,0,0,1,Tail is a class description and 'is' is a bare copula.
+hotpotqa,11,011877d0a526,0,0,1,1,"The chunk says she (the author) was featured in Reader's Digest, not the book; head is a truncated fragment."
+hotpotqa,12,3ae2e8f4eb70,1,0,1,1,Tail is a descriptive noun phrase rather than a named entity.
+hotpotqa,13,3d3c9b67bd69,1,0,0,1,Tail is a generic noun and 'is' is a bare copula.
+hotpotqa,14,dfbfd071521a,1,0,0,1,Tail is a generic noun phrase and 'were' is a bare copula.
+hotpotqa,15,884a38719203,1,1,1,1,"Stated: a city in Blue Earth, Nicollet and Le Sueur counties."
+hotpotqa,16,e85eb4fdce7d,1,1,1,1,Stated directly.
+hotpotqa,17,61dbd85bc3b9,1,0,1,1,Head is a generic noun phrase.
+hotpotqa,18,0390e35bdb52,1,1,1,1,Stated directly; tail is a specific year.
+hotpotqa,19,673a41b46882,1,0,0,1,Tail is a class description and 'is a' is a bare copula.
+hotpotqa,20,0080e765a9cd,1,0,0,1,Tail is a class description and 'was' is a bare copula (chunk uses present tense).
+hotpotqa,21,a88e1821b3fe,1,0,0,1,Tail is a generic noun and 'is' is a bare copula.
+hotpotqa,22,1aabf2549c29,1,1,1,1,Stated directly.
+hotpotqa,23,374790ef5a09,1,0,0,1,Tail is a class description and 'is' is a bare copula.
+hotpotqa,24,0b524212c3de,1,1,1,1,Stated directly.
+hotpotqa,25,60bb1c936baf,1,0,1,1,Head and tail are generic nouns.
+hotpotqa,26,100c1623e6df,1,0,1,1,Head is a generic noun phrase.
+hotpotqa,27,eb0426bb86a3,1,0,1,1,Tail 'mainstream' is a generic noun.
+hotpotqa,28,d8d16b414a7f,1,0,0,1,Tail is a count phrase and 'has' is vague.
+hotpotqa,29,24ab0ede6a4f,1,0,0,1,Tail is a generic noun and 'is' is a bare copula.
+hotpotqa,30,604e2f09a23d,1,0,1,1,Head is a generic noun phrase.
+hotpotqa,31,be3c52533273,1,1,1,1,Stated directly.
+hotpotqa,32,eb32092316a0,1,0,0,1,Head is a generic noun phrase and 'was' is a bare copula.
+hotpotqa,33,29274e351ded,1,0,0,1,Head 'debut date' is generic and 'was' is a bare copula.
+hotpotqa,34,c9bed8d5ed2c,1,0,0,1,"Head 'area' is generic, tail is a location phrase and 'is' is a bare copula."
+hotpotqa,35,308890813af0,1,0,0,1,Tail is a class description and 'is' is a bare copula.
+hotpotqa,36,1330afc59ff0,0,0,1,1,Reversed: the chunk says Lord Digga produced as part of the duo Bluez Brothers and does not name Ace as a member; tail joins two entities.
+hotpotqa,37,78708784a734,1,0,1,1,Tail 'header files' is a generic noun.
+hotpotqa,38,aae66589590b,1,0,1,1,Head is a generic noun phrase.
+hotpotqa,39,b9fc174a14cb,1,0,0,1,Tail is a generic noun phrase and 'is' is a bare copula.
+hotpotqa,40,c1b7f3a2088f,1,1,1,1,Stated directly; both are specific medical terms.
+hotpotqa,41,8cbb176dc88e,1,1,1,1,Stated: he has done work for Rolling Stone.
+hotpotqa,42,514888df7d62,1,0,1,1,"Tail is a descriptive phrase, not an entity."
+hotpotqa,43,a98d9dc5d107,1,0,0,1,Tail is a generic noun and 'was' is a bare copula.
+hotpotqa,44,89e4b142e8ac,1,0,1,1,Tail is a generic phrase.
+hotpotqa,45,8b91bd0b6e1a,1,0,0,1,"Head is generic, tail is a fragment and 'made' is vague."
+hotpotqa,46,7eb7bbc09484,1,1,1,1,Stated directly.
+hotpotqa,47,d18a0ad13b94,1,0,1,1,"Tail is a prepositional phrase, not an entity."
+hotpotqa,48,f36c193a9b02,1,0,1,1,Head 'band' is a generic noun.
+hotpotqa,49,15fc674b4f6c,1,0,1,1,Head 'race' is a generic noun.
+hotpotqa,50,58a7419dd3c7,1,0,0,1,Head and tail are generic and 'rocked' is a figurative idiom with no informative content.
+spiqa,1,850cb68d552b,1,0,1,1,Head and tail are generic noun phrases.
+spiqa,2,320002711a4b,1,0,1,1,Head is a symbol and tail is a set literal.
+spiqa,3,f2f853c9aa8e,1,0,1,1,Head is generic and tail is a prepositional fragment.
+spiqa,4,55befb0468f8,1,0,1,1,Head and tail are generic phrases.
+spiqa,5,d5f2be1140ec,1,0,1,1,Head is generic and tail is a formula.
+spiqa,6,38a347548720,1,0,1,1,"Tail is a numeric value, not an entity."
+spiqa,7,4cd2f6ecee7e,1,0,1,1,Head and tail are generic noun phrases.
+spiqa,8,b463bc21b2df,1,0,0,1,"Head is generic, tail is an adjective phrase and 'are' is a bare copula."
+spiqa,9,74097eb3630e,1,0,1,1,Head is generic and tail is a symbol.
+spiqa,10,c97a20e0d4d6,0,0,0,1,The sentence is cut off before its predicate and the preceding text says the impact is not notable; generic head and bare copula.
+spiqa,11,9720bf26668c,1,0,1,1,Head 'solution' is generic and tail is a descriptive phrase.
+spiqa,12,325d863f7f28,1,0,1,1,Head and tail are descriptive phrases.
+spiqa,13,f3caa8bb1c8f,1,0,1,1,Head and tail are generic noun phrases.
+spiqa,14,47aa6dcd569e,1,0,1,1,"Tail is a descriptive phrase, not an entity."
+spiqa,15,d8ed0a08032b,0,0,0,1,"Cho et al. (2014) is one of several citations; the chunk does not say who developed NMT, and the tail is a clause."
+spiqa,16,4825813c1ea8,1,0,1,1,Table gives 0.800 R10@5 for the M2-only channel; head is a symbol and tail is a value.
+spiqa,17,409928cb18ee,1,0,1,1,Head 'model' is generic and tail is a descriptive phrase.
+spiqa,18,c8125e72316f,1,0,1,1,Tail is a paper-local variable rather than a canonical entity.
+spiqa,19,2865da09e601,1,0,0,1,Head and tail are generic and 'have' is vague.
+spiqa,20,ddf135c8d1bd,1,0,1,1,"Tail is a pair of adjectives, not an entity."
+spiqa,21,72a22d8c02b2,1,0,1,1,Tail 'real biases' is a generic phrase.
+spiqa,22,62a724c19ba1,1,0,1,1,Head and tail are formulas.
+spiqa,23,ed3333496408,1,0,1,1,Loose: the chunk says integrating external knowledge into adversarial training could further improve quality; tail 'quality' is generic.
+spiqa,24,23910efed016,1,0,1,1,Head and tail are generic phrases.
+spiqa,25,e14f43415c4d,1,0,1,1,Head and tail are generic phrases.
+spiqa,26,185fdd720e41,1,0,0,1,"Verbatim but cut off mid-sentence, so the tail is a fragment and 'makes' is vague."
+spiqa,27,d2c3daf9034f,1,0,0,1,"Head is a bare percentage, tail is a descriptive phrase and 'are' is a bare copula."
+spiqa,28,1fb092de4647,1,0,1,1,Head 'aspect information' is a generic phrase.
+spiqa,29,f466dcce05a1,1,0,1,1,Head is a truncated citation fragment and tail is a descriptive phrase.
+spiqa,30,a351aa3ab4ee,1,0,1,1,Tail is a fragment holding two arguments.
+spiqa,31,8b4d20006b50,1,0,0,1,"Head is generic, tail is a symbol and 'is' is a bare copula."
+spiqa,32,c44c40796074,1,1,1,1,Stated: used in applications such as wavelet decomposition.
+spiqa,33,632ec7a7fa24,1,0,1,1,Head 'existing works' is generic.
+spiqa,34,56b33b223a08,1,0,1,1,Head and tail are symbols.
+spiqa,35,58bb2b47af5f,1,0,1,1,Head 'translation models' is generic.
+spiqa,36,c513919cafaa,1,0,0,1,Tail is a purpose clause and 'is considered' is vague.
+spiqa,37,d804e6617b47,1,0,1,1,Head is a paper-local label and tail is a descriptive phrase.
+spiqa,38,71adf276e077,1,0,1,1,Head is generic and tail is a symbol.
+spiqa,39,a9667abaefde,1,0,0,1,"The fact (human evaluation is subjective) is stated but the triple is malformed, with the predicate adjective in the relation."
+spiqa,40,ad972b2bfa25,1,0,1,1,Tail 'testing performance' is generic.
+spiqa,41,f9f87843cbbe,1,0,1,1,Head and tail are generic nouns.
+spiqa,42,ef44c11fc1b9,1,0,0,1,"Head is a symbol, tail is a description and 'is' is a bare copula."
+spiqa,43,47e233482979,1,0,0,1,"Head is a symbol, tail is a description and 'is' is a bare copula."
+spiqa,44,9f47fff99dee,1,0,0,1,Tail is a hardware spec value and 'has' is vague.
+spiqa,45,dd7581a76691,1,0,1,1,Tail is a generic descriptive phrase.
+spiqa,46,086b8ddbc754,1,0,1,1,Tail 'results' is generic.
+spiqa,47,6f3ff1a6ab5c,1,0,1,1,Head 'novel method' is generic.
+spiqa,48,a12d725e0386,1,0,0,1,"Matches the chunk's literal text, though '333' is a rendering artifact for 3; tail is a number and 'is' is a bare copula."
+spiqa,49,f9306f4cc9fb,1,0,0,1,"Head is generic, tail is a prepositional fragment and 'are' is a bare copula."
+spiqa,50,18015ff5326f,1,1,1,1,Stated directly.
+publaynet,1,35db1c3c38ae,1,0,0,1,"Matches the OCR text (the figure itself is garbled); generic head, value tail and bare copula."
+publaynet,2,c696446bccc1,1,0,1,1,Tail 'Dependence' is truncated from alcohol dependence.
+publaynet,3,a20a8bffcc70,1,0,1,1,Head 'procedure' is generic and tail is a value phrase.
+publaynet,4,0445f569ac39,1,0,1,1,Matches the OCR text ('94-50%' is probably a misread range); tail is a long quantity phrase.
+publaynet,5,b3f2e83fc0fc,1,0,0,1,"Head is a generic phrase, tail is an adjective and 'is' is a bare copula."
+publaynet,6,9a3db5d56383,1,0,1,1,Head and tail are generic phrases.
+publaynet,7,fc404ac86fc6,1,0,1,1,"Tail is a list of several entities, not one node."
+publaynet,8,02d54b92a082,1,0,1,1,Loose: the chunk credits the efficiency and accuracy of strain designs with accelerating the pace; generic phrases.
+publaynet,9,64b7c7441c89,1,0,1,1,"Verbatim but cut off, so the tail 'excessive' is a fragment."
+publaynet,10,c3ecab5e26fb,0,0,0,1,"0.003 is the P value for the group difference, not the mRNA level."
+publaynet,11,9abf65aa9e08,0,0,1,1,"The sentence on relative abundance values is cut off; monitoring ions is tied to measuring 13C incorporation, so the link is not stated."
+publaynet,12,39a4dbb06bb4,0,0,0,1,Meta filler: the chunk asserts no such fact and the instrument name is completed by guess; relation is vague.
+publaynet,13,700746b97ad2,1,0,1,1,Head and tail are descriptive noun phrases.
+publaynet,14,69418455c745,1,0,0,1,Tail is a clause and 'is' is a bare copula.
+publaynet,15,818bd9d00352,0,0,1,1,"The chunk says coatings, films and layers should have higher bond strength, not 'MPs'; head is a fragment."
+publaynet,16,9c44b02cca3d,1,0,0,1,Loose: Mitchell 1984 is cited as one way to model spillover effects; tail is a garbled clause and 'is' is a bare copula.
+publaynet,17,cecc03e43f1c,1,0,0,1,"Head is a descriptive phrase, tail is a percentage and 'is' is a bare copula."
+publaynet,18,89955aad8f9b,1,0,0,1,Loose: the chunk describes a docked model of the protein bound with alpha-importin; tail is a clause and head is OCR-garbled.
+publaynet,19,7df09efdd641,1,0,0,1,Stated with a hedge ('thought to be'); tail is a clause and 'is' is a bare copula.
+publaynet,20,5bcb1069ddd3,1,0,1,1,Loose paraphrase; head and tail are generic phrases.
+publaynet,21,40fd48a29100,1,0,0,1,Loose: it is the protein's NLS peptide that was docked manually; tail is a clause and 'was' is a bare copula.
+publaynet,22,62368ead24bc,1,0,1,1,Head and tail are descriptive phrases.
+publaynet,23,716e1783887b,1,0,1,1,Head is generic and tail is a prepositional fragment.
+publaynet,24,bdf8ff26520e,1,0,0,1,"Supported in substance but malformed; generic head and tail, vague relation."
+publaynet,25,29a2d98098ae,1,0,1,1,Head is generic and tail is an adjective.
+publaynet,26,dff921372cde,0,0,1,1,"'Asian data' is a guess at garbled OCR ('asian dee', listed beside type 2 diabetes and so probably a disease); head is OCR-garbled and tail is a fragment."
+publaynet,27,516730344423,0,0,0,1,"38.9% is the spread reported for the MM group, not a reduction for PS; 'had' is vague."
+publaynet,28,79c1742af31b,1,0,1,1,Tail 'similar shape' is a generic phrase.
+publaynet,29,1b8ecdce76fa,0,0,1,1,"No disintegration of PE is stated, but 'field conditions' is not; the chunk contrasts the study with field settings."
+publaynet,30,16ca0fb32b0a,1,0,0,1,"Head is generic, tail is a clause fragment and 'is' is a bare copula."
+publaynet,31,bea8ee020213,1,0,0,1,"Head is generic, tail is a duration and 'is' is a bare copula."
+publaynet,32,14029fd09b8e,1,0,0,1,Tail carries an OCR error ('issues' for tissues) and 'involves' is vague.
+publaynet,33,0780ac868b10,0,0,1,1,"The chunk says Gcm2 morphants, which lack HR ionocytes, absorb Na via NCC cells; tail is a clause."
+publaynet,34,e51f86172db6,1,0,0,1,Tail is a verb phrase and 'helped' is a light verb with no content of its own.
+publaynet,35,3ac2b6c971a8,0,1,1,1,The chunk says AOM favours heterotrophic bacteria; what promotes cyanobacterial blooms is cut off.
+publaynet,36,b2fb0c1734cc,0,0,1,1,The chunk says the antibody inhibits cryptococcal growth; 'erythrocyte' is a misreading of the OCR and the head is generic.
+publaynet,37,2fce009116eb,0,0,0,1,Two unrelated fragments of garbled OCR joined by a copula; no such statement in the chunk.
+publaynet,38,a580a5ab613a,0,0,0,1,The chunk is a list of headings and states no relation between them; relation is vague.
+publaynet,39,d840e7664d11,1,0,1,1,Sentence is cut off at 'cognitiv'; tail is a generic phrase.
+publaynet,40,47001c1ff6bb,1,0,1,1,Head and tail are generic nouns.
+publaynet,41,844ae0969398,1,0,1,1,Head is generic and tail is a descriptive phrase.
+publaynet,42,dd788231d75f,0,0,0,1,"'Gi' is an OCR-garbled list marker '(ii)', not a value of the head."
+publaynet,43,01daad71d4e1,0,0,1,1,"Context (spatial resolution, optics) indicates the diffraction limit; 'detection limit' is a misreading of garbled OCR."
+publaynet,44,c115743c888f,1,1,1,1,Stated as a negative association with prenatal exposure.
+publaynet,45,ea4f3b9df29d,1,0,1,1,Tail is a temporal fragment.
+publaynet,46,d61cd63c4f5f,0,0,1,1,"Sequences were retrieved from GenBank (OCR 'rckoved'), not removed; head is generic."
+publaynet,47,1a934e05c550,1,0,1,1,Head and tail are generic phrases.
+publaynet,48,310e4e92a9ae,0,0,1,1,Lena Shah appears only in the author list that follows a garbled sentence; head is generic.
+publaynet,49,767c12d732f0,1,0,1,1,Head and tail are descriptive phrases.
+publaynet,50,9909969da777,1,0,1,1,From the article title; tail is a compound phrase rather than a single entity.

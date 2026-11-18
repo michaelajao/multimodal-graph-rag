@@ -1,0 +1,101 @@
+set,row,question_id,fable_verdict,fable_reason
+spiqa_screened_pixels,1,4687b81677c2ac04,0,Generic closed-book description of a supervised classifier that never states the contrasting words per topic by tone.
+spiqa_screened_pixels,2,e822b8cc2bd25430,1,Names the method with NN deformation as the one that reconstructs the shape properly.
+spiqa_screened_pixels,3,c0eca440c339eac8,1,"Says the warped triplets supply temporal (motion) information to the discriminator, matching the reference point."
+spiqa_screened_pixels,4,45487eedf17a2cd1,0,Names a syntax-aware model instead of Scholar + w.v. and gives a different trade-off.
+spiqa_screened_pixels,5,ca9253c5ceda2ca6,1,"Gives 5e-5, the same value as the reference."
+spiqa_screened_pixels,6,107f05de3f0e8f6a,0,Declines to answer.
+spiqa_screened_pixels,7,6a487e7cf8abae09,0,Declines to answer.
+spiqa_screened_pixels,8,e6e81feff93604bc,0,Declines to answer.
+spiqa_screened_pixels,9,f2f70b081c6ef65b,1,States low-res frontal plus side-face input and high-res frontal output.
+spiqa_screened_pixels,10,817ef89db6dc12f7,1,Identifies the AR component.
+spiqa_screened_pixels,11,15f71f0a7b4866af,0,Declines to answer.
+spiqa_screened_pixels,12,98064553807b59ce,1,All six accuracies match the reference.
+spiqa_screened_pixels,13,c613b180110b10ce,1,States that sample quality decreases as the update threshold increases.
+spiqa_screened_pixels,14,5fe76fb43433589e,0,Does not name SNLI or the 85.8 versus 85.2 figures and asks for clarification.
+spiqa_screened_pixels,15,17799828b3cf2593,1,"States that learning time increases, scaling linearly with edges per node."
+spiqa_screened_pixels,16,ac52d9456ea8bcaf,0,Declines to name a dataset and does not give wdbc.
+spiqa_screened_pixels,17,62fcc9c1e9464562,0,Declines to answer.
+spiqa_screened_pixels,18,ebd7185080bfc192,1,Names Conv-KNRM with nDCG@20 of 0.3215 and says it beats the baselines.
+spiqa_screened_pixels,19,b04fa929256f0e12,1,States that COPA is faster than Helwig.
+spiqa_screened_pixels,20,a1215413fbf31590,1,Describes z as the conditioning signal that guides the attributes of the generated face.
+spiqa_screened_pixels,21,099bc0d4dff5a7d4,0,"Talks about highlight sharpness incoherently and then declines, not the more even surface texture."
+spiqa_screened_pixels,22,7e732e164d3e8abc,1,Conveys that adversarial examples have low non-ME and are filtered by a threshold on it.
+spiqa_screened_pixels,23,c091be9b578ed8e4,0,Compares the proposed model with competitors and never says the baseline faces are blurry and unrealistic.
+spiqa_screened_pixels,24,8f30387e0073c5cc,1,Says the fusion modules combine the representations produced by the alignment modules.
+spiqa_screened_pixels,25,fdc9b09991f18d34,0,Declines to answer.
+spiqa_screened_pixels,26,98064553807b59ce,1,All six accuracies match the reference.
+spiqa_screened_pixels,27,46ebdba9d27f32e4,0,Declines to answer.
+spiqa_screened_pixels,28,3753454c48d001b5,1,Says shared weights make both branches use the same parameters so their output distributions can be compared by the confusion loss.
+spiqa_screened_pixels,29,708fe0ab9ef09cfd,1,States the proposed method gets hair colour right while icGAN does not.
+spiqa_screened_pixels,30,c8263b2f5c09ed7c,0,Asks which corpora are meant and gives no answer.
+spiqa_screened_pixels,31,8efefc59d4b36a16,1,Describes embedding box information at several scales as attention maps fused with encoder features before the decoder.
+spiqa_screened_pixels,32,30a0cd9344c532a2,1,"Hedged, but conveys that a more complex geometric setting requires more blanks."
+spiqa_screened_pixels,33,708fe0ab9ef09cfd,0,Generic discussion that ends by declining to compare the methods.
+spiqa_screened_pixels,34,6894d3d1ba3c6f3b,0,Does not name Entropy Balancing and describes a different comparison.
+spiqa_screened_pixels,35,30a0cd9344c532a2,0,Declines to answer.
+spiqa_screened_pixels,36,f2f70b081c6ef65b,1,States low-res face plus side-view input and high-res frontal output.
+spiqa_screened_pixels,37,c8263b2f5c09ed7c,1,UMBC News has more sentences by 60.5 million.
+spiqa_screened_pixels,38,bae2cf01063083a8,0,Describes a plateau at 60 cameras and never states that accuracy increases with the number of cameras.
+spiqa_screened_pixels,39,fdc9b09991f18d34,0,Names FLoss and PP loss instead of TecoGAN.
+spiqa_screened_pixels,40,88b373f93876c1e7,0,Gives a different distinction and misses the increment-only-if-key-absent condition.
+spiqa_screened_pixels,41,4df2722d9d76957c,0,"Describes temporal cycle-consistency across domains, not knowledge transfer between the two recurrent generators."
+spiqa_screened_pixels,42,e941a9fb513db85e,0,Declines to answer.
+spiqa_screened_pixels,43,98064553807b59ce,0,Reports different MNLI accuracies (about 74 percent) and omits the SNLI gain.
+spiqa_screened_pixels,44,44a2b224fac89df9,1,Names BoSsNet as the model with the highest combined score.
+spiqa_screened_pixels,45,ddf400eae6945f6e,1,States that NegPair reduction increases with the number of perfect results.
+spiqa_screened_pixels,46,b794c9b2e1a0698a,0,Asks which datasets are meant and gives no answer.
+spiqa_screened_pixels,47,26388638abb10f6c,0,Declines to answer.
+spiqa_screened_pixels,48,f7ee86ce4cee316f,0,Declines to answer.
+spiqa_screened_pixels,49,945ef1ec41a7b1e4,1,"Defines clicks as interactions on displayed ads and CTR as clicks over impressions, which implies clicks are a subset of impressions."
+spiqa_screened_pixels,50,2ec3387caf03877b,1,"Lists eight of the nine steps in order, omitting only the initial sampling of comments."
+spiqa_flagged_pixels,1,a27ed6441e41e357,0,Declines to answer.
+spiqa_flagged_pixels,2,c4630e54ff5bd033,1,States higher recall and lower precision as beta squared increases.
+spiqa_flagged_pixels,3,608ae5521f5cf545,0,Declines to answer.
+spiqa_flagged_pixels,4,a2f1c7f67ac608f2,1,Names KEHNN as best because it has the highest score on all four metrics.
+spiqa_flagged_pixels,5,69753372328d541f,1,States VAGER+Voting is best in both 1-shot and 20-shot settings on AUC and F1.
+spiqa_flagged_pixels,6,4e160e63c9b15b17,0,Declines to answer.
+spiqa_flagged_pixels,7,fadaa4235d2c5577,0,Declines to answer.
+spiqa_flagged_pixels,8,c03c930f18568e60,0,Declines to answer.
+spiqa_flagged_pixels,9,0366d20729a6301e,0,Declines to answer.
+spiqa_flagged_pixels,10,de8a813412023198,1,Attributes the poor performance to failing to capture semantic representations of unseen KB entities.
+spiqa_flagged_pixels,11,313dc719d6c65598,0,Names Bayesian optimisation with GP-EI rather than One Step ALOQ.
+spiqa_flagged_pixels,12,58e7dbb0f7ebdf7e,1,Identifies removing normalisation as the most harmful change on KITTI 2015.
+spiqa_flagged_pixels,13,552fb09b21e346e5,0,Declines to answer.
+spiqa_flagged_pixels,14,24830767fbdf2d0b,0,Names a conversational genre instead of Pivot Corpus (PT).
+spiqa_flagged_pixels,15,6651643731c4095e,1,Names MSDNet38.
+spiqa_flagged_pixels,16,5894fc98d801aba3,0,Declines to answer.
+spiqa_flagged_pixels,17,d6feb3b93d19354d,1,Explains TF-IDF as the TF times IDF product and BM25 as a probabilistic ranking function with document length normalisation.
+spiqa_flagged_pixels,18,2725f5c4b9569c6d,1,Names RCV1.
+spiqa_flagged_pixels,19,21f360664840f204,0,Declines to answer.
+spiqa_flagged_pixels,20,21f360664840f204,0,Names a syntax-aware model instead of A3C-CTS.
+spiqa_flagged_pixels,21,b579923f64a6a53e,0,Declines to answer.
+spiqa_flagged_pixels,22,b289cffafe33826b,1,"States performance improves with N and plateaus past 20, with the trade-off being sampling cost."
+spiqa_flagged_pixels,23,75f2aba418f414e0,0,Declines to answer.
+spiqa_flagged_pixels,24,248665276a69e931,0,Does not name AdaQA (two-way) + att.
+spiqa_flagged_pixels,25,81374a498915eeb8,0,Says the context lacks the comparison and does not name BIM/CE.
+spiqa_flagged_pixels,26,21db0a399972f85d,0,Names Merge-and-run instead of ITN (ResNet-32) with data augmentation.
+spiqa_flagged_pixels,27,ed085533b34edd04,0,Declines to answer.
+spiqa_flagged_pixels,28,d41513e22193161b,1,Names the english language city spanish community topic.
+spiqa_flagged_pixels,29,84a331ff892a60cc,1,Names ALOQ.
+spiqa_flagged_pixels,30,536ca6cf843abbd3,0,Generic survey of few-shot methods that never names VAGER + Voting.
+spiqa_flagged_pixels,31,9e067a9abc14e495,1,Names YTF with a 31.9 percent relative improvement.
+spiqa_flagged_pixels,32,0cc65c930410ad92,0,Answers yes where the reference says no.
+spiqa_flagged_pixels,33,708bb2c83cd2b7b1,0,Generic speculation with no finding that matches the reference.
+spiqa_flagged_pixels,34,b6992bb4eb524c8c,1,Names LSTNet.
+spiqa_flagged_pixels,35,e58c91517ca5d875,0,Opens by declining and says the comparison with word-level convolution is unavailable.
+spiqa_flagged_pixels,36,708bb2c83cd2b7b1,0,"Describes the best alpha shifting with sample size, not the loss-dependent effect the reference gives."
+spiqa_flagged_pixels,37,a9ba30333f5b1d33,1,"Gives 0.0002, the same value as the reference."
+spiqa_flagged_pixels,38,3002288998631db1,0,Declines to answer.
+spiqa_flagged_pixels,39,2132e018df3f10b5,0,Declines to answer.
+spiqa_flagged_pixels,40,c0c8c66ebd034cb8,0,Declines to answer.
+spiqa_flagged_pixels,41,f09f32ae6eecaaa1,1,Says the 3D ConvNet extracts the features used for each discretised place.
+spiqa_flagged_pixels,42,1142647d007e0b04,1,Names TecoGAN as combining temporal coherence with spatial detail.
+spiqa_flagged_pixels,43,5a9fc7a2bf728f91,0,Declines to answer.
+spiqa_flagged_pixels,44,b45b87de2304e0cb,0,Describes an inverted-U relationship rather than an inverse one.
+spiqa_flagged_pixels,45,89ccb561f8141b08,1,Concludes CDAN-fg is the most effective.
+spiqa_flagged_pixels,46,29c566bfd1253e98,0,Generic account that omits the symmetric-noise wins and the weakness on Pair-45 asymmetric noise.
+spiqa_flagged_pixels,47,81374a498915eeb8,1,"Names BIM as the most effective attack, covering the CE-trained model."
+spiqa_flagged_pixels,48,44d16b94b806058f,0,"Gives the range (0, 3) instead of 0 to 2."
+spiqa_flagged_pixels,49,1142647d007e0b04,0,Guesses Model 3 instead of TecoGAN.
+spiqa_flagged_pixels,50,07348b2d11b733fa,0,"Says no single method is highest across the three networks, contradicting beam width 9."
